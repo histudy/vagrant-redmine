@@ -184,7 +184,7 @@ redmine_puma_cfg:
 
 ### redmine_customize_language
 
-redmineの言語設定のカスタマイズ内容を指定します。
+redmineの言語設定のカスタマイズ内容を指定します。  
 ※この変数が定義されている場合、Redmine本体の言語ファイルを書き換えます。
 
 ```yml
