@@ -63,8 +63,8 @@ redmine_version: "3.4-stable"
 
 設定する値はGithubのブランチ名やタグ名を指定します。
 
-https://github.com/redmine/redmine/branches
-https://github.com/redmine/redmine/releases
+* https://github.com/redmine/redmine/branches
+* https://github.com/redmine/redmine/releases
 
 
 ### redmine_themes
