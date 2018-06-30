@@ -1,0 +1,17 @@
+---
+redmine_user: redmine
+redmine_home: /opt/redmine
+redmine_theme_dir: "{{ redmine_home }}/public/themes"
+redmine_plugin_dir: "{{ redmine_home }}/plugins"
+
+redmine_dependency_packages:
+  - libmagickcore-dev
+  - libmagickwand-dev
+  - libicu-dev
+  - fonts-ipaexfont
+  - bundler
+  - ruby-rmagick
+  - unzip
+  - puma
+  - acl
+  - git
