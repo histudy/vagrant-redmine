@@ -14,13 +14,13 @@
     group: "{{ redmine_user }}"
     state: directory
 - name: setup database(MySQL/Postgresql)
-  include_tasks: "database/{{ redmine_db_cfg['production'].adapter }}.yml"
+  include_tasks: "database/{{ redmine_db_cfg.production.adapter }}.yml"
   when:
-    - (redmine_db_cfg.adapter == 'mysql2' or redmine_db_cfg.adapter == 'postgresql')
-    - (redmine_db_cfg.host == 'localhost' or redmine_db_cfg.host == '127.0.0.1')
+    - (redmine_db_cfg.production.adapter == 'mysql2' or redmine_db_cfg.production.adapter == 'postgresql')
+    - (redmine_db_cfg.production.host == 'localhost' or redmine_db_cfg.production.host == '127.0.0.1')
 - name: setup database(SQLite)
-  include_tasks: "database/{{ redmine_db_cfg['production'].adapter }}.yml"
-  when: redmine_db_cfg.adapter == 'sqlite3'
+  include_tasks: "database/{{ redmine_db_cfg.production.adapter }}.yml"
+  when: redmine_db_cfg.production.adapter == 'sqlite3'
 - block:
   - name: checkout Redmine
     git:
