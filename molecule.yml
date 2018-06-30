@@ -66,10 +66,10 @@ ansible:
         - name: slack
           repo: "https://github.com/sciyoshi/redmine-slack.git"
         # URLから取得
-        - name: easy_gantt
-          url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
-          # 展開先ディレクトリ名(テスト用)
-          directory: easy_gantt
+        # - name: easy_gantt
+        #   url: "https://www.easyredmine.com/packages/EasyGanttFree.zip"
+        #   # 展開先ディレクトリ名(テスト用)
+        #   directory: easy_gantt
         # ファイルのアップロード
         - name: agile
           file: ~/Downloads/redmine/redmine_agile-1_4_6-light.zip
