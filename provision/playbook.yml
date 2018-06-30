@@ -1,5 +1,9 @@
 - name: Deploy Redmine
   hosts: all
+  roles:
+    - role: mariadb
+    - role: redmine
+    - role: nginx
   tasks:
     - debug:
-        msg: "Let's Redmine"
+        msg: "Let's Redmine!"

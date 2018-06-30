@@ -1,0 +1,10 @@
+nginx_generate_dh_key: no
+nginx_vhosts:
+  - name: default
+    server_name: example.com
+    default: yes
+    locations:
+      - pattern: /
+        content: |
+          proxy_pass http://unix:///opt/redmine/tmp/redmine.sock;
+          include proxy_params;
