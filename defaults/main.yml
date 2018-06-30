@@ -1,0 +1,179 @@
+---
+redmine_version: "3.4-stable"
+
+redmine_db_cfg:
+  production:
+    adapter: mysql2
+    database: redmine
+    host: localhost
+    username: redmine_user
+    password: redmine_password
+    encoding: utf8
+    # # ---------
+    # # PostgreSQL setting example
+    # # ---------
+    # adapter: postgresql
+    # database: redmine
+    # host: localhost
+    # username: redmine_user
+    # password: redmine_password
+    # # ---------
+    # # SQLite3 setting example
+    # # ---------
+    # adapter: sqlite3
+    # database: "{{ redmine_home }}/redmine.sqlite3"
+    # # ---------
+    # # SQL Server setting example
+    # # ---------
+    # adapter: sqlserver
+    # database: redmine
+    # host: localhost
+    # username: redmine_user
+    # password: redmine_password
+
+redmine_cfg:
+  default:
+    email_delivery:
+      # ---------
+      # send mail by Sendmail command
+      # ---------
+      delivery_method: :sendmail
+      # ---------
+      # send mail by SMTP Server
+      # ---------
+      # delivery_method: :smtp
+      # smtp_settings:
+      #   # Simple SMTP server at localhost
+      #   address: "localhost"
+      #   port: 25
+      #   # SMTP server at example.com using PLAIN authentication
+      #   address: "example.com"
+      #   port: 25
+      #   authentication: :login
+      #   domain: 'example.com'
+      #   user_name: 'myaccount'
+      #   password: 'password'
+      #   # SMTP server at example.com using LOGIN authentication and checking HELO for foo.com
+      #   address: "example.com"
+      #   port: 25
+      #   authentication: :plain
+      #   domain: 'example.com'
+      #   user_name: 'myaccount'
+      #   password: 'password'
+      #   # SMTP server at example.com using LOGIN authentication and checking HELO for foo.com
+      #   enable_starttls_auto: yes
+      #   address: "example.com"
+      #   port: 587
+      #   authentication: :plain
+      #   domain: 'example.com'
+      #   user_name: 'myaccount'
+      #   password: 'password'
+    attachments_storage_path:
+    autologin_cookie_name:
+    autologin_cookie_path:
+    autologin_cookie_secure:
+    scm_subversion_command:
+    scm_mercurial_command:
+    scm_git_command:
+    scm_cvs_command:
+    scm_bazaar_command:
+    scm_darcs_command:
+    scm_subversion_path_regexp:
+    scm_mercurial_path_regexp:
+    scm_git_path_regexp:
+    scm_cvs_path_regexp:
+    scm_bazaar_path_regexp:
+    scm_darcs_path_regexp:
+    scm_filesystem_path_regexp:
+    scm_stderr_log_file:
+    database_cipher_key:
+    # mirror_plugins_assets_on_startup: false
+    # sudo_mode: true
+    # sudo_mode_timeout: 15
+    # imagemagick_convert_command:
+    rmagick_font_path: /usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf
+    # max_concurrent_ajax_uploads: 2
+    # openid_authentication_store: :memory
+
+redmine_themes: []
+  # - name: gitmike
+  #   repo: "https://github.com/makotokw/redmine-theme-gitmike.git"
+  # - name: farend_fancy
+  #   repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
+  # - name: farend_basic
+  #   repo: "https://github.com/farend/redmine_theme_farend_basic.git"
+
+redmine_plugins: []
+  # - name: view_customize
+  #   repo: "https://github.com/onozaty/redmine-view-customize.git"
+  #   directory: view_customize
+  # - name: issue_templates
+  #   repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
+  # - name: dashboard
+  #   repo: "https://github.com/jgraichen/redmine_dashboard.git"
+  #   version: stable-v2
+  # - name: slack
+  #   repo: "https://github.com/sciyoshi/redmine-slack.git"
+  # - name: issue_checklist
+  #   repo: "https://github.com/Undev/redmine_issue_checklist.git"
+  # - name: knowledgebase
+  #   repo: "https://github.com/alexbevi/redmine_knowledgebase.git"
+  # - name: easy_gantt
+  #   url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
+  # - name: agile
+  #   file: path/to/redmine_agile-light.zip
+  # - name: checklists
+  #   file: path/to/redmine_checklists-light.zip
+  # - name: zenedit
+  #   file: path/to/redmine_zenedit-light.zip
+
+redmine_lang: ja
+
+redmine_send_reminders_cron_job:
+  enabled: no
+  params:
+    - 'days=7'
+    # - 'tracker=1'
+    # - 'users="1,23,45"'
+  hour: 9
+  minute: 0
+
+redmine_receive_imap_cron_job:
+  enabled: no
+  params:
+    - "username=imap_acount"
+    - "password=imap_password"
+    # - host=127.0.0.1
+    # - port=143
+    # - ssl=false
+    # - folder=INBOX
+  # hour: "*"
+  # minute: "*/5"
+
+redmine_receive_pop3_cron_job:
+  enabled: no
+  params:
+    - "username=pop3_acount"
+    - "password=pop3_password"
+    # - host=127.0.0.1
+    # - port=110
+    # - ssl=false
+  # hour: "*"
+  # minute: "*/5"
+
+redmine_puma_cfg:
+  bind: "unix://{{ redmine_home }}/tmp/redmine.sock"
+  # bind: "tcp://0.0.0.0:9292"
+  pidfile: "{{ redmine_home }}/tmp/redmine.pid"
+  state_path: "{{ redmine_home }}/tmp/redmine.state"
+  stdout_redirect:
+    stdout: "{{ redmine_home }}/log/stdout.log"
+    stderr: "{{ redmine_home }}/log/stderr.log"
+    append: no
+  # quiet: no
+  threads:
+    min: 0
+    max: 16
+  workers: 2
+  # prune_bundler: no
+  preload_app: yes

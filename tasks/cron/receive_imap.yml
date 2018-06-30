@@ -1,0 +1,8 @@
+- name: set/unset receive imap job
+  cron:
+    name: Redmine receive imap job
+    job: cd {{ redmine_home }} && bundle exec rake redmine:email:receive_imap {{ redmine_receive_imap_cron_job.params|join(' ') }}
+    hour: "{{ redmine_receive_imap_cron_job.hour|default('*') }}"
+    minute: "{{ redmine_receive_imap_cron_job.minute|default('*') }}"
+    user: "{{ redmine_user }}"
+    state: "{{ 'present' if redmine_receive_imap_cron_job.enabled else 'absent' }}"

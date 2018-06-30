@@ -1,0 +1,23 @@
+#!/usr/bin/env puma
+
+directory '{{ redmine_home }}'
+environment 'production'
+daemonize false
+
+pidfile '{{ redmine_puma_cfg.pidfile }}'
+state_path '{{ redmine_puma_cfg.state_path }}'
+stdout_redirect '{{ redmine_puma_cfg.stdout_redirect.stdout }}', '{{ redmine_puma_cfg.stdout_redirect.stderr }}', {{ 'true' if redmine_puma_cfg.stdout_redirect.append else 'false' }}
+threads '{{ redmine_puma_cfg.threads.min }}', '{{ redmine_puma_cfg.threads.max }}'
+bind '{{ redmine_puma_cfg.bind }}'
+{% if redmine_puma_cfg.quiet is defined and redmine_puma_cfg.quiet %}
+quiet
+{% endif %}
+{% if redmine_puma_cfg.workers is defined %}
+workers {{ redmine_puma_cfg.workers }}
+{% endif %}
+{% if redmine_puma_cfg.prune_bundler is defined and redmine_puma_cfg.prune_bundler %}
+prune_bundler
+{% endif %}
+{% if redmine_puma_cfg.preload_app is defined and redmine_puma_cfg.preload_app %}
+preload_app!
+{% endif %}
