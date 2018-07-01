@@ -109,10 +109,38 @@ redmine_plugins:
     file: path/to/redmine_checklists-light.zip
 ```
 
+### redmine_settings
+
+Redmineの設定を指定します。
+
+```yml
+redmine_settings:
+  ## -------------
+  ## 全般
+  ## -------------
+  ## アプリケーションのタイトル
+  app_title: Redmineデモ環境
+  ## ウェルカムメッセージ
+  welcome_text: |
+    # Redmineのデモ環境
+  ## ホスト名とパス
+  host_name: localhost:8080
+  ## テキスト書式
+  text_formatting: markdown
+  ## -------------
+  ## 表示
+  ## -------------
+  ## テーマ
+  # ui_theme: ""
+  ## デフォルトの言語
+  default_language: ja
+  ## ユーザー名の表示形式
+  user_format: lastname_firstname
+```
 
 ### redmine_customize_language
 
-redmineの言語設定のカスタマイズ内容を指定します。  
+Redmineの言語設定のカスタマイズ内容を指定します。  
 ※この変数が定義されている場合、Redmine本体の言語ファイルを書き換えます。
 
 ```yml

@@ -112,3 +112,21 @@ nginx_vhosts:
 #     permission_view_news: お知らせの閲覧
 #     permission_manage_news: お知らせの管理
 #     permission_comment_news: お知らせへのコメント
+
+redmine_settings:
+  ## -------------
+  ## 全般
+  ## -------------
+  ## アプリケーションのタイトル
+  app_title: Redmineデモ環境
+  ## ホスト名とパス
+  host_name: localhost:8080
+  ## テキスト書式
+  text_formatting: markdown
+  ## -------------
+  ## 表示
+  ## -------------
+  ## デフォルトの言語
+  default_language: ja
+  ## ユーザー名の表示形式
+  user_format: lastname_firstname
