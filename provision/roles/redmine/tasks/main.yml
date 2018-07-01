@@ -76,6 +76,12 @@
     args:
       chdir: "{{ redmine_home }}"
     when: generate_token_result is changed
+  - name: update redmine settings
+    command: bundle exec rails runner 'Setting["{{ item.key }}"]="{{ item.value }}"'
+    args:
+      chdir: "{{ redmine_home }}"
+    with_dict: "{{ redmine_settings }}"
+    when: redmine_settings is defined
   - name: install themes
     git:
       repo: "{{ item.repo }}"

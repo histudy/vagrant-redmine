@@ -109,6 +109,124 @@ Redmineの初期登録データの言語を指定します。
 redmine_lang: ja
 ```
 
+### redmine_settings
+
+Redmineの設定を指定します。
+
+```yml
+redmine_settings:
+  ## -------------
+  ## 全般
+  ## -------------
+  ## アプリケーションのタイトル
+  # app_title: Redmine
+  ## ウェルカムメッセージ
+  # welcome_text: |
+  #   Redmineの使い方
+  #   =======================
+  #
+  #   以下の内容を把握した上でRedmineを利用しましょう。
+  #
+  #   チケット種別
+  #   -----------------------
+  #   チケットの種別を表しています。
+  #   ### バグ
+  #   不具合(と思われるもの)は、チケット種別にこの値を設定します。
+  #   ### 機能
+  #   新たに機能を追加するものは、チケット種別にこの値を設定します。
+  #   ### サポート
+  #   既存機能の改善や保守作業に該当するものは、チケット種別にこの値を設定します。
+  #
+  #   ステータス
+  #   -----------------------
+  #   チケットが現在どのような状態かを表しています。
+  #   ### 新規
+  #   何も対応が行われていない状態です。
+  #   ### 処理中
+  #   現在対応中の状態です。
+  #   ### 解決済み
+  #   対応が完了し、対応内容に問題ないかどうか確認中の状態です。
+  #   ### 完了
+  #   確認が完了し、完了した状態です。
+  #   ### 破棄
+  #   何も対応を行わず、完了した状態です。
+  ## ホスト名とパス
+  host_name: "{{ inventory_hostname }}"
+  ## プロトコル
+  # protocol: http
+  ## テキスト書式
+  text_formatting: markdown
+  ## -------------
+  ## 表示
+  ## -------------
+  ## テーマ
+  # ui_theme: ""
+  ## デフォルトの言語
+  default_language: "{{ redmine_lang }}"
+  ## ユーザー名の表示形式
+  ## * firstname_lastname：Redmine Admin
+  ## * firstname_lastinitial：Redmine A.
+  ## * firstinitial_lastname：R. Admin
+  ## * firstname：Redmine
+  ## * lastname_firstname：Admin Redmine
+  ## * lastnamefirstname：AdminRedmine
+  ## * lastname_comma_firstname：Admin, Redmine
+  ## * lastname：Admin
+  ## * username：admin
+  user_format: lastname_firstname
+  ## Gravatarのアイコンを使用する
+  # gravatar_enabled: 1
+  ## デフォルトのGravatarアイコン
+  # gravatar_default: ""
+  ## 添付ファイルのサムネイル画像を表示
+  # thumbnails_enabled: 1
+  ## サムネイル画像の大きさ(ピクセル単位)
+  # thumbnails_size: 100
+  ## -------------
+  ## 認証
+  ## -------------
+  ## 認証が必要
+  # login_required: 1
+  ## 自動ログイン
+  # autologin: 7
+  ## -------------
+  ## API
+  ## -------------
+  ## RESTによるWebサービスを有効にする
+  # rest_api_enabled: 1
+  ## JSONPを有効にする
+  # jsonp_enabled: 1
+  ## -------------
+  ## ファイル
+  ## -------------
+  ## 添付ファイルの上限(KB)
+  # attachment_max_size: 5120
+  ## 添付ファイルとリポジトリのエンコーディング
+  # repositories_encodings: ""
+  ## -------------
+  ## メール通知
+  ## -------------
+  ## 送信元メールアドレス
+  # mail_from: redmine@example.net
+  ## デフォルトのメール通知オプション
+  ## * all：参加しているプロジェクトのすべての通知
+  ## * only_my_events：ウォッチ中または自分が関係しているもの
+  ## * only_assigned：ウォッチ中または自分が担当しているもの
+  ## * only_owner：ウォッチ中または自分が作成したもの
+  ## * none：通知しない
+  # default_notification_option: only_my_events
+  ## メールのヘッダー
+  # emails_header: |
+  #   このメールはRedmineからのメール通知です。
+  # emails_footer: |
+  #   この通知は「個人設定」の「メール通知」により通知されています。
+  #   メール通知を無効にする場合は以下のURLより「個人設定」を開き、
+  #   「メール通知」の設定内容を変更してください。
+  #   ------
+  #   http://{{ inventory_hostname }}/my/account
+  #   ------
+```
+
 ### redmine_send_reminders_cron_job
 
 リマインダーメールの設定を指定します。
