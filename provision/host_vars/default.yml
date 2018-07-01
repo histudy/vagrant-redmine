@@ -1,4 +1,9 @@
 nginx_generate_dh_key: no
+
+nginx_cfg:
+  http:
+    client_max_body_size: 100M
+
 nginx_vhosts:
   - name: default
     server_name: example.com
@@ -130,3 +135,8 @@ redmine_settings:
   default_language: ja
   ## ユーザー名の表示形式
   user_format: lastname_firstname
+  ## -------------
+  ## API
+  ## -------------
+  ## RESTによるWebサービスを有効にする
+  # rest_api_enabled: 1
