@@ -76,12 +76,6 @@
     args:
       chdir: "{{ redmine_home }}"
     when: generate_token_result is changed
-  - name: update redmine settings
-    command: bundle exec rails runner 'Setting["{{ item.key }}"]="{{ item.value }}"'
-    args:
-      chdir: "{{ redmine_home }}"
-    with_dict: "{{ redmine_settings }}"
-    when: redmine_settings is defined
   - name: install themes
     git:
       repo: "{{ item.repo }}"
@@ -130,6 +124,12 @@
         args:
           chdir: "{{ redmine_home }}"
     when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
+  - name: update redmine settings
+    command: bundle exec rails runner 'Setting["{{ item.key }}"]="{{ item.value }}"'
+    args:
+      chdir: "{{ redmine_home }}"
+    with_dict: "{{ redmine_settings }}"
+    when: redmine_settings is defined
   - name: create puma config file
     template:
       src: puma.rb.j2
