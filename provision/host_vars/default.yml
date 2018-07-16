@@ -48,9 +48,9 @@ nginx_vhosts:
 #     directory: view_customize
 #   - name: issue_templates
 #     repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
+#   # ファイルをアップロードしてインストールする場合
 #   - name: checklists
 #     file: path/to/redmine_checklists-3_1_11-light.zip
-#   # ファイルをアップロードしてインストールする場合
 #   - name: easy_gantt
 #     # ファイルのパスを指定します
 #     file: path/to/EasyGanttFree.zip
