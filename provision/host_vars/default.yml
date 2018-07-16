@@ -48,14 +48,14 @@ nginx_vhosts:
 #     directory: view_customize
 #   - name: issue_templates
 #     repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
+#   - name: checklists
+#     file: path/to/redmine_checklists-3_1_11-light.zip
 #   # ファイルをアップロードしてインストールする場合
 #   - name: easy_gantt
 #     # ファイルのパスを指定します
 #     file: path/to/EasyGanttFree.zip
 #   - name: agile
 #     file: path/to/redmine_agile-light.zip
-#   - name: checklists
-#     file: path/to/redmine_checklists-light.zip
 
 # --------------------
 # 言語ファイルのカスタマイズ
@@ -117,6 +117,28 @@ nginx_vhosts:
 #     permission_view_news: お知らせの閲覧
 #     permission_manage_news: お知らせの管理
 #     permission_comment_news: お知らせへのコメント
+#     ## 初期データ
+#     default_role_manager: 管理者
+#     default_role_developer: 開発者
+#     default_role_reporter: 報告者
+#     default_tracker_bug: バグ
+#     default_tracker_feature: 機能
+#     default_tracker_support: サポート
+#     default_issue_status_new: 新規
+#     default_issue_status_in_progress: 進行中
+#     default_issue_status_resolved: 解決
+#     default_issue_status_feedback: フィードバック
+#     default_issue_status_closed: 終了
+#     default_issue_status_rejected: 却下
+#     default_doc_category_user: ユーザー文書
+#     default_doc_category_tech: 技術文書
+#     default_priority_low: 低め
+#     default_priority_normal: 通常
+#     default_priority_high: 高め
+#     default_priority_urgent: 急いで
+#     default_priority_immediate: 今すぐ
+#     default_activity_design: 設計作業
+#     default_activity_development: 開発作業
 
 redmine_settings:
   ## -------------
@@ -135,6 +157,18 @@ redmine_settings:
   default_language: ja
   ## ユーザー名の表示形式
   user_format: lastname_firstname
+  ## -------------
+  ## 認証
+  ## -------------
+  ## 認証が必要
+  # login_required: 1
+  ## 自動ログイン
+  # autologin: ""
+  ## -------------
+  ## プロジェクト
+  ## -------------
+  ## デフォルトで新しいプロジェクトは公開にする
+  # default_projects_public: 1
   ## -------------
   ## API
   ## -------------
