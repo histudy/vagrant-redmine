@@ -125,7 +125,7 @@
           chdir: "{{ redmine_home }}"
     when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
   - name: update redmine settings
-    command: bundle exec rails runner 'Setting["{{ item.key }}"]="{{ item.value }}"'
+    command: bundle exec rails runner 'Setting["{{ item.key }}"]={{ '"' + item.value|string + '"' if item.value is string or item.value is number else '["' + item.value|map('string')|join('", "') + '"]' }}'
     args:
       chdir: "{{ redmine_home }}"
     with_dict: "{{ redmine_settings }}"
