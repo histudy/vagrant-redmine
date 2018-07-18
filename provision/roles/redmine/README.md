@@ -87,6 +87,10 @@ redmine_plugins:
     directory: view_customize
   - name: issue_templates
     repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
+  - name: slack
+    repo: "https://github.com/sciyoshi/redmine-slack.git"
+  - name: chatwork
+    repo: "https://github.com/wate/redmine_chatwork.git"
   - name: dashboard
     repo: "https://github.com/jgraichen/redmine_dashboard.git"
     # 取得するバージョンまたはブランチを指定(省略時はmasterブランチの内容を取得)
@@ -188,7 +192,7 @@ redmine_settings:
   ## 認証が必要
   # login_required: 1
   ## 自動ログイン
-  # autologin: 7
+  # autologin: ""
   ## -------------
   ## API
   ## -------------
@@ -197,12 +201,32 @@ redmine_settings:
   ## JSONPを有効にする
   # jsonp_enabled: 1
   ## -------------
+  ## プロジェクト
+  ## -------------
+  ## デフォルトで新しいプロジェクトは公開にする
+  # default_projects_public: 1
+  ## 新規プロジェクトにおいてデフォルトで有効になるモジュール
+  # default_projects_modules:
+  #   - issue_tracking
+  #   - time_tracking
+  #   - news
+  #   - documents
+  #   - files
+  #   - wiki
+  #   - calendar
+  #   - gantt
+  #   - issue_templates
+  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
+  # default_projects_tracker_ids:
+  #   - 1
+  #   - 3
+  ## -------------
   ## ファイル
   ## -------------
   ## 添付ファイルの上限(KB)
   # attachment_max_size: 5120
   ## 添付ファイルとリポジトリのエンコーディング
-  # repositories_encodings: ""
+  # repositories_encodings: "UTF-8,CP932,EUC-JP"
   ## -------------
   ## メール通知
   ## -------------
@@ -225,6 +249,12 @@ redmine_settings:
   #   ------
   #   http://{{ inventory_hostname }}/my/account
   #   ------
+  ## -------------
+  ## リポジトリ
+  ## -------------
+  ## 使用するバージョン管理システム
+  # enabled_scm:
+  #   - Git
 ```
 
 ### redmine_send_reminders_cron_job

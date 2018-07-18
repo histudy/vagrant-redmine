@@ -109,23 +109,18 @@ redmine_plugins: []
   #   directory: view_customize
   # - name: issue_templates
   #   repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
-  # - name: dashboard
-  #   repo: "https://github.com/jgraichen/redmine_dashboard.git"
-  #   version: stable-v2
+  # - name: chatwork
+  #   repo: "https://github.com/wate/redmine_chatwork.git"
   # - name: slack
   #   repo: "https://github.com/sciyoshi/redmine-slack.git"
   # - name: issue_checklist
   #   repo: "https://github.com/Undev/redmine_issue_checklist.git"
-  # - name: knowledgebase
-  #   repo: "https://github.com/alexbevi/redmine_knowledgebase.git"
   # - name: easy_gantt
   #   url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
   # - name: agile
   #   file: path/to/redmine_agile-light.zip
   # - name: checklists
   #   file: path/to/redmine_checklists-light.zip
-  # - name: zenedit
-  #   file: path/to/redmine_zenedit-light.zip
 
 redmine_lang: ja
 
@@ -216,13 +211,28 @@ redmine_settings:
   ## -------------
   ## デフォルトで新しいプロジェクトは公開にする
   # default_projects_public: 1
+  ## 新規プロジェクトにおいてデフォルトで有効になるモジュール
+  # default_projects_modules:
+  #   - issue_tracking
+  #   - time_tracking
+  #   - news
+  #   - documents
+  #   - files
+  #   - wiki
+  #   - calendar
+  #   - gantt
+  #   - issue_templates
+  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
+  # default_projects_tracker_ids:
+  #   - 1
+  #   - 3
   ## -------------
   ## ファイル
   ## -------------
   ## 添付ファイルの上限(KB)
   # attachment_max_size: 5120
   ## 添付ファイルとリポジトリのエンコーディング
-  # repositories_encodings: ""
+  # repositories_encodings: "UTF-8,CP932,EUC-JP"
   ## -------------
   ## メール通知
   ## -------------
@@ -245,6 +255,12 @@ redmine_settings:
   #   ------
   #   http://{{ inventory_hostname }}/my/account
   #   ------
+  ## -------------
+  ## リポジトリ
+  ## -------------
+  ## 使用するバージョン管理システム
+  # enabled_scm:
+  #   - Git
 
 redmine_send_reminders_cron_job:
   enabled: no
