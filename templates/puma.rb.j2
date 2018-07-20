@@ -1,7 +1,7 @@
 #!/usr/bin/env puma
 
 directory '{{ redmine_home }}'
-environment 'production'
+environment '{{ redmine_mode }}'
 daemonize false
 
 pidfile '{{ redmine_puma_cfg.pidfile }}'

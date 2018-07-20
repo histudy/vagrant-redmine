@@ -15,3 +15,5 @@ redmine_dependency_packages:
   - puma
   - acl
   - git
+
+redmine_mode: production
