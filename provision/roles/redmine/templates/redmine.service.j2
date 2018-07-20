@@ -18,7 +18,7 @@ Type=simple
 Restart=always
 User={{ redmine_user }}
 WorkingDirectory={{ redmine_home }}
-ExecStart=/usr/bin/bundle exec puma -C {{ redmine_home }}/config/puma.rb -e production
+ExecStart=/usr/bin/bundle exec puma -C {{ redmine_home }}/config/puma.rb -e {{ redmine_mode }}
 ExecStop=/bin/kill -TERM $MAINPID
 ExecReload=/bin/kill -HUP $MAINPID
 
