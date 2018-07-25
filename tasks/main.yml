@@ -143,7 +143,7 @@
 - name: set cron variable
   cronvar:
     name: RAILS_ENV
-    value: production
+    value: "{{ redmine_mode }}"
     user: "{{ redmine_user }}"
 - name: set/unset issue reminder mail cron job
   import_tasks: cron/send_reminders.yml
