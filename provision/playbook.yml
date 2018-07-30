@@ -5,26 +5,6 @@
     - role: redmine
     - role: nginx
   tasks:
-    - name: directory exists custom theme directory
-      stat:
-        path: /vagrant/src/theme
-      register: result
-    - name: create symlink theme directory
-      file:
-        src: /vagrant/src/theme
-        dest: "{{ redmine_home }}/public/themes/{{ redmine_cusutom_theme_dir|default('custom_theme') }}"
-        state: link
-      when: result.stat.exists
-    - name: directory exists custom plugin directory
-      stat:
-        path: /vagrant/src/plugin
-      register: result
-    - name: create symlink plugin directory
-      file:
-        src: /vagrant/src/plugin
-        dest: "{{ redmine_home }}/plugins/{{ redmine_cusutom_plugin_dir|default('custom_plugin') }}"
-        state: link
-      when: result.stat.exists
     - name: Finish display message
       debug:
         msg: "Let's Redmine!"
