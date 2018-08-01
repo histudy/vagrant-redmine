@@ -103,6 +103,20 @@ redmine_plugins:
     file: path/to/redmine_agile-light.zip
   - name: checklists
     file: path/to/redmine_checklists-light.zip
+  - name: plantuml
+    repo: "https://github.com/dkd/plantuml.git"
+    directory: plantuml
+    # プラグインが依存するパッケージ
+    required_packages:
+      - plantuml
+  - name: periodic_task
+    repo: "https://github.com/wate/redmine_periodic_task.git"
+    directory: periodictask
+    # プラグインのcron設定
+    cron:
+      command: bundle exec rake redmine:check_periodictasks
+      minute: 0
+      hour: 1
 ```
 
 ### redmine_lang
@@ -395,8 +409,9 @@ redmine_customize_language:
     permission_comment_news: お知らせへのコメント
     default_doc_category_user: ユーザーマニュアル
     default_doc_category_tech: 仕様書
-    default_tracker_feature: 機能追加
-    default_tracker_support: 保守
+    default_tracker_bug: 不具合
+    default_tracker_feature: 機能
+    default_tracker_support: 運用保守
     default_issue_status_new: 未対応
     default_issue_status_in_progress: 対応中
     default_issue_status_resolved: 対応済み

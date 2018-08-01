@@ -104,6 +104,18 @@ ansible:
           file: ~/Downloads/redmine/redmine_checklists-3_1_11-light.zip
           # 展開先ディレクトリ名(テスト用)
           directory: redmine_checklists
+        - name: plantuml
+          repo: "https://github.com/dkd/plantuml.git"
+          directory: plantuml
+          required_packages:
+            - plantuml
+        - name: periodic_task
+          repo: "https://github.com/wate/redmine_periodic_task.git"
+          directory: periodictask
+          cron:
+            command: bundle exec rake redmine:check_periodictasks
+            minute: 0
+            hour: 1
       redmine_send_reminders_cron_job:
         enabled: yes
         params:

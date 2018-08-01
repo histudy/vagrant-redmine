@@ -22,15 +22,6 @@ property['redmine_themes'].each do |theme|
   end
 end
 
-property['redmine_plugins'].each do |plugin|
-  dir_name = 'redmine_' + plugin['name']
-  dir_name = plugin['directory'] if plugin.key?('directory')
-  describe file(property['redmine_home'] + '/plugins/' + dir_name) do
-    it { should exist }
-    it { should be_directory }
-  end
-end
-
 describe service('redmine') do
   it { should be_enabled }
   it { should be_running }

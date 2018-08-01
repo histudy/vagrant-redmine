@@ -1,0 +1,13 @@
+{% if redmine_admin is defined %}
+# 管理者
+sys_admin = User.find_by_id(1)
+sys_admin.login = '{{ redmine_admin.login|default("admin") }}'
+sys_admin.firstname = '{{ redmine_admin.firstname|default("Redmine") }}'
+sys_admin.lastname = '{{ redmine_admin.lastname|default("Admin") }}'
+sys_admin.mail = '{{ redmine_admin.mail|default("admin@example.net") }}'
+sys_admin.language = '{{ redmine_admin.language|default("", true) }}'
+sys_admin.password = '{{ redmine_admin.password|default("admin") }}'
+sys_admin.password_confirmation = '{{ redmine_admin.password|default("admin") }}'
+sys_admin.must_change_passwd = false
+sys_admin.save
+{% endif %}

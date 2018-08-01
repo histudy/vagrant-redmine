@@ -110,6 +110,15 @@
     with_items: "{{ redmine_plugins|selectattr('file', 'defined')|list }}"
     notify: restart redmine
     register: plugin_install_from_file_result
+  - name: install plugin dependency packages
+    apt:
+      name: "{{ item.1 }}"
+    with_subelements:
+      - "{{ redmine_plugins|selectattr('required_packages', 'defined')|list }}"
+      - required_packages
+    notify: restart redmine
+    become: yes
+    become_user: root
   - block:
       - name: execute bundle install
         command: bundle install
@@ -124,12 +133,19 @@
         args:
           chdir: "{{ redmine_home }}"
     when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
+  - name: create settings file
+    template:
+      src: settings.rb.j2
+      dest: "{{ redmine_home }}/tmp/settings.rb"
+    register: result
   - name: update redmine settings
-    command: bundle exec rails runner 'Setting["{{ item.key }}"]={{ '"' + item.value|string + '"' if item.value is string or item.value is number else '["' + item.value|map('string')|join('", "') + '"]' }}'
+    shell: "bundle exec rails console <{{ redmine_home }}/tmp/settings.rb"
     args:
       chdir: "{{ redmine_home }}"
-    with_dict: "{{ redmine_settings }}"
-    when: redmine_settings is defined
+  - name: remove setting file
+    file:
+      path: "{{ redmine_home }}/tmp/settings.rb"
+      state: absent
   - name: create puma config file
     template:
       src: puma.rb.j2
@@ -138,7 +154,7 @@
   become: yes
   become_user: "{{ redmine_user }}"
   environment:
-    RAILS_ENV: production
+    RAILS_ENV: "{{ redmine_mode }}"
     REDMINE_LANG: "{{ redmine_lang }}"
 - name: set cron variable
   cronvar:
@@ -151,6 +167,8 @@
   import_tasks: cron/receive_imap.yml
 - name: set/unset issue reminder mail cron job
   import_tasks: cron/receive_pop3.yml
+- name: set/unset issue reminder mail cron job
+  import_tasks: cron/plugin.yml
 - name: create redmine systemd unit file
   template:
     src: redmine.service.j2
