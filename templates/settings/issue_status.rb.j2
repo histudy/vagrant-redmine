@@ -1,0 +1,13 @@
+{% if redmine_issue_statuses is defined %}
+# ステータス
+issue_statuses = YAML.load(<<EOT)
+{{ redmine_issue_statuses | to_yaml }}
+EOT
+issue_statuses.each do |item|
+  issue_status = IssueStatus.find_by_name(item['name'])
+  issue_status = IssueStatus.new unless issue_status
+  issue_status.safe_attributes = item
+  issue_status.position = item['position'] if item['position'].present?
+  issue_status.save
+end
+{% endif %}

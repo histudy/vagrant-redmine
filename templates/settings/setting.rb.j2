@@ -1,0 +1,6 @@
+{% if redmine_settings is defined %}
+# Redmineの管理
+{% for redmine_setting_key, redmine_setting_value in redmine_settings.items() %}
+Setting.{{ redmine_setting_key }} = {{ '"' + redmine_setting_value|string + '"' if redmine_setting_value is string or redmine_setting_value is number else '["' + redmine_setting_value|map('string')|join('", "') + '"]' }}
+{% endfor %}
+{% endif %}
