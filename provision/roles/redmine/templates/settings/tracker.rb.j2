@@ -4,7 +4,7 @@ trackers = YAML.load(<<EOT)
 {{ redmine_trackers | to_yaml }}
 EOT
 default_issue_status = IssueStatus.first
-default_code_fields = [
+default_core_fields = [
   'assigned_to_id',
   'category_id',
   'fixed_version_id',
@@ -23,7 +23,7 @@ if not_exists_copy_from_trackers
     unless tracker
       tracker = Tracker.new
       tracker.name = item['name']
-      tracker.core_fields = default_code_fields
+      tracker.core_fields = default_core_fields
     end
     tracker.core_fields = item['core_fields'] if item['core_fields'].present?
     tracker.default_status_id = default_issue_status.id
