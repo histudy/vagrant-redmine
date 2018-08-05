@@ -1,71 +1,64 @@
-Let's Redmine
-==========================
+redmine
+=========
 
-利用方法
------------------
+[Redmine](http://www.redmine.org/)のインストールとセットアップを行います。
 
-### 仮想マシンを起動
-
-以下のコマンドを実行し仮想マシンを起動します。
-
-```
-vagrant up
-```
-
-### Redmineのデモ環境を開く
-
-以下のメッセージが表示されたら、
-ブラウザで[http://localhost:8080](http://localhost:8080)を開きます。
-
-```
-TASK [Finish display message] **************************************************
-ok: [default] => {
-    "msg": "Let's Redmine!"
-}
-```
-
-初期構築時のRedmineのログイン情報は以下の通りです。
-
-| ユーザー名 | パスワード |
-| ---------- | ---------- |
-| admin      | admin      |
-
-システム構成
------------------
-
-* Debian 9
-* MariaDB
-* Nginx
-
-カスタマイズ方法
------------------
-
-[provision/host_vars/default.yml](provision/host_vars/default.yml)の内容を編集し、  
-Redmineのセットアップ内容を変更できます。
-
-設定可能な変数には以下のようなものがあります。
-
-
-セットアップ後に変数を変更した場合は、
-以下のコマンドを実行し変更内容を適用しなおす必要があります。
-
-```
-vagrant provision
-```
+Role Variables
+--------------
 
 ### redmine_version
 
-Redmineのバージョンを指定します。
+インストールするRedmineのバージョンを指定します。
 
 ```yml
 redmine_version: "3.4-stable"
 ```
 
-設定する値はGithubのブランチ名やタグ名を指定します。
+### redmine_db_cfg
 
-* https://github.com/redmine/redmine/branches
-* https://github.com/redmine/redmine/releases
+データベースの接続情報を指定します。
 
+```yml
+redmine_db_cfg:
+  production:
+    adapter: mysql2
+    database: redmine
+    host: localhost
+    username: redmine_user
+    password: redmine_password
+    encoding: utf8
+```
+
+### redmine_cfg
+
+Redmineのシステム設定を指定します。
+
+```yml
+redmine_cfg:
+  default:
+    email_delivery:
+      delivery_method: :sendmail
+    attachments_storage_path:
+    autologin_cookie_name:
+    autologin_cookie_path:
+    autologin_cookie_secure:
+    scm_subversion_command:
+    scm_mercurial_command:
+    scm_git_command:
+    scm_cvs_command:
+    scm_bazaar_command:
+    scm_darcs_command:
+    scm_subversion_path_regexp:
+    scm_mercurial_path_regexp:
+    scm_git_path_regexp:
+    scm_cvs_path_regexp:
+    scm_bazaar_path_regexp:
+    scm_darcs_path_regexp:
+    scm_filesystem_path_regexp:
+    scm_stderr_log_file:
+    database_cipher_key:
+    rmagick_font_path: /usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf
+```
 
 ### redmine_themes
 
@@ -73,16 +66,12 @@ redmine_version: "3.4-stable"
 
 ```yml
 redmine_themes:
-  # Githubのリポジトリから取得
-  - name: farend_fancy
-    repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
-    # テーマのディレクトリ名を指定(任意)
-    # ディレクトリ名の指定を省略した場合はname属性の値をディレクトリ名として展開します
-    # directory: farend_fancy
-  - name: farend_basic
-    repo: "https://github.com/farend/redmine_theme_farend_basic.git"
   - name: gitmike
     repo: "https://github.com/makotokw/redmine-theme-gitmike.git"
+  - name: farend_fancy
+    repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
+  - name: farend_basic
+    repo: "https://github.com/farend/redmine_theme_farend_basic.git"
 ```
 
 ### redmine_plugins
@@ -91,22 +80,51 @@ redmine_themes:
 
 ```yml
 redmine_plugins:
-  # Githubのリポジトリから取得
+  # リポジトリから取得
   - name: view_customize
     repo: "https://github.com/onozaty/redmine-view-customize.git"
-    # プラグインのディレクトリ名を指定(任意)
-    # ディレクトリ名の指定を省略した場合はname属性の前に「redmine_」を付与したディレクトリに展開します
+    # プラグインのディレクトリ名を指定
     directory: view_customize
   - name: issue_templates
     repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
-  # ファイルをアップロードしてインストールする場合
+  - name: slack
+    repo: "https://github.com/sciyoshi/redmine-slack.git"
+  - name: chatwork
+    repo: "https://github.com/wate/redmine_chatwork.git"
+  - name: dashboard
+    repo: "https://github.com/jgraichen/redmine_dashboard.git"
+    # 取得するバージョンまたはブランチを指定(省略時はmasterブランチの内容を取得)
+    version: stable-v2
+  # URLから取得
   - name: easy_gantt
-    # ファイルのパスを指定します
-    file: path/to/EasyGanttFree.zip
+    url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
+  # ファイルをアップロード
   - name: agile
     file: path/to/redmine_agile-light.zip
   - name: checklists
     file: path/to/redmine_checklists-light.zip
+  - name: plantuml
+    repo: "https://github.com/dkd/plantuml.git"
+    directory: plantuml
+    # プラグインが依存するパッケージ
+    required_packages:
+      - plantuml
+  - name: periodic_task
+    repo: "https://github.com/wate/redmine_periodic_task.git"
+    directory: periodictask
+    # プラグインのcron設定
+    cron:
+      command: bundle exec rake redmine:check_periodictasks
+      minute: 0
+      hour: 1
+```
+
+### redmine_lang
+
+Redmineの初期登録データの言語を指定します。
+
+```yml
+redmine_lang: ja
 ```
 
 ### redmine_settings
@@ -119,12 +137,41 @@ redmine_settings:
   ## 全般
   ## -------------
   ## アプリケーションのタイトル
-  app_title: Redmineデモ環境
+  # app_title: Redmine
   ## ウェルカムメッセージ
-  welcome_text: |
-    # Redmineのデモ環境
+  # welcome_text: |
+  #   Redmineの使い方
+  #   =======================
+  #
+  #   以下の内容を把握した上でRedmineを利用しましょう。
+  #
+  #   チケット種別
+  #   -----------------------
+  #   チケットの種別を表しています。
+  #   ### バグ
+  #   不具合(と思われるもの)は、チケット種別にこの値を設定します。
+  #   ### 機能
+  #   新たに機能を追加するものは、チケット種別にこの値を設定します。
+  #   ### サポート
+  #   既存機能の改善や保守作業に該当するものは、チケット種別にこの値を設定します。
+  #
+  #   ステータス
+  #   -----------------------
+  #   チケットが現在どのような状態かを表しています。
+  #   ### 新規
+  #   何も対応が行われていない状態です。
+  #   ### 処理中
+  #   現在対応中の状態です。
+  #   ### 解決済み
+  #   対応が完了し、対応内容に問題ないかどうか確認中の状態です。
+  #   ### 完了
+  #   確認が完了し、完了した状態です。
+  #   ### 破棄
+  #   何も対応を行わず、完了した状態です。
   ## ホスト名とパス
-  host_name: localhost:8080
+  host_name: "{{ inventory_hostname }}"
+  ## プロトコル
+  # protocol: http
   ## テキスト書式
   text_formatting: markdown
   ## -------------
@@ -133,14 +180,173 @@ redmine_settings:
   ## テーマ
   # ui_theme: ""
   ## デフォルトの言語
-  default_language: ja
+  default_language: "{{ redmine_lang }}"
   ## ユーザー名の表示形式
+  ## * firstname_lastname：Redmine Admin
+  ## * firstname_lastinitial：Redmine A.
+  ## * firstinitial_lastname：R. Admin
+  ## * firstname：Redmine
+  ## * lastname_firstname：Admin Redmine
+  ## * lastnamefirstname：AdminRedmine
+  ## * lastname_comma_firstname：Admin, Redmine
+  ## * lastname：Admin
+  ## * username：admin
   user_format: lastname_firstname
+  ## Gravatarのアイコンを使用する
+  # gravatar_enabled: 1
+  ## デフォルトのGravatarアイコン
+  # gravatar_default: ""
+  ## 添付ファイルのサムネイル画像を表示
+  # thumbnails_enabled: 1
+  ## サムネイル画像の大きさ(ピクセル単位)
+  # thumbnails_size: 100
+  ## -------------
+  ## 認証
+  ## -------------
+  ## 認証が必要
+  # login_required: 1
+  ## 自動ログイン
+  # autologin: ""
+  ## -------------
+  ## API
+  ## -------------
+  ## RESTによるWebサービスを有効にする
+  # rest_api_enabled: 1
+  ## JSONPを有効にする
+  # jsonp_enabled: 1
+  ## -------------
+  ## プロジェクト
+  ## -------------
+  ## デフォルトで新しいプロジェクトは公開にする
+  # default_projects_public: 1
+  ## 新規プロジェクトにおいてデフォルトで有効になるモジュール
+  # default_projects_modules:
+  #   - issue_tracking
+  #   - time_tracking
+  #   - news
+  #   - documents
+  #   - files
+  #   - wiki
+  #   - calendar
+  #   - gantt
+  #   - issue_templates
+  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
+  # default_projects_tracker_ids:
+  #   - 1
+  #   - 3
+  ## -------------
+  ## ファイル
+  ## -------------
+  ## 添付ファイルの上限(KB)
+  # attachment_max_size: 5120
+  ## 添付ファイルとリポジトリのエンコーディング
+  # repositories_encodings: "UTF-8,CP932,EUC-JP"
+  ## -------------
+  ## メール通知
+  ## -------------
+  ## 送信元メールアドレス
+  # mail_from: redmine@example.net
+  ## デフォルトのメール通知オプション
+  ## * all：参加しているプロジェクトのすべての通知
+  ## * only_my_events：ウォッチ中または自分が関係しているもの
+  ## * only_assigned：ウォッチ中または自分が担当しているもの
+  ## * only_owner：ウォッチ中または自分が作成したもの
+  ## * none：通知しない
+  # default_notification_option: only_my_events
+  ## メールのヘッダー
+  # emails_header: |
+  #   このメールはRedmineからのメール通知です。
+  # emails_footer: |
+  #   この通知は「個人設定」の「メール通知」により通知されています。
+  #   メール通知を無効にする場合は以下のURLより「個人設定」を開き、
+  #   「メール通知」の設定内容を変更してください。
+  #   ------
+  #   http://{{ inventory_hostname }}/my/account
+  #   ------
+  ## -------------
+  ## リポジトリ
+  ## -------------
+  ## 使用するバージョン管理システム
+  # enabled_scm:
+  #   - Git
+```
+
+### redmine_send_reminders_cron_job
+
+リマインダーメールの設定を指定します。
+
+```yml
+redmine_send_reminders_cron_job:
+  enabled: no
+  params:
+    - 'days=7'
+    # - 'tracker=1'
+    # - 'users="1,23,45"'
+  hour: 9
+  minute: 0
+```
+
+### redmine_receive_imap_cron_job
+
+メール(IMAP)によるチケット登録の設定を指定します。
+
+```yml
+redmine_receive_imap_cron_job:
+  enabled: no
+  params:
+    - "username=imap_acount"
+    - "password=imap_password"
+    # - host=127.0.0.1
+    # - port=143
+    # - ssl=false
+    # - folder=INBOX
+  # hour: "*"
+  # minute: "*/5"
+```
+
+### redmine_receive_pop3_cron_job
+
+メール(POP3)によるチケット登録の設定を指定します。
+
+```yml
+redmine_receive_pop3_cron_job:
+  enabled: no
+  params:
+    - "username=pop3_acount"
+    - "password=pop3_password"
+    # - host=127.0.0.1
+    # - port=110
+    # - ssl=false
+  # hour: "*"
+  # minute: "*/5"
+```
+
+### redmine_puma_cfg
+
+Redmineのサービス設定を指定します。
+
+```yml
+redmine_puma_cfg:
+  bind: "unix://{{ redmine_home }}/tmp/redmine.sock"
+  # bind: "tcp://0.0.0.0:9292"
+  pidfile: "{{ redmine_home }}/tmp/redmine.pid"
+  state_path: "{{ redmine_home }}/tmp/redmine.state"
+  stdout_redirect:
+    stdout: "{{ redmine_home }}/log/stdout.log"
+    stderr: "{{ redmine_home }}/log/stderr.log"
+    append: no
+  # quiet: no
+  threads:
+    min: 0
+    max: 16
+  workers: 2
+  # prune_bundler: no
+  preload_app: yes
 ```
 
 ### redmine_customize_language
 
-Redmineの言語設定のカスタマイズ内容を指定します。  
+redmineの言語設定のカスタマイズ内容を指定します。  
 ※この変数が定義されている場合、Redmine本体の言語ファイルを書き換えます。
 
 ```yml
@@ -201,4 +407,34 @@ redmine_customize_language:
     permission_view_news: お知らせの閲覧
     permission_manage_news: お知らせの管理
     permission_comment_news: お知らせへのコメント
+    default_doc_category_user: ユーザーマニュアル
+    default_doc_category_tech: 仕様書
+    default_tracker_bug: 不具合
+    default_tracker_feature: 機能
+    default_tracker_support: 運用保守
+    default_issue_status_new: 未対応
+    default_issue_status_in_progress: 対応中
+    default_issue_status_resolved: 対応済み
+    default_issue_status_feedback: 差し戻し
+    default_issue_status_closed: 完了
+    default_issue_status_rejected: 却下
+    default_priority_low: 低い
+    default_priority_normal: 普通
+    default_priority_high: 高い
+    default_priority_urgent: 緊急
+    default_priority_immediate: 至急
 ```
+
+Example Playbook
+----------------
+
+```yml
+- hosts: servers
+  roles:
+    - role: redmine
+```
+
+License
+-------
+
+MIT
