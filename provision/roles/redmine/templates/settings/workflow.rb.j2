@@ -1,0 +1,27 @@
+{% if redmine_trackers is defined %}
+# ワークフロー
+all_statuses = IssueStatus.all
+{% for workflow in redmine_workflows %}
+# {{ workflow.roles|map('string')|join('", "') }}
+roles = Role.where(:name =>  ["{{ workflow.roles|map('string')|join('", "') }}"]).to_a
+trackers = Tracker.where(:name =>  ["{{ workflow.trackers|map('string')|join('", "') }}"]).to_a
+transitions = {}
+all_statuses.each do |from|
+  all_statuses.each do |to|
+    transitions[from.id] = {} unless transitions.key?(from.id)
+    unless transitions[from.id].key?(to.id)
+      transitions[from.id][to.id] = {'always' => false, 'author' => false, 'assignee' => false}
+    end
+  end
+end
+{% for transition in workflow.transitions %}
+# {{ workflow.roles|map('string')|join('", "') }}:{{ transition.from }}
+from_status = IssueStatus.find_by_name('{{ transition.from }}')
+to_statuses = IssueStatus.where(:name => ["{{ transition.to|map('string')|join('", "') }}"])
+to_statuses.each do |to_status|
+  transitions[from_status.id][to_status.id]['always'] = true
+end
+{% endfor %}
+WorkflowTransition.replace_transitions(trackers, roles, transitions)
+{% endfor %}
+{% endif %}
