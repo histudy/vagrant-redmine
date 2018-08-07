@@ -134,6 +134,9 @@ redmine_plugins: []
 
 redmine_lang: ja
 
+# --------------------
+# Redmineの設定(管理)
+# --------------------
 redmine_settings:
   ## -------------
   ## 全般
@@ -232,10 +235,15 @@ redmine_settings:
   #   - calendar
   #   - gantt
   #   - issue_templates
-  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
+  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー(ID指定)
   # default_projects_tracker_ids:
   #   - 1
   #   - 3
+  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー(名前指定)
+  # default_projects_trackers:
+  #   - バグ
+  #   - 機能
+  #   - サポート
   ## -------------
   ## ファイル
   ## -------------
@@ -321,6 +329,12 @@ redmine_puma_cfg:
   # prune_bundler: no
   preload_app: yes
 
+# --------------------
+# 言語ファイルのカスタマイズ
+# --------------------
+# 「トラッカー」を「チケット種別」に変更
+# 「ニュース」を「お知らせ」に変更
+# 「文書」を「マニュアル」に変更
 # redmine_customize_language:
 #   ja:
 #     error_no_tracker_in_project: このプロジェクトにはチケット種別が登録されていません。プロジェクト設定を確認してください。
@@ -328,18 +342,18 @@ redmine_puma_cfg:
 #     error_workflow_copy_target: コピー先となるチケット種別とロールを選択してください
 #     error_can_not_delete_tracker: このチケット種別は使用中です。削除できません。
 #     error_no_tracker_allowed_for_new_issue_in_project: このプロジェクトにはチケットの追加が許可されているチケット種別がありません
-#     setting_app_title: タイトル
 #     setting_default_projects_tracker_ids: 新規プロジェクトにおいてデフォルトで有効になるチケット種別
-#     project_module_documents: ドキュメント
+#     project_module_documents: マニュアル
 #     project_module_news: お知らせ
 #     label_tracker: チケット種別
 #     label_tracker_plural: チケット種別
 #     label_tracker_new: 新しいチケット種別
 #     label_tracker_all: すべてのチケット種別
-#     label_document: ドキュメント
-#     label_document_new: 新しいドキュメント
-#     label_document_plural: ドキュメント
-#     label_document_added: ドキュメントの追加
+#     label_document: マニュアル
+#     label_document_new: 新しいマニュアル
+#     label_document_plural: マニュアル
+#     label_document_added: マニュアルの追加
+#     label_display_used_statuses_only: このチケット種別で使用中のステータスのみ表示
 #     label_news: お知らせ
 #     label_news_new: お知らせを追加
 #     label_news_plural: お知らせ
@@ -347,55 +361,42 @@ redmine_puma_cfg:
 #     label_news_view_all: すべてのお知らせを表示
 #     label_news_added: お知らせを追加
 #     label_news_comment_added: お知らせへのコメント追加
-#     label_display_used_statuses_only: このチケット種別で使用中のステータスのみ表示
-#     label_roadmap: マイルストーン
-#     label_in_less_than: n日後、以前
-#     label_in_more_than: n日後、以降
-#     label_in: n日後
-#     label_less_than_ago: n日前、以降
-#     label_more_than_ago: n日前、以前
-#     label_ago: n日前
-#     label_in_the_next_days: 今後n日以内
-#     label_in_the_past_days: 過去n日以内
-#     field_tracker: チケット種別
-#     field_is_in_roadmap: チケットをマイルストーンに表示する
-#     text_workflow_edit: ワークフローを編集するロールとチケット種別を選んでください
-#     text_tracker_no_workflow: このチケット種別にワークフローが定義されていません
-#     text_no_configuration_data: "ロール、チケット種別、チケットのステータス、ワークフローがまだ設定されていません。\nデフォルト設定のロードを強くお勧めします。ロードした後、それを修正することができます。"
-#     text_issue_added: "チケット %{id} を %{author} が作成しました。"
-#     text_issue_updated: "チケット %{id} を %{author} が更新しました。"
-#     text_user_mail_option: "未選択のプロジェクトでは、ウォッチまたは関係している事柄(例: 自分が報告者もしくは担当者であるチケット)のみメールが送信されます。"
-#     notice_account_lost_email_sent: パスワードの再設定手順をメールで送信しました。
-#     mail_subject_wiki_content_added: "Wikiページ %{id} の追加"
-#     mail_body_wiki_content_added: "Wikiページ %{id} を %{author} が追加しました。"
-#     mail_subject_wiki_content_updated: "Wikiページ %{id} の更新"
-#     mail_body_wiki_content_updated: "Wikiページ %{id} を %{author} が更新しました。"
-#     enumeration_doc_categories: ドキュメントカテゴリ
-#     permission_add_documents: ドキュメントの追加
-#     permission_edit_documents: ドキュメントの編集
-#     permission_delete_documents: ドキュメントの削除
-#     permission_view_documents: ドキュメントの閲覧
+#     enumeration_doc_categories: マニュアルの分類
+#     permission_add_documents: マニュアルの追加
+#     permission_edit_documents: マニュアルの編集
+#     permission_delete_documents: マニュアルの削除
+#     permission_view_documents: マニュアルの閲覧
 #     permission_view_news: お知らせの閲覧
 #     permission_manage_news: お知らせの管理
 #     permission_comment_news: お知らせへのコメント
-#     default_doc_category_user: ユーザーマニュアル
-#     default_doc_category_tech: 仕様書
+#     field_tracker: チケット種別
+#     text_workflow_edit: ワークフローを編集するロールとチケット種別を選んでください
+#     text_tracker_no_workflow: このチケット種別にワークフローが定義されていません
+#     text_no_configuration_data: "ロール、チケット種別、チケットのステータス、ワークフローがまだ設定されていません。\nデフォルト設定のロードを強くお勧めします。ロードした後、それを修正することができます。"
+#     ## 初期データ
+#     default_role_manager: 管理者
+#     default_role_developer: 開発者
+#     default_role_reporter: 報告者
 #     default_tracker_bug: 不具合
 #     default_tracker_feature: 機能
 #     default_tracker_support: 運用保守
 #     default_issue_status_new: 未対応
 #     default_issue_status_in_progress: 対応中
 #     default_issue_status_resolved: 対応済み
-#     default_issue_status_feedback: 差し戻し
-#     default_issue_status_closed: 完了
-#     default_issue_status_rejected: 却下
+#     default_issue_status_feedback: フィードバック
+#     default_issue_status_closed: 終了
+#     default_issue_status_rejected: 破棄
+#     default_doc_category_user: オペレーター向け
+#     default_doc_category_tech: 技術者向け
 #     default_priority_low: 低い
 #     default_priority_normal: 普通
 #     default_priority_high: 高い
 #     default_priority_urgent: 緊急
 #     default_priority_immediate: 至急
 
-
+# --------------------
+# Redmineの設定(システム管理者)
+# --------------------
 # redmine_admin:
 #   login: admin
 #   firstname: 太郎
@@ -404,6 +405,9 @@ redmine_puma_cfg:
 #   language: ja
 #   password: password
 
+# --------------------
+# Redmineの設定(チケットのステータス)
+# --------------------
 # redmine_issue_statuses:
 #   - name: 未対応
 #     is_closed: no
@@ -414,50 +418,95 @@ redmine_puma_cfg:
 #   - name: 対応済み
 #     is_closed: no
 #     position: 3
-#   - name: 差し戻し
+#   - name: フィードバック
 #     is_closed: no
 #     position: 4
 #   - name: 確認待ち
 #     position: 5
-#   - name: 経過観察中
-#     position: 6
-#   - name: 完了
+#   - name: 終了
 #     is_closed: yes
 #     position: 7
 #   - name: 破棄
 #     is_closed: yes
 #     position: 8
 
+# --------------------
+# Redmineの設定(トラッカー)
+# --------------------
 # redmine_trackers:
 #   - name: 不具合
-#     position: 2
+#     position: 1
 #   - name: 機能
-#     position: 3
+#     position: 2
 #   - name: 運用保守
+#     position: 3
+#   - name: その他
 #     position: 4
-#   - name: 要望
-#     default_status: 未対応
 #     core_fields:
 #       # 担当者
 #       - assigned_to_id
 #       # カテゴリ
 #       - category_id
 #       # バージョン
-#       - fixed_version_id
+#       # - fixed_version_id
 #       # 親チケット
-#       - parent_issue_id
+#       # - parent_issue_id
 #       # 開始日
-#       - start_date
+#       # - start_date
 #       # 期日
 #       - due_date
 #       # 予定工数
-#       - estimated_hours
+#       # - estimated_hours
 #       # 進捗率
-#       - done_ratio
+#       # - done_ratio
 #       # 説明
 #       - description
-#     copy_workflow_from: 不具合
-#     position: 1
-#   - name: その他
-#     position: 5
 #     copy_workflow_from: 機能
+
+# --------------------
+# Redmineの設定(ワークフロー)
+# --------------------
+# redmine_workflows:
+#   - roles: [管理者]
+#     trackers: [不具合, 機能 ,運用保守, その他]
+#     transitions:
+#       - from: 未対応
+#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 対応中
+#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 対応済み
+#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 確認待ち
+#         to: [未対応, 対応中, 対応済み, フィードバック, 終了, 破棄]
+#       - from: フィードバック
+#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了, 破棄]
+#       - from: 終了
+#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 破棄]
+#       - from: 破棄
+#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 終了]
+#   - roles: [開発者]
+#     trackers: [不具合, 機能 ,運用保守, その他]
+#     transitions:
+#       - from: 未対応
+#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了]
+#       - from: 対応中
+#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了]
+#       - from: 対応済み
+#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了]
+#       - from: 確認待ち
+#         to: [未対応, 対応中, 対応済み, フィードバック, 終了]
+#       - from: フィードバック
+#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了]
+#   - roles: [報告者]
+#     trackers: [不具合, 機能 ,運用保守, その他]
+#     transitions:
+#       - from: 未対応
+#         to: [終了]
+#       - from: 対応中
+#         to: [終了]
+#       - from: 対応済み
+#         to: [終了]
+#       - from: 確認待ち
+#         to: [フィードバック, 終了]
+#       - from: フィードバック
+#         to: [確認待ち, 終了]
