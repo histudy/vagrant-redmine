@@ -221,23 +221,29 @@ redmine_settings:
   ## -------------
   ## 新規プロジェクトにおいてデフォルトで有効になるモジュール
   default_projects_modules:
-    #  チケットトラッキング
+    ## チケットトラッキング
     - issue_tracking
-    # 時間管理
+    ## 時間管理
     # - time_tracking
-    # お知らせ(ニュース)
+    ## お知らせ(ニュース)
     - news
-    # マニュアル(文書)
+    ## マニュアル(文書)
     - documents
-    # ファイル
+    ## ファイル
     - files
-    # Wiki
+    ## Wiki
     - wiki
-    # カレンダー
+    ## リポジトリ
+    # - repository
+    ## フォーラム
+    # - boards
+    ## カレンダー
     - calendar
-    # Agail
+    ## ガントチャート
+    # - gantt
+    ## Agail(プラグイン)
     - agile
-    # チケットテンプレート
+    ## チケットテンプレート(プラグイン)
     - issue_templates
   ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
   default_projects_trackers:
