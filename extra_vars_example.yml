@@ -11,7 +11,12 @@
 # --------------------
 # redmineの動作モード(production / development)
 # --------------------
-# redmine_mode: production
+# redmine_mode: development
+
+# --------------------
+# Redmine実行ユーザー
+# --------------------
+# redmine_user: vagrant
 
 # --------------------
 # 言語ファイルのカスタマイズ

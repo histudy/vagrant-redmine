@@ -9,10 +9,11 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./", "/vagrant"
 
   config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    # vb.gui = true
-    # Customize the amount of memory on the VM:
     vb.memory = "1024"
+  end
+
+  if Vagrant.has_plugin?('vagrant-exec')
+    config.exec.commands 'rails', prepend: 'bundle exec', directory: '/opt/redmine'
   end
 
   config.vm.provision "shell", path: "provision/install_ansible.sh"
