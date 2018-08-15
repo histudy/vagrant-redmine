@@ -12,16 +12,22 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
   end
 
-  if Vagrant.has_plugin?('vagrant-exec')
-    config.exec.commands 'rails', prepend: 'bundle exec', directory: '/opt/redmine'
-  end
-
   config.vm.provision "shell", path: "provision/install_ansible.sh"
   ansible_extra_vars = {}
   extra_var_file = File.expand_path(File.join(File.dirname(__FILE__), 'extra_vars.yml'))
   if File.exists?(extra_var_file)
     ansible_extra_vars = YAML.load_file(extra_var_file)
   end
+  # vagrant-execプラグインの設定
+  if Vagrant.has_plugin?('vagrant-exec')
+    vagrant_exec_env = {
+      'RAILS_ENV' => ansible_extra_vars['redmine_mode'] || 'production'
+    }
+    config.exec.commands '*', directory: '/opt/redmine', env: vagrant_exec_env
+    config.exec.commands %w[rails rake], prepend: 'bundle exec', directory: '/opt/redmine', env: vagrant_exec_env
+    config.exec.commands 'systemctl', prepend: 'sudo'
+  end
+
   config.vm.provision "ansible_local" do |ansible|
     ansible.become = true
     ansible.compatibility_mode = "2.0"
