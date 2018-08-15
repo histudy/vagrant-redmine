@@ -201,6 +201,160 @@ redmine_workflows:
         to: [確認待ち, 終了]
 
 # --------------------
+# Redmineの設定(カスタムフィールド[プロジェクト])
+# --------------------
+redmine_project_custom_fields:
+  - name: Slack Channel
+    field_format: string
+  - name: Slack URL
+    field_format: link
+    visible: no
+
+# --------------------
+# Redmineの設定(カスタムフィールド[チケット])
+# --------------------
+redmine_issue_custom_fields:
+    ## 名称
+  - name: テキスト
+    ## 形式
+    ## * string:テキスト
+    ## * version:バージョン
+    ## * attachment:ファイル
+    ## * user:ユーザー
+    ## * list:リスト
+    ## * link:リンク
+    ## * float:小数
+    ## * int:整数
+    ## * date:日付
+    ## * bool:真偽値
+    ## * text:長いテキスト
+    ## * enumeration:キー・バリュー リスト
+    field_format: string
+    ## 説明
+    # description: ""
+    ## 最小(形式が以下の場合のみ)
+    ## * テキスト
+    ## * 整数
+    ## * 小数
+    ## * リンク
+    ## * 長いテキスト
+    # min_length: ""
+    ## 最大(形式が以下の場合のみ)
+    ## * テキスト
+    ## * 整数
+    ## * 小数
+    ## * リンク
+    ## * 長いテキスト
+    # max_length: ""
+    ## 正規表現(形式が以下の場合のみ)
+    ## * テキスト
+    ## * 整数
+    ## * 小数
+    ## * リンク
+    ## * 長いテキスト
+    # regexp: ""
+    ## デフォルト値(形式が以下の場合のみ)
+    ## * テキスト
+    ## * リンク
+    ## * 整数
+    ## * 小数
+    ## * 日付
+    ## * 真偽値(1:はい/0:いいえ)
+    ## * 長いテキスト
+    # default_value: ""
+    ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
+    # text_formatting: no
+    ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
+    ## * ユーザー
+    ## * バージョン
+    ## * ファイル
+    ## * 長いテキスト
+    # url_pattern: ""
+    ## 表示(入力形式)
+    ## ※形式が以下の場合のみ
+    ## * バージョン
+    ## * ユーザー
+    ## * リスト
+    ## * 真偽値
+    ## * キー・バリュー リスト
+    ## ※設定値一覧
+    ## *(空):ドロップダウンリスト
+    ## * check_box:チェックボックス
+    ## * radio:ラジオ(形式が「真偽値」の場合のみ)
+    # edit_tag_style: ""
+    ## 複数選択可(形式が以下の場合のみ)
+    ## * ユーザー
+    ## * バージョン
+    ## * リスト
+    ## * キー・バリュー リスト
+    # multiple: no
+    ## 必須
+    # is_required: no
+    ## 表示(すべて)
+    # visible: yes
+    ## 表示(表示するロールを限定)
+    # visible:
+    #   - 管理者
+    #   - 開発者
+    ## 検索対象(形式が以下の場合のみの場合のみ)
+    ## * テキスト
+    ## * リスト
+    ## * 長いテキスト
+    # searchable: no
+    ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
+    # is_filter: no
+    ## トラッカー
+    # trackers:
+    #   - 不具合
+    #   - 機能
+    ## プロジェクト
+    # projects:
+    #     - プロジェクト1
+    #     - プロジェクト2
+    #     - プロジェクト3
+  - name: バージョン
+    field_format: version
+    ## ステータス(形式が「バージョン」の場合のみ)
+    version_status:
+      - open
+      - locked
+  - name: ファイル
+    field_format: attachment
+    ## 許可する拡張子(形式が「ファイル」の場合のみ)
+    extensions_allowed:
+      - jpg
+      - gif
+      - png
+  - name: ユーザー
+    field_format: user
+    ## ロール(形式が「ユーザー」の場合のみ)
+    user_role:
+      - 管理者
+      - 開発者
+  - name: リスト
+    field_format: list
+    ## 選択肢(形式が「リスト」の場合のみ)
+    possible_values: |
+      選択肢1
+      選択肢2
+      選択肢3
+      選択肢4
+  - name: リンク
+    field_format: link
+  - name: 小数
+    field_format: float
+  - name: 整数
+    field_format: int
+  - name: 日付
+    field_format: date
+  - name: 真偽値
+    field_format: bool
+  - name: 長いテキスト
+    field_format: text
+  - name: キー・バリュー リスト
+    field_format: enumeration
+
+# --------------------
 # Redmineの設定(管理)
 # --------------------
 redmine_settings:
@@ -259,6 +413,49 @@ redmine_settings:
   ## 使用するバージョン管理システム
   enabled_scm:
     - Git
+
+# --------------------
+# Redmineの設定(ユーザー)
+# --------------------
+redmine_users:
+  - login: ichiro
+    lastname: 一郎
+    firstname: 田中
+    mail: ichiro@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+  - login: jiro
+    lastname: 次郎
+    firstname: 鈴木
+    mail: jiro@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+  - login: saburo
+    lastname: 三郎
+    firstname: 山本
+    mail: saburo@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+  - login: shiro
+    lastname: 四郎
+    firstname: 小林
+    mail: shiro@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+  - login: goro
+    lastname: 五郎
+    firstname: 土井
+    mail: goro@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+  - login: hanako
+    lastname: 花子
+    firstname: 山田
+    mail: hanako@example.net
+    password: str0ng@p455w0rd
+    must_change_passwd: yes
+    mail_notification: none
+    locked: yes
 
 # --------------------
 # Redmineの設定(プロジェクト)
