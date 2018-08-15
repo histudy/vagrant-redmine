@@ -346,7 +346,7 @@ redmine_puma_cfg:
 
 ### redmine_customize_language
 
-redmineの言語設定のカスタマイズ内容を指定します。  
+redmineの言語ファイルのカスタマイズ内容を設定します。  
 ※この変数が定義されている場合、Redmine本体の言語ファイルを書き換えます。
 
 ```yml
@@ -424,6 +424,46 @@ redmine_customize_language:
     default_priority_urgent: 緊急
     default_priority_immediate: 至急
 ```
+
+### redmine_admin
+
+Redmineの初期システム管理者を設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_issue_statuses
+
+Redmineのチケットのステータスを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_trackers
+
+Redmineのトラッカーを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_workflows
+
+Redmineのワークフローを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_project_custom_fields
+
+Redmineのプロジェクトのカスタムフォールドを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_issue_custom_fields
+
+Redmineのチケットのカスタムフォールドを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_users
+
+Redmineのユーザーを設定します。  
+※詳細は変数ファイルを参照してください。
+
+### redmine_projects
+
+Redmineのプロジェクトを設定します。  
+※詳細は変数ファイルを参照してください。
 
 Example Playbook
 ----------------
