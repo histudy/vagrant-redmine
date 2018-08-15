@@ -510,3 +510,375 @@ redmine_puma_cfg:
 #         to: [フィードバック, 終了]
 #       - from: フィードバック
 #         to: [確認待ち, 終了]
+
+# --------------------
+# Redmineの設定(カスタムフィールド[プロジェクト])
+# --------------------
+# redmine_project_custom_fields:
+#     ## 名称
+#   - name: テキスト
+#     ## 形式
+#     ## * string:テキスト
+#     ## * version:バージョン
+#     ## * attachment:ファイル
+#     ## * user:ユーザー
+#     ## * list:リスト
+#     ## * link:リンク
+#     ## * float:小数
+#     ## * int:整数
+#     ## * date:日付
+#     ## * bool:真偽値
+#     ## * text:長いテキスト
+#     ## * enumeration:キー・バリュー リスト
+#     field_format: string
+#     ## 説明
+#     # description: ""
+#     ## 最小(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # min_length: ""
+#     ## 最大(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # max_length: ""
+#     ## 正規表現(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # regexp: ""
+#     ## デフォルト値(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * リンク
+#     ## * 整数
+#     ## * 小数
+#     ## * 日付
+#     ## * 真偽値(1:はい/0:いいえ)
+#     ## * 長いテキスト
+#     # default_value: ""
+#     ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
+#     # text_formatting: no
+#     ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * ファイル
+#     ## * 長いテキスト
+#     # url_pattern: ""
+#     ## 表示(入力形式)
+#     ## ※形式が以下の場合のみ
+#     ## * バージョン
+#     ## * ユーザー
+#     ## * リスト
+#     ## * 真偽値
+#     ## * キー・バリュー リスト
+#     ## ※設定値一覧
+#     ## *(空):ドロップダウンリスト
+#     ## * check_box:チェックボックス
+#     ## * radio:ラジオ(形式が「真偽値」の場合のみ)
+#     # edit_tag_style: ""
+#     ## 複数選択可(形式が以下の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * リスト
+#     ## * キー・バリュー リスト
+#     # multiple: no
+#     ## 必須
+#     # is_required: no
+#     ## 表示
+#     # visible: yes
+#     ## 検索対象(形式が以下の場合のみの場合のみ)
+#     ## * テキスト
+#     ## * リスト
+#     ## * 長いテキスト
+#     # searchable: no
+#     ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
+#     # is_filter: no
+#   - name: バージョン
+#     field_format: version
+#     ## ステータス(形式が「バージョン」の場合のみ)
+#     version_status:
+#       - open
+#       - locked
+#   - name: ファイル
+#     field_format: attachment
+#     ## 許可する拡張子(形式が「ファイル」の場合のみ)
+#     extensions_allowed:
+#       - jpg
+#       - gif
+#       - png
+#   - name: ユーザー
+#     field_format: user
+#     ## ロール(形式が「ユーザー」の場合のみ)
+#     user_role:
+#       - 管理者
+#       - 開発者
+#   - name: リスト
+#     field_format: list
+#     ## 選択肢(形式が「リスト」の場合のみ)
+#     possible_values: |
+#       選択肢1
+#       選択肢2
+#       選択肢3
+#       選択肢4
+#   - name: リンク
+#     field_format: link
+#   - name: 小数
+#     field_format: float
+#   - name: 整数
+#     field_format: int
+#   - name: 日付
+#     field_format: date
+#   - name: 真偽値
+#     field_format: bool
+#   - name: 長いテキスト
+#     field_format: text
+#   - name: キー・バリュー リスト
+#     field_format: enumeration
+
+# --------------------
+# Redmineの設定(カスタムフィールド[チケット])
+# --------------------
+# redmine_issue_custom_fields:
+#     ## 名称
+#   - name: テキスト
+#     ## 形式
+#     ## * string:テキスト
+#     ## * version:バージョン
+#     ## * attachment:ファイル
+#     ## * user:ユーザー
+#     ## * list:リスト
+#     ## * link:リンク
+#     ## * float:小数
+#     ## * int:整数
+#     ## * date:日付
+#     ## * bool:真偽値
+#     ## * text:長いテキスト
+#     ## * enumeration:キー・バリュー リスト
+#     field_format: string
+#     ## 説明
+#     # description: ""
+#     ## 最小(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # min_length: ""
+#     ## 最大(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # max_length: ""
+#     ## 正規表現(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # regexp: ""
+#     ## デフォルト値(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * リンク
+#     ## * 整数
+#     ## * 小数
+#     ## * 日付
+#     ## * 真偽値(1:はい/0:いいえ)
+#     ## * 長いテキスト
+#     # default_value: ""
+#     ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
+#     # text_formatting: no
+#     ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * ファイル
+#     ## * 長いテキスト
+#     # url_pattern: ""
+#     ## 表示(入力形式)
+#     ## ※形式が以下の場合のみ
+#     ## * バージョン
+#     ## * ユーザー
+#     ## * リスト
+#     ## * 真偽値
+#     ## * キー・バリュー リスト
+#     ## ※設定値一覧
+#     ## *(空):ドロップダウンリスト
+#     ## * check_box:チェックボックス
+#     ## * radio:ラジオ(形式が「真偽値」の場合のみ)
+#     # edit_tag_style: ""
+#     ## 複数選択可(形式が以下の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * リスト
+#     ## * キー・バリュー リスト
+#     # multiple: no
+#     ## 必須
+#     # is_required: no
+#     ## 表示(すべて)
+#     # visible: yes
+#     ## 表示(表示するロールを限定)
+#     # visible:
+#     #   - 管理者
+#     #   - 開発者
+#     ## 検索対象(形式が以下の場合のみの場合のみ)
+#     ## * テキスト
+#     ## * リスト
+#     ## * 長いテキスト
+#     # searchable: no
+#     ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
+#     # is_filter: no
+#     ## トラッカー
+#     # trackers:
+#     #   - 不具合
+#     #   - 機能
+#     ## プロジェクト
+#     # projects:
+#     #     - プロジェクト1
+#     #     - プロジェクト2
+#     #     - プロジェクト3
+#   - name: バージョン
+#     field_format: version
+#     ## ステータス(形式が「バージョン」の場合のみ)
+#     version_status:
+#       - open
+#       - locked
+#   - name: ファイル
+#     field_format: attachment
+#     ## 許可する拡張子(形式が「ファイル」の場合のみ)
+#     extensions_allowed:
+#       - jpg
+#       - gif
+#       - png
+#   - name: ユーザー
+#     field_format: user
+#     ## ロール(形式が「ユーザー」の場合のみ)
+#     user_role:
+#       - 管理者
+#       - 開発者
+#   - name: リスト
+#     field_format: list
+#     ## 選択肢(形式が「リスト」の場合のみ)
+#     possible_values: |
+#       選択肢1
+#       選択肢2
+#       選択肢3
+#       選択肢4
+#   - name: リンク
+#     field_format: link
+#   - name: 小数
+#     field_format: float
+#   - name: 整数
+#     field_format: int
+#   - name: 日付
+#     field_format: date
+#   - name: 真偽値
+#     field_format: bool
+#   - name: 長いテキスト
+#     field_format: text
+#   - name: キー・バリュー リスト
+#     field_format: enumeration
+
+# --------------------
+# Redmineの設定(ユーザー)
+# --------------------
+# redmine_users:
+#     ## ログインID (最大:60Byte/文字種:半角英数および@_-.)
+#   - login: taro
+#     ## 名 (最大:30Byte)
+#     lastname: 太郎
+#     ## 姓 (最大:30Byte)
+#     firstname: 山田
+#     ## メールアドレス  (最大:60Byte)
+#     mail: taro@example.com
+#     ## 言語
+#     # language: ja
+#     ## システム管理
+#     # system_admin: no
+#     ## パスワード(最小:8文字以上[Redmineの初期値])
+#     # password: str0ngp455w0rd
+#     ## 次回ログイン時にパスワード変更を強制
+#     # must_change_passwd: no
+#     ## メール通知
+#     ## * selected:選択したプロジェクトのすべての通知
+#     ## * only_my_events:ウォッチまたは関係している事柄のみ
+#     ## * only_assigned:自分が担当している事柄のみ
+#     ## * only_owner:自分が作成した事柄のみ
+#     ## * none:通知しない
+#     # mail_notification: only_my_events
+#     ## 自分自身による変更の通知は不要
+#     # no_self_notified: yes
+#     ## メールアドレスを隠す
+#     # hide_mail: yes
+#     ## コメントの表示順
+#     ## * desc:新しい順
+#     ## * asc:古い順
+#     # comments_sorting: asc
+#     ## データを保存せずにページから移動するときに警告
+#     # warn_on_leaving_unsaved: yes
+#     ## テキストエリアのフォント
+#     ## * monospace:等幅
+#     ## * proportional:プロポーショナル
+#     # textarea_font: ""
+#     ## ロック
+#     # locked: yes
+
+# --------------------
+# Redmineの設定(プロジェクト)
+# --------------------
+# redmine_projects:
+#     # 識別子
+#   - identifier: shinared
+#     # 名称
+#     name: redmine.tokyo
+#     # 説明
+#     description: |
+#       フリー(OSS)のプロジェクト管理ツール Redmine の恩恵を共有することを目的として、
+#       勉強会を開催したりチケットで課題や知見を共有するというような活動を、主に関東を中心に行うコミュニティです。
+#       でも中心メンバには関東以外の人間も多いです。
+#     # ホームページ
+#     homepage: https://redmine.tokyo/projects/shinared
+#     # 公開
+#     is_public: true
+#     # トラッカー
+#     trackers:
+#       - 不具合
+#       - 機能
+#       - 運用保守
+#   - identifier: unofficialcooking
+#     # 名称
+#     name: Unofficial Redmine Cooking
+#     description: |
+#       Redmineの機能が少し不足していて、困る場合がありませんか？
+#
+#       既に対応方法があっても、探すのに苦労する場合もあります。
+#       そのような情報を蓄積して、各自がRedmineをより効率的に活用できるようにしていきましょう。
+#     # ホームページ
+#     homepage: https://redmine.tokyo/projects/unofficialcooking
+#     # 親プロジェクト(プロジェクト名または識別子で指定)
+#     parent: redmine.tokyo
+#     # メンバーを継承
+#     inherit_members: true
+#     # 公開
+#     is_public: true
+#     # モジュール
+#     modules:
+#       # チケットトラッキング
+#       - issue_tracking
+#       # お知らせ(ニュース)
+#       - news
+#       # マニュアル(文書)
+#       - documents
+#       # Wiki
+#       - wiki
+#       ## フォーラム
+#       - boards
+#       # チケットテンプレート
+#       - issue_templates

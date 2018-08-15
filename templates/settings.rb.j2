@@ -5,6 +5,33 @@ require 'yaml'
 {% include "settings/tracker.rb.j2" %}
 {% include "settings/setting.rb.j2" %}
 {% include "settings/workflow.rb.j2" %}
+
+allow_field_formats = [
+  'string',
+  'text',
+  'link',
+  'date',
+  'list',
+  'int',
+  'float',
+  'bool',
+  'version',
+  'user',
+  'attachment',
+  'enumeration'
+]
+allow_length_formats = ['string', 'text', 'link', 'int', 'float']
+allow_regexp_formats = ['string', 'text', 'link', 'int', 'float']
+allow_default_value_formats = ['string', 'text', 'link', 'int', 'float', 'date', 'bool']
+allow_text_formatting_formats = ['string', 'text']
+allow_url_pattern_formats = ['string', 'link', 'date', 'int', 'float', 'bool', 'enumeration']
+allow_edit_tag_style_formats = ['version', 'user', 'list', 'bool', 'enumeration']
+allow_multiple_formats = ['version', 'user', 'list', 'enumeration']
+allow_searchable_formats = ['string', 'text', 'list']
+
+{% include "settings/project_custom_field.rb.j2" %}
+{% include "settings/issue_custom_field.rb.j2" %}
+{% include "settings/user.rb.j2" %}
 {% include "settings/project.rb.j2" %}
 
 quit

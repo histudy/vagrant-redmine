@@ -1,5 +1,5 @@
 [Unit]
-Description=Redmine Unicorn Server
+Description=Redmine
 {% if redmine_db_cfg.production.host is defined and redmine_db_cfg.production.host == 'localhost' -%}
 {% if redmine_db_cfg.production.adapter in 'mysql2'%}
 Requires=mariadb.service
