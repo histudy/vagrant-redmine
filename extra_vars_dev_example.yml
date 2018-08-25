@@ -550,7 +550,6 @@ redmine_plugins:
     version: "3.4.x"
   - name: recurring_tasks
     # チケットの繰り返し登録機能を追加
-    # ※日本語には未対応のため、だれかプルリクエストを送ってあげて・・
     # ref: https://github.com/nutso/redmine-plugin-recurring-tasks
     repo: https://github.com/nutso/redmine-plugin-recurring-tasks.git
     directory: recurring_tasks
