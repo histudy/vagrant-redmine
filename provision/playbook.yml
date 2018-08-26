@@ -5,6 +5,32 @@
     - role: redmine
     - role: nginx
   tasks:
+    - block:
+        - name: apply custom directory mapping
+          file:
+            dest: "{{ redmine_home }}/{{ item.dest }}"
+            src: "/vagrant/{{ item.src }}"
+            owner: "{{ redmine_user }}"
+            group: "{{ redmine_user }}"
+            state: link
+          with_items: "{{ redmine_custom_directory_mappings }}"
+          notify: restart redmine
+          register: result
+        - block:
+            - name: execute bundle install
+              command: bundle install
+              args:
+                chdir: "{{ redmine_home }}"
+            - name: execute bundle exec rake db:migrate
+              command: bundle exec rake db:migrate
+              args:
+                chdir: "{{ redmine_home }}"
+            - name: execute bundle exec rake redmine:plugins:migrate
+              command: bundle exec rake redmine:plugins:migrate
+              args:
+                chdir: "{{ redmine_home }}"
+          when: result is changed
+      when: redmine_custom_directory_mappings is defined
     - name: Finish display message
       debug:
         msg: "Let's Redmine!"
