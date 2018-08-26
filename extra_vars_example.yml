@@ -99,24 +99,24 @@ redmine_admin:
 # --------------------
 redmine_issue_statuses:
   - name: 未対応
-    is_closed: false
+    is_closed: no
     position: 1
   - name: 対応中
-    is_closed: false
+    is_closed: no
     position: 2
   - name: 対応済み
-    is_closed: false
+    is_closed: no
     position: 3
   - name: フィードバック
-    is_closed: false
+    is_closed: no
     position: 4
   - name: 確認待ち
     position: 5
   - name: 終了
-    is_closed: true
+    is_closed: yes
     position: 7
   - name: 破棄
-    is_closed: true
+    is_closed: yes
     position: 8
 
 # --------------------
@@ -473,7 +473,7 @@ redmine_projects:
     # ホームページ
     homepage: https://redmine.tokyo/projects/shinared
     # 公開
-    is_public: true
+    is_public: yes
     # トラッカー
     trackers:
       - 不具合
@@ -492,9 +492,9 @@ redmine_projects:
     # 親プロジェクト(プロジェクト名または識別子で指定)
     parent: redmine.tokyo
     # メンバーを継承
-    inherit_members: true
+    inherit_members: yes
     # 公開
-    is_public: true
+    is_public: yes
     # モジュール
     modules:
       # チケットトラッキング
