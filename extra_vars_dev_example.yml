@@ -419,38 +419,38 @@ redmine_settings:
 # --------------------
 redmine_users:
   - login: ichiro
-    lastname: 一郎
-    firstname: 田中
+    firstname: 一郎
+    lastname: 田中
     mail: ichiro@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
   - login: jiro
-    lastname: 次郎
-    firstname: 鈴木
+    firstname: 二郎
+    lastname: 鈴木
     mail: jiro@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
   - login: saburo
-    lastname: 三郎
-    firstname: 山本
+    firstname: 三郎
+    lastname: 山本
     mail: saburo@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
   - login: shiro
-    lastname: 四郎
-    firstname: 小林
+    firstname: 四郎
+    lastname: 小林
     mail: shiro@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
   - login: goro
-    lastname: 五郎
-    firstname: 土井
+    firstname: 五郎
+    lastname: 土井
     mail: goro@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
   - login: hanako
-    lastname: 花子
-    firstname: 山田
+    firstname: 花子
+    lastname: 山田
     mail: hanako@example.net
     password: str0ng@p455w0rd
     must_change_passwd: yes
