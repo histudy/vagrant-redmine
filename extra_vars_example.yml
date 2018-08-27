@@ -93,6 +93,7 @@ redmine_admin:
   mail: taro@example.net
   language: ja
   password: password
+  must_change_passwd: yes
 
 # --------------------
 # Redmineの設定(チケットのステータス)
