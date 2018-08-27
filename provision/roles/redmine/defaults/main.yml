@@ -404,6 +404,7 @@ redmine_puma_cfg:
 #   mail: taro@example.net
 #   language: ja
 #   password: password
+#   must_change_passwd: no
 
 # --------------------
 # Redmineの設定(チケットのステータス)
@@ -793,9 +794,9 @@ redmine_puma_cfg:
 #     ## ログインID (最大:60Byte/文字種:半角英数および@_-.)
 #   - login: taro
 #     ## 名 (最大:30Byte)
-#     lastname: 太郎
+#     firstname: 太郎
 #     ## 姓 (最大:30Byte)
-#     firstname: 山田
+#     lastname: 山田
 #     ## メールアドレス  (最大:60Byte)
 #     mail: taro@example.com
 #     ## 言語
