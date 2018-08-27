@@ -8,6 +8,6 @@ sys_admin.mail = '{{ redmine_admin.mail|default("admin@example.net") }}'
 sys_admin.language = '{{ redmine_admin.language|default("", true) }}'
 sys_admin.password = '{{ redmine_admin.password|default("admin") }}'
 sys_admin.password_confirmation = '{{ redmine_admin.password|default("admin") }}'
-sys_admin.must_change_passwd = false
+sys_admin.must_change_passwd = {{ 'true' if redmine_admin.must_change_passwd|default(false)  else 'false' }}
 sys_admin.save
 {% endif %}
