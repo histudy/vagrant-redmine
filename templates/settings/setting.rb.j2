@@ -3,6 +3,11 @@
 {% for redmine_setting_key, redmine_setting_value in redmine_settings.items() %}
 {% if redmine_setting_key == 'default_projects_trackers' -%}
 Setting.default_projects_tracker_ids = Tracker.where(:name => ["{{ redmine_setting_value|map('string')|join('", "') }}"]).pluck(:id).map {|item| item.to_s }
+{% elif redmine_setting_key.startswith('plugin_') -%}
+plugin_setting = YAML.load(<<EOT)
+{{ redmine_setting_value | to_yaml }}
+EOT
+Setting.{{ redmine_setting_key }}= plugin_setting
 {% else -%}
 Setting.{{ redmine_setting_key }} = {{ '"' + redmine_setting_value|string + '"' if redmine_setting_value is string or redmine_setting_value is number else '["' + redmine_setting_value|map('string')|join('", "') + '"]' }}
 {% endif %}
