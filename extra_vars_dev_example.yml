@@ -367,6 +367,11 @@ redmine_settings:
   ## 自動ログイン
   autologin: 7
   ## -------------
+  ## 表示
+  ## -------------
+  ## 新規オブジェクト作成タブ
+  new_item_menu_tab: 1
+  ## -------------
   ## API
   ## -------------
   ## RESTによるWebサービスを有効にする
@@ -414,6 +419,49 @@ redmine_settings:
   ## 使用するバージョン管理システム
   enabled_scm:
     - Git
+  ## -------------
+  ## プラグインの設定
+  ## -------------
+  ## issue_templates
+  plugin_redmine_issue_templates:
+    apply_global_template_to_all_projects: 'true'
+  ## plantuml
+  plugin_plantuml:
+    plantuml_binary_default: '/usr/bin/plantuml'
+  ## graphviz
+  plugin_graphviz:
+    graphviz_binary_default: '/usr/bin/dot'
+  ## slack
+  plugin_redmine_slack:
+    slack_url: ''
+    channel: ''
+    icon: https://raw.github.com/sciyoshi/redmine-slack/gh-pages/icon.png
+    username: redmine
+    display_watchers: 'no'
+    post_updates: '1'
+    post_wiki_updates: '1'
+  ## chatwork
+  plugin_redmine_chatwork:
+    token: ''
+    room: ''
+    post_updates: '1'
+    post_wiki_updates: '1'
+  ## issues_tree
+  plugin_redmine_issues_tree:
+    default_redirect_to_tree_view: 'true'
+    default_redirect_to_tree_view_without_project: 'true'
+  ## recurring_tasks
+  plugin_recurring_tasks:
+    journal_attributed_to_user: '1'
+    show_top_menu: '0'
+    reopen_issue: '0'
+  ## tags
+  plugin_redmine_tags:
+    issues_sidebar: list
+    issues_show_count: '1'
+    issues_open_only: '1'
+    issues_sort_by: count
+    issues_sort_order: desc
 
 # --------------------
 # Redmineの設定(ユーザー)
@@ -537,13 +585,28 @@ redmine_plugins:
     # Slackへの通知機能を追加
     # ref: https://github.com/sciyoshi/redmine-slack
     repo: "https://github.com/sciyoshi/redmine-slack.git"
+  - name: chatwork
+    # チャットワークへの通知機能を追加
+    # ref: https://github.com/sciyoshi/redmine-slack
+    repo: https://github.com/wate/redmine_chatwork.git
   - name: plantuml
-    # WikiにPlantUMLのレンダリング用マクロ機能を追加
+    # PlantUMLのレンダリング用マクロ機能を追加
     # ref: https://github.com/dkd/plantuml
     repo: "https://github.com/dkd/plantuml.git"
     required_packages:
       - plantuml
     directory: plantuml
+  - name: graphviz
+    # Graphvizのレンダリング用マクロ機能を追加
+    # ref: https://github.com/dkd/plantuml
+    repo: "https://github.com/wate/graphviz.git"
+    required_packages:
+      - graphviz
+    directory: graphviz
+  - name: knowledgebase
+    # ナレッジベース機能を追加
+    # ref: https://github.com/alexbevi/redmine_knowledgebase
+    repo: https://github.com/wate/redmine_knowledgebase.git
   - name: issues_tree
     # チケットの親子関係表示機能を追加
     # ref: https://github.com/Loriowar/redmine_issues_tree
@@ -558,15 +621,27 @@ redmine_plugins:
       command: bundle exec rake RAILS_ENV=production redmine:recur_tasks
       hour: 1
       minute: 0
+  - name: tags
+    # チケットにタグ機能を追加
+    # ref: https://github.com/ixti/redmine_tags
+    repo: https://github.com/ixti/redmine_tags.git
+  - name: work_days
+    # Redmineに個別の休業日設定機能を追加
+    # ref: https://github.com/agileware-jp/redmine_work_days
+    repo: https://github.com/agileware-jp/redmine_work_days.git
   - name: absolute_dates
     # チケットの登録日を日付で表示する機能を追加
     # ref: https://github.com/suer/redmine_absolute_dates
     repo: "https://github.com/suer/redmine_absolute_dates.git"
-  - name: agile
-    # カンバン機能を追加
-    # ref: https://www.redmineup.com/pages/ja/plugins/agile
-    file: /vagrant/plugins/redmine_agile-1_4_6-light.zip
-  - name: checklists
-    # チケットにチェックリストを追加
-    # ref: https://www.redmineup.com/pages/ja/plugins/checklists
-    file: /vagrant/plugins/redmine_checklists-3_1_11-light.zip
+  # - name: EasyGanttFree
+  #   # Redmineのガントチャート強化版
+  #   # ref: https://www.easyredmine.com/redmine-gantt-plugin
+  #   file: /vagrant/plugins/EasyGanttFree.zip
+  # - name: agile
+  #   # カンバン機能を追加
+  #   # ref: https://www.redmineup.com/pages/ja/plugins/agile
+  #   file: /vagrant/plugins/redmine_agile-1_4_6-light.zip
+  # - name: checklists
+  #   # チケットにチェックリストを追加
+  #   # ref: https://www.redmineup.com/pages/ja/plugins/checklists
+  #   file: /vagrant/plugins/redmine_checklists-3_1_11-light.zip
