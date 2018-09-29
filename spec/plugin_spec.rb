@@ -18,6 +18,7 @@ property['redmine_plugins'].each do |plugin|
     end
   end
   next unless plugin.key?('required_packages')
+
   plugin['required_packages'].each do |pkg|
     describe package(pkg) do
       it { should be_installed }
