@@ -567,6 +567,10 @@ redmine_themes:
     repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
   - name: farend_basic
     repo: "https://github.com/farend/redmine_theme_farend_basic.git"
+  - name: flatly_light
+    repo: https://github.com/Nitrino/flatly_light_redmine.git
+  - name: alex_skin
+    repo: https://bitbucket.org/dkuk/redmine_alex_skin.git
 
 # --------------------
 # インストールするプラグイン
@@ -633,10 +637,10 @@ redmine_plugins:
     # チケットの登録日を日付で表示する機能を追加
     # ref: https://github.com/suer/redmine_absolute_dates
     repo: "https://github.com/suer/redmine_absolute_dates.git"
-  # - name: EasyGanttFree
-  #   # Redmineのガントチャート強化版
-  #   # ref: https://www.easyredmine.com/redmine-gantt-plugin
-  #   file: /vagrant/plugins/EasyGanttFree.zip
+  - name: EasyGanttFree
+    # Redmineのガントチャート強化版
+    # ref: https://www.easyredmine.com/redmine-gantt-plugin
+    url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
   # - name: agile
   #   # カンバン機能を追加
   #   # ref: https://www.redmineup.com/pages/ja/plugins/agile
