@@ -591,7 +591,7 @@ redmine_plugins:
     repo: "https://github.com/sciyoshi/redmine-slack.git"
   - name: chatwork
     # チャットワークへの通知機能を追加
-    # ref: https://github.com/sciyoshi/redmine-slack
+    # ref: https://github.com/wate/redmine-slack
     repo: https://github.com/wate/redmine_chatwork.git
   - name: plantuml
     # PlantUMLのレンダリング用マクロ機能を追加
