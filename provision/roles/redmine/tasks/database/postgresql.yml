@@ -1,0 +1,22 @@
+---
+- name: install database adapter
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - python-psycopg2
+    - postgresql-client
+    - libpq-dev
+- name: create database user
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: "{{ redmine_db_cfg.production.username }}"
+    password: "{{ redmine_db_cfg.production.password }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER
+- name: create database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: "{{ redmine_db_cfg.production.database }}"
+    owner: "{{ redmine_db_cfg.production.username }}"
+    encoding: "{{ redmine_db_cfg.production.encoding|default('utf8') }}"

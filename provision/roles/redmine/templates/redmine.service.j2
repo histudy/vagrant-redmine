@@ -1,0 +1,26 @@
+[Unit]
+Description=Redmine
+{% if redmine_db_cfg.production.host is defined and redmine_db_cfg.production.host == 'localhost' -%}
+{% if redmine_db_cfg.production.adapter in 'mysql2'%}
+Requires=mariadb.service
+After=network.target mariadb.service
+{% endif -%}
+{% if redmine_db_cfg.production.adapter == 'postgresql' and redmine_db_cfg.production.host == 'localhost' -%}
+Requires=postgresql.service
+After=network.target postgresql.service
+{% endif -%}
+{% else -%}
+After=network.target
+{% endif %}
+
+[Service]
+Type=simple
+Restart=always
+User={{ redmine_user }}
+WorkingDirectory={{ redmine_home }}
+ExecStart=/usr/bin/bundle exec puma -C {{ redmine_home }}/config/puma.rb -e {{ redmine_mode }}
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

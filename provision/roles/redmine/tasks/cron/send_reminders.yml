@@ -1,0 +1,8 @@
+- name: set/unset send reminders job
+  cron:
+    name: Redmine send reminders job
+    job: cd {{ redmine_home }} && bundle exec rake redmine:send_reminders {{ redmine_send_reminders_cron_job.params|join(' ') if redmine_send_reminders_cron_job.params is defined else '' }}
+    hour: "{{ redmine_send_reminders_cron_job.hour|default('*') }}"
+    minute: "{{ redmine_send_reminders_cron_job.minute|default('*') }}"
+    user: "{{ redmine_user }}"
+    state: "{{ 'present' if redmine_send_reminders_cron_job.enabled else 'absent' }}"

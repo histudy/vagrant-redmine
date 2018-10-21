@@ -1,0 +1,10 @@
+- name: add plugin cron job
+  cron:
+    name: Plugin job({{ item.name }})
+    job: cd {{ redmine_home }} && {{ item.cron.command }}
+    minute: "{{ item.cron.minute|default('*') }}"
+    hour: "{{ item.cron.hour|default('*') }}"
+    day: "{{ item.cron.day|default('*') }}"
+    month: "{{ item.cron.month|default('*') }}"
+    user: "{{ redmine_user }}"
+  with_items: "{{ redmine_plugins|selectattr('cron', 'defined')|list }}"

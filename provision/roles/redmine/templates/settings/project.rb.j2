@@ -1,0 +1,63 @@
+{% if redmine_projects is defined %}
+# プロジェクト
+projects = YAML.load(<<EOT)
+{{ redmine_projects | to_yaml }}
+EOT
+# 親プロジェクトがないプロジェクトを登録
+not_has_parent_projects = projects.reject {|item| item['parent'].present? }
+if not_has_parent_projects
+  not_has_parent_projects.each do |item|
+    project = Project.find_by_identifier(item['identifier'])
+    unless project
+      project = Project.new
+      project.identifier = item['identifier']
+    end
+    # 名称
+    project.name = item['name']
+    # 説明
+    project.description = item['description'] if item.key?('description')
+    # ホームページ
+    project.homepage = item['homepage'] if item.key?('homepage')
+    # 公開
+    project.is_public = item['is_public'] if item.key?('is_public')
+    # モジュール
+    project.enabled_module_names = item['modules'] if item.key?('modules')
+    # トラッカー
+    if item.key?('trackers')
+      project.tracker_ids = Tracker.where(:name => item['trackers']).pluck(:id)
+    end
+    project.save
+  end
+end
+# 親プロジェクトがあるプロジェクトを登録
+has_parent_projects = projects.select {|item| item['parent'].present? }
+if has_parent_projects
+  has_parent_projects.each do |item|
+    project = Project.find_by_identifier(item['identifier'])
+    unless project
+      project = Project.new
+      project.identifier = item['identifier']
+    end
+    # 名称
+    project.name = item['name']
+    # 説明
+    project.description = item['description'] if item.key?('description')
+    # ホームページ
+    project.homepage = item['homepage'] if item.key?('homepage')
+    # 公開
+    project.is_public = !!item['is_public'] if item.key?('is_public')
+    # メンバーを継承
+    project.inherit_members = !!item['inherit_members'] if item.key?('inherit_members')
+    # モジュール
+    project.enabled_module_names = item['modules'] if item.key?('modules')
+    # トラッカー
+    if item.key?('trackers')
+      project.tracker_ids = Tracker.where(:name => item['trackers']).pluck(:id)
+    end
+    if project.save
+      parent = Project.where("identifier = :parent OR name = :parent", {parent: item['parent']}).sorted.first
+      project.set_parent! parent if parent
+    end
+  end
+end
+{% endif %}
