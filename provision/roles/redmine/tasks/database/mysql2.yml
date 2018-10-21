@@ -1,11 +1,10 @@
 ---
 - name: install database adapter
   apt:
-    name: "{{ item }}"
-  with_items:
-    - mariadb-client
-    - python-mysqldb
-    - libmariadbclient-dev
+    name:
+      - mariadb-client
+      - python-mysqldb
+      - libmariadbclient-dev
 - name: create database
   mysql_db:
     name: "{{ redmine_db_cfg.production.database }}"

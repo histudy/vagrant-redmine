@@ -1,11 +1,10 @@
 ---
 - name: install database adapter
   apt:
-    name: "{{ item }}"
-  with_items:
-    - python-psycopg2
-    - postgresql-client
-    - libpq-dev
+    name:
+      - python-psycopg2
+      - postgresql-client
+      - libpq-dev
 - name: create database user
   become: yes
   become_user: postgres
