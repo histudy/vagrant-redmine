@@ -4,7 +4,8 @@
     name: ufw
 - name: install MariaDB packages
   apt:
-    name: "{{ mariadb_packages }}"
+    name: "{{ item }}"
+  with_items: "{{ mariadb_packages }}"
 - name: insrall python-mysqldb package
   apt:
     name: python-mysqldb
