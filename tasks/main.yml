@@ -5,8 +5,7 @@
     system: yes
 - name: install dependency packages
   apt:
-    name: "{{ item }}"
-  with_items: "{{ redmine_dependency_packages }}"
+    name: "{{ redmine_dependency_packages }}"
 - name: create install directory
   file:
     path: "{{ redmine_home }}"
