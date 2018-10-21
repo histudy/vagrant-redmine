@@ -41,7 +41,7 @@
 - name: change extra config status
   file:
     path: "/etc/nginx/modules-enabled/{{ item.name }}.conf"
-    src: "/etc/nginx/modules-available/{{ item.name }}.conf"
+    src: "{{ '/etc/nginx/modules-available/' + item.name + '.conf' if item.state|default(true) else omit }}"
     state: "{{ 'link' if item.state|default(true) else 'absent' }}"
   with_items: "{{ nginx_modules }}"
   notify: restart nginx
@@ -54,7 +54,7 @@
 - name: change site config
   file:
     path: /etc/nginx/sites-enabled/{{ item.name|default(item.server_name) }}
-    src: /etc/nginx/sites-available/{{ item.name|default(item.server_name) }}
+    src: "{{ '/etc/nginx/sites-available/' + item.name|default(item.server_name) if item.state|default(true) else omit }}"
     state: "{{ 'link' if item.state|default(true) else 'absent' }}"
   with_items: "{{ nginx_vhosts }}"
   notify: reload nginx
