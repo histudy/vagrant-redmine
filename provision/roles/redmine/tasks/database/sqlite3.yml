@@ -1,7 +1,0 @@
----
-- name: install database adapter
-  apt:
-    name: "{{ item }}"
-  with_items:
-    - sqlite3
-    - libsqlite3-dev

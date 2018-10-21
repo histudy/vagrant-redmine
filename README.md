@@ -1,204 +1,179 @@
-Let's Redmine
-==========================
+nginx
+=========
 
-利用方法
------------------
+[Nginx](https://nginx.org/)のインストールとセットアップを行います。
 
-### 仮想マシンを起動
+Dependencies
+------------
 
-以下のコマンドを実行し仮想マシンを起動します。
+* [apt-backports](https://github.com/histudy/ansible-role-apt-backports)
 
-```
-vagrant up
-```
+Role Variables
+--------------
 
-### Redmineのデモ環境を開く
+| 変数名                | 内容                                                   |
+| --------------------- | ------------------------------------------------------ |
+| nginx_packages        | インストールするNginxのパッケージを設定します          |
+| nginx_cfg             | httpディレクティブの内容を設定します                   |
+| nginx_vhosts          | serverディレクティブの内容を設定します                 |
+| nginx_generate_dh_key | Diffie-Hellman鍵共有用の鍵を生成するか否かを設定します |
+| nginx_dh_key_bit      | Diffie-Hellman鍵のサイズを設定します                   |
+| nginx_dh_key_path     | Diffie-Hellman鍵の保存先を設定します                   |
 
-以下のメッセージが表示されたら、
-ブラウザで[http://localhost:8080](http://localhost:8080)を開きます。
+### nginx_packages
 
-```
-TASK [Finish display message] **************************************************
-ok: [default] => {
-    "msg": "Let's Redmine!"
-}
-```
+インストールするNginxのパッケージを設定します。
 
-初期構築時のRedmineのログイン情報は以下の通りです。
-
-| ユーザー名 | パスワード |
-| ---------- | ---------- |
-| admin      | admin      |
-
-システム構成
------------------
-
-* Debian 9
-* MariaDB
-* Nginx
-
-カスタマイズ方法
------------------
-
-[provision/host_vars/default.yml](provision/host_vars/default.yml)の内容を編集し、  
-Redmineのセットアップ内容を変更できます。
-
-設定可能な変数には以下のようなものがあります。
-
-
-セットアップ後に変数を変更した場合は、
-以下のコマンドを実行し変更内容を適用しなおす必要があります。
-
-```
-vagrant provision
-```
-
-### redmine_version
-
-Redmineのバージョンを指定します。
+#### Example
 
 ```yml
-redmine_version: "3.4-stable"
+nginx_packages:
+  - nginx
 ```
 
-設定する値はGithubのブランチ名やタグ名を指定します。
+### nginx_cfg
 
-* https://github.com/redmine/redmine/branches
-* https://github.com/redmine/redmine/releases
+httpディレクティブの内容を設定します。
 
-
-### redmine_themes
-
-インストールするテーマを指定します。
+#### Example
 
 ```yml
-redmine_themes:
-  # Githubのリポジトリから取得
-  - name: farend_fancy
-    repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
-    # テーマのディレクトリ名を指定(任意)
-    # ディレクトリ名の指定を省略した場合はname属性の値をディレクトリ名として展開します
-    # directory: farend_fancy
-  - name: farend_basic
-    repo: "https://github.com/farend/redmine_theme_farend_basic.git"
-  - name: gitmike
-    repo: "https://github.com/makotokw/redmine-theme-gitmike.git"
+nginx_cfg:
+  user: "www-data"
+  worker_processes: auto
+  pid: /run/nginx.pid
+  events:
+    worker_connections: 1024
+  http:
+    sendfile: yes
+    tcp_nopush: yes
+    tcp_nodelay: yes
+    keepalive_timeout: 65
+    types_hash_max_size: 2048
+    server_tokens: no
+    default_type: "application/octet-stream"
+    access_log: /var/log/nginx/access.log
+    error_log: /var/log/nginx/error.log
+    client_max_body_size: 8M
+    gzip: yes
+    gzip_vary: yes
+    gzip_proxied: any
+    gzip_comp_level: 6
+    gzip_buffers: "16 8k"
+    gzip_http_version: 1.1
+    gzip_types:
+      - text/plain
+      - text/css
+      - application/json
+      - application/javascript
+      - text/xml
+      - application/xml
+      - application/xml+rss
+      - text/javascript
 ```
 
-### redmine_plugins
+### nginx_vhosts
 
-インストールするプラグインを指定します。
+serverディレクティブの内容を設定します。
+
+#### Example
+
+※以下、指定可能な全項目の設定例です。
 
 ```yml
-redmine_plugins:
-  # Githubのリポジトリから取得
-  - name: view_customize
-    repo: "https://github.com/onozaty/redmine-view-customize.git"
-    # プラグインのディレクトリ名を指定(任意)
-    # ディレクトリ名の指定を省略した場合はname属性の前に「redmine_」を付与したディレクトリに展開します
-    directory: view_customize
-  - name: issue_templates
-    repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
-  # ファイルをアップロードしてインストールする場合
-  - name: easy_gantt
-    # ファイルのパスを指定します
-    file: path/to/EasyGanttFree.zip
-  - name: agile
-    file: path/to/redmine_agile-light.zip
-  - name: checklists
-    file: path/to/redmine_checklists-light.zip
+nginx_vhosts:
+  - name: default
+    default: yes
+    server_name: www.exampe.com
+    # server_name:
+    #   - exampe.com
+    #   - "*.exampe.com"
+    access_log: /var/log/nginx/access.log
+    error_log: /var/log/nginx/error.log
+    document_root: /var/www/html
+    client_max_body_size: 16M
+    index: index.html
+    # index:
+    #   - index.html
+    #   - index.htm
+    #   - index.php
+    variables:
+      variable_name: varriable_value
+    includes:
+      - snippets/wordpress.conf
+    locations:
+      - pattern: "/\\.ht"
+        match_type: "~"
+        content: "deny all;"
+    ssl:
+      certificate: /path/to/cert.pem
+      certificate_key:  /path/to/privkey.pem
+      trusted_certificate: /path/to/chain.pem
+      protocols:
+        - TLSv1.2
+      ciphers:
+        - ECDHE-ECDSA-AES256-GCM-SHA384
+        - ECDHE-RSA-AES256-GCM-SHA384
+        - ECDHE-ECDSA-CHACHA20-POLY1305
+        - ECDHE-RSA-CHACHA20-POLY1305
+        - ECDHE-ECDSA-AES128-GCM-SHA256
+        - ECDHE-RSA-AES128-GCM-SHA256
+        - ECDHE-ECDSA-AES256-SHA384
+        - ECDHE-RSA-AES256-SHA384
+        - ECDHE-ECDSA-AES128-SHA256
+        - ECDHE-RSA-AES128-SHA256
+      session_timeout: "1d"
+      session_cache: "shared:SSL:50m"
+      session_tickets: no
+      hsts: "max-age=15768000; includeSubDomains;"
+      stapling: yes
+      stapling_verify: yes
+    extra_setting: |
+      # some extra setting here
 ```
 
-### redmine_settings
+### nginx_generate_dh_key
 
-Redmineの設定を指定します。
+Diffie-Hellman鍵共有用の鍵を生成するか否かを設定します。
+
+#### Example
 
 ```yml
-redmine_settings:
-  ## -------------
-  ## 全般
-  ## -------------
-  ## アプリケーションのタイトル
-  app_title: Redmineデモ環境
-  ## ウェルカムメッセージ
-  welcome_text: |
-    # Redmineのデモ環境
-  ## ホスト名とパス
-  host_name: localhost:8080
-  ## テキスト書式
-  text_formatting: markdown
-  ## -------------
-  ## 表示
-  ## -------------
-  ## テーマ
-  # ui_theme: ""
-  ## デフォルトの言語
-  default_language: ja
-  ## ユーザー名の表示形式
-  user_format: lastname_firstname
+nginx_generate_dh_key: yes
 ```
 
-### redmine_customize_language
+### nginx_dh_key_bit
 
-Redmineの言語設定のカスタマイズ内容を指定します。  
-※この変数が定義されている場合、Redmine本体の言語ファイルを書き換えます。
+Diffie-Hellman鍵のサイズを設定します。  
+※nginx_generate_dh_keyに`true`が設定されている場合のみ有効です。
+
+#### Example
 
 ```yml
-redmine_customize_language:
-  ja:
-    error_no_tracker_in_project: このプロジェクトにはチケット種別が登録されていません。プロジェクト設定を確認してください。
-    error_workflow_copy_source: コピー元となるチケット種別またはロールを選択してください
-    error_workflow_copy_target: コピー先となるチケット種別とロールを選択してください
-    error_can_not_delete_tracker: このチケット種別は使用中です。削除できません。
-    error_no_tracker_allowed_for_new_issue_in_project: このプロジェクトにはチケットの追加が許可されているチケット種別がありません
-    setting_app_title: タイトル
-    setting_default_projects_tracker_ids: 新規プロジェクトにおいてデフォルトで有効になるチケット種別
-    project_module_documents: ドキュメント
-    project_module_news: お知らせ
-    label_tracker: チケット種別
-    label_tracker_plural: チケット種別
-    label_tracker_new: 新しいチケット種別
-    label_tracker_all: すべてのチケット種別
-    label_document: ドキュメント
-    label_document_new: 新しいドキュメント
-    label_document_plural: ドキュメント
-    label_document_added: ドキュメントの追加
-    label_news: お知らせ
-    label_news_new: お知らせを追加
-    label_news_plural: お知らせ
-    label_news_latest: 最新のお知らせ
-    label_news_view_all: すべてのお知らせを表示
-    label_news_added: お知らせを追加
-    label_news_comment_added: お知らせへのコメント追加
-    label_display_used_statuses_only: このチケット種別で使用中のステータスのみ表示
-    label_roadmap: マイルストーン
-    label_in_less_than: n日後、以前
-    label_in_more_than: n日後、以降
-    label_in: n日後
-    label_less_than_ago: n日前、以降
-    label_more_than_ago: n日前、以前
-    label_ago: n日前
-    label_in_the_next_days: 今後n日以内
-    label_in_the_past_days: 過去n日以内
-    field_tracker: チケット種別
-    field_is_in_roadmap: チケットをマイルストーンに表示する
-    text_workflow_edit: ワークフローを編集するロールとチケット種別を選んでください
-    text_tracker_no_workflow: このチケット種別にワークフローが定義されていません
-    text_no_configuration_data: "ロール、チケット種別、チケットのステータス、ワークフローがまだ設定されていません。\nデフォルト設定のロードを強くお勧めします。ロードした後、それを修正することができます。"
-    text_issue_added: "チケット %{id} を %{author} が作成しました。"
-    text_issue_updated: "チケット %{id} を %{author} が更新しました。"
-    text_user_mail_option: "未選択のプロジェクトでは、ウォッチまたは関係している事柄(例: 自分が報告者もしくは担当者であるチケット)のみメールが送信されます。"
-    notice_account_lost_email_sent: パスワードの再設定手順をメールで送信しました。
-    mail_subject_wiki_content_added: "Wikiページ %{id} の追加"
-    mail_body_wiki_content_added: "Wikiページ %{id} を %{author} が追加しました。"
-    mail_subject_wiki_content_updated: "Wikiページ %{id} の更新"
-    mail_body_wiki_content_updated: "Wikiページ %{id} を %{author} が更新しました。"
-    enumeration_doc_categories: ドキュメントカテゴリ
-    permission_add_documents: ドキュメントの追加
-    permission_edit_documents: ドキュメントの編集
-    permission_delete_documents: ドキュメントの削除
-    permission_view_documents: ドキュメントの閲覧
-    permission_view_news: お知らせの閲覧
-    permission_manage_news: お知らせの管理
-    permission_comment_news: お知らせへのコメント
+nginx_dh_key_bit: 2048
 ```
+
+### nginx_dh_key_path
+
+Diffie-Hellman鍵の保存先を設定します。  
+※nginx_generate_dh_keyに`true`が設定されている場合のみ有効です。
+
+#### Example
+
+```yml
+nginx_dh_key_path: /etc/nginx/dhparam.pem
+```
+
+Example Playbook
+----------------
+
+```yml
+- hosts: servers
+  roles:
+     - { role: nginx }
+```
+
+License
+-------
+
+MIT

@@ -1,15 +1,27 @@
 
-# Created by https://www.gitignore.io/api/vagrant,ansible
+# Created by https://www.gitignore.io/api/ansible
 
 ### Ansible ###
+# Ansible retry files
 *.retry
 
+# Test driven development on Ansible with Molecule, Testinfra and pytest
+.cache/
+.idea/
+.molecule/
+.tox/
+__pycache__/
+tests/roles
+*.pyc
+
+# End of https://www.gitignore.io/api/ansible
+
+# Created by https://www.gitignore.io/api/vagrant
+
 ### Vagrant ###
-# General
 .vagrant/
+*.box
 
-# Log files (if you are creating logs in debug mode, uncomment this)
-# *.logs
+# End of https://www.gitignore.io/api/vagrant
 
-
-# End of https://www.gitignore.io/api/vagrant,ansible
+Gemfile.lock
