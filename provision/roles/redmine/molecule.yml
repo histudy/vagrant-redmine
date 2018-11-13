@@ -97,7 +97,7 @@ ansible:
           directory: easy_gantt
         # ファイルのアップロード
         - name: agile
-          file: ~/Downloads/redmine/plugins/redmine_agile-1_4_6-light.zip
+          file: ~/Downloads/redmine/plugins/redmine_agile-1_4_7-light.zip
           # 展開先ディレクトリ名(テスト用)
           directory: redmine_agile
         - name: checklists

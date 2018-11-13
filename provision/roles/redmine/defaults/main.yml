@@ -518,6 +518,247 @@ redmine_puma_cfg:
 #         to: [確認待ち, 終了]
 
 # --------------------
+# Redmineの設定(ロールと権限)
+# --------------------
+# redmine_roles:
+#     ## 名称
+#   - name: 管理者
+#     ## このロールにチケットを割り当て可能
+#     assignable: true
+#     ## 表示できるチケット
+#     # * all: 全てのチケット
+#     # * default: プライベートチケット以外
+#     # * own: 作業者か作成者であるチケット
+#     issues_visibility: default
+#     ## 表示できる作業時間
+#     # * all: すべての作業時間
+#     # * own: 自身が登録した作業時間
+#     time_entries_visibility: all
+#     ## 表示できるユーザー
+#     # * all: すべてのアクティブなユーザー
+#     # * members_of_visible_projects: 見ることができるプロジェクトのメンバー
+#     users_visibility: all
+#     ## ワークフローをここからコピー(新規登録時のみ)
+#     # copy_workflow_from: 管理者
+#     ## メンバーの管理
+#     # managed_roles:
+#     #   - 管理者
+#     #   - 開発者
+#     #   - 報告者
+#     ## 権限
+#     permissions:
+#       ## プロジェクト
+#       # プロジェクトの追加
+#       - add_project
+#       # プロジェクトの編集
+#       - edit_project
+#       # プロジェクトの終了/再開
+#       - close_project
+#       # モジュールの選択
+#       - select_project_modules
+#       # メンバーの管理
+#       - manage_members
+#       # バージョンの管理
+#       - manage_versions
+#       # サブプロジェクトの追加
+#       - add_subprojects
+#       # 公開クエリの管理
+#       - manage_public_queries
+#       # クエリの保存
+#       - save_queries
+#       ## チケットトラッキング
+#       # チケットの閲覧
+#       - view_issues
+#       # チケットの追加
+#       - add_issues
+#       # チケットの編集
+#       - edit_issues
+#       # チケットのコピー
+#       - copy_issues
+#       # 関連するチケットの管理
+#       - manage_issue_relations
+#       # 子チケットの管理
+#       - manage_subtasks
+#       # チケットをプライベートに設定
+#       - set_issues_private
+#       # 自分のチケットをプライベートに設定
+#       - set_own_issues_private
+#       # 注記の追加
+#       - add_issue_notes
+#       # 注記の編集
+#       - edit_issue_notes
+#       # 自身が記入した注記の編集
+#       - edit_own_issue_notes
+#       # プライベート注記の閲覧
+#       - view_private_notes
+#       # 注記をプライベートに設定
+#       - set_notes_private
+#       # チケットの削除
+#       - delete_issues
+#       # ウォッチャー一覧の閲覧
+#       - view_issue_watchers
+#       # ウォッチャーの追加
+#       - add_issue_watchers
+#       # ウォッチャーの削除
+#       - delete_issue_watchers
+#       # チケットのインポート
+#       - import_issues
+#       # チケットのカテゴリの管理
+#       - manage_categories
+#       ## 時間管理
+#       # 作業時間の閲覧
+#       - view_time_entries
+#       # 作業時間の記入
+#       - log_time
+#       # 作業時間の編集
+#       - edit_time_entries
+#       # 自身が記入した作業時間の編集
+#       - edit_own_time_entries
+#       # 作業分類 (時間管理) の管理-
+#       - manage_project_activities
+#       ## ニュース
+#       # ニュースの閲覧
+#       - view_news
+#       # ニュースの管理
+#       - manage_news
+#       # ニュースへのコメント
+#       - comment_news
+#       ## 文書
+#       # 文書の閲覧
+#       - view_documents
+#       # 文書の追加
+#       - add_documents
+#       # 文書の編集
+#       - edit_documents
+#       # 文書の削除
+#       - delete_documents
+#       ## ファイル
+#       # ファイルの閲覧
+#       - view_files
+#       # ファイルの管理
+#       - manage_files
+#       ## Wiki
+#       # Wikiの閲覧
+#       - view_wiki_pages
+#       # Wiki履歴の閲覧
+#       - view_wiki_edits
+#       # Wikiページを他の形式にエクスポート
+#       - export_wiki_pages
+#       # Wikiページの編集
+#       - edit_wiki_pages
+#       # Wikiページ名の変更
+#       - rename_wiki_pages
+#       # Wikiページの削除
+#       - delete_wiki_pages
+#       # 添付ファイルの削除
+#       - delete_wiki_pages_attachments
+#       # Wikiページの凍結
+#       - protect_wiki_pages
+#       # Wikiの管理
+#       - manage_wiki
+#       ## リポジトリ
+#       # 更新履歴の閲覧
+#       - view_changesets
+#       # リポジトリの閲覧
+#       - browse_repository
+#       # コミット権限
+#       - commit_access
+#       # リビジョンとチケットの関連の管理
+#       - manage_related_issues
+#       # リポジトリの管理
+#       - manage_repository
+#       ## フォーラム
+#       # メッセージの閲覧
+#       - view_messages
+#       # メッセージの追加
+#       - add_messages
+#       # メッセージの編集
+#       - edit_messages
+#       # 自身が記入したメッセージの編集
+#       - edit_own_messages
+#       # メッセージの削除
+#       - delete_messages
+#       # 自身が記入したメッセージの削除
+#       - delete_own_messages
+#       # フォーラムの管理
+#       - manage_boards
+#       ## カレンダー
+#       # カレンダーの閲覧
+#       - view_calendar
+#       ## ガントチャート
+#       # ガントチャートの閲覧
+#       - view_gantt
+#     ## チケットトラッキング
+#     # permissions_trackers:
+#     #   view_issues: []
+#     #   add_issues: []
+#     #   edit_issues: []
+#     #   add_issue_notes: []
+#     #   delete_issues: []
+#   - name: 開発者
+#     assignable: true
+#     issues_visibility: default
+#     time_entries_visibility: all
+#     users_visibility: all
+#     permissions:
+#       - manage_versions
+#       - manage_categories
+#       - view_issues
+#       - add_issues
+#       - edit_issues
+#       - view_private_notes
+#       - set_notes_private
+#       - manage_issue_relations
+#       - manage_subtasks
+#       - add_issue_notes
+#       - save_queries
+#       - view_gantt
+#       - view_calendar
+#       - log_time
+#       - view_time_entries
+#       - view_news
+#       - comment_news
+#       - view_documents
+#       - view_wiki_pages
+#       - view_wiki_edits
+#       - edit_wiki_pages
+#       - delete_wiki_pages
+#       - view_messages
+#       - add_messages
+#       - edit_own_messages
+#       - view_files
+#       - manage_files
+#       - browse_repository
+#       - view_changesets
+#       - commit_access
+#       - manage_related_issues
+#   - name: 報告者
+#     assignable: true
+#     issues_visibility: default
+#     time_entries_visibility: all
+#     users_visibility: all
+#     permissions:
+#       - save_queries
+#       - view_messages
+#       - add_messages
+#       - edit_own_messages
+#       - view_calendar
+#       - view_documents
+#       - view_files
+#       - view_gantt
+#       - view_issues
+#       - add_issues
+#       - add_issue_notes
+#       - view_news
+#       - comment_news
+#       - view_changesets
+#       - browse_repository
+#       - view_time_entries
+#       - log_time
+#       - view_wiki_pages
+#       - view_wiki_edits
+
+# --------------------
 # Redmineの設定(カスタムフィールド[プロジェクト])
 # --------------------
 # redmine_project_custom_fields:

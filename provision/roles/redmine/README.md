@@ -445,6 +445,11 @@ Redmineのトラッカーを設定します。
 Redmineのワークフローを設定します。  
 ※詳細は変数ファイルを参照してください。
 
+### redmine_roles
+
+Redmineのロールを設定します。  
+※詳細は変数ファイルを参照してください。
+
 ### redmine_project_custom_fields
 
 Redmineのプロジェクトのカスタムフォールドを設定します。  
