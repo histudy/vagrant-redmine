@@ -50,8 +50,8 @@
       src: configuration.yml.j2
       dest: "{{ redmine_home }}/config/configuration.yml"
     notify: restart redmine
-  - name: execute bundle install
-    command: bundle install
+  - name: execute bundle update
+    command: bundle update
     args:
       chdir: "{{ redmine_home }}"
     when: git_result is changed
