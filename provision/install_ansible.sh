@@ -1,4 +1,5 @@
 #!/bin/sh
+apt-get update
 if [ ! -f /usr/bin/dirmngr ]; then
   apt-get install -y dirmngr
 fi
