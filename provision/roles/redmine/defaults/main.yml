@@ -1,5 +1,5 @@
 ---
-redmine_version: "3.4-stable"
+redmine_version: "4.0-stable"
 
 redmine_db_cfg:
   production:
