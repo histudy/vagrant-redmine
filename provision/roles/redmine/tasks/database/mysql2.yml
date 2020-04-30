@@ -18,3 +18,4 @@
   with_items:
     - localhost
     - 127.0.0.1
+  no_log: true

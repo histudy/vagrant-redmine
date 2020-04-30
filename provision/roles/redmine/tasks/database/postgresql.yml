@@ -12,6 +12,7 @@
     name: "{{ redmine_db_cfg.production.username }}"
     password: "{{ redmine_db_cfg.production.password }}"
     role_attr_flags: CREATEDB,NOSUPERUSER
+  no_log: true
 - name: create database
   become: yes
   become_user: postgres
