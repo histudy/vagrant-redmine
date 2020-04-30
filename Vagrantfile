@@ -18,6 +18,10 @@ Vagrant.configure("2") do |config|
   if File.exists?(extra_var_file)
     ansible_extra_vars = YAML.load_file(extra_var_file)
   end
+  if Vagrant.has_plugin?('vagrant-vbguest')
+    config.vbguest.auto_update = false
+  end
+
   # vagrant-execプラグインの設定
   if Vagrant.has_plugin?('vagrant-exec')
     vagrant_exec_env = {
