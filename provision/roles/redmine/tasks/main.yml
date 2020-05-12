@@ -67,9 +67,6 @@
       chdir: "{{ redmine_home }}"
     notify: restart redmine
     when: git_result is changed or db_config_result is changed
-  - name: customize language file
-    import_tasks: customize_lang.yml
-    when: redmine_customize_language is defined
   - name: load default data
     command: bundle exec rake redmine:load_default_data
     args:
@@ -78,43 +75,41 @@
   - name: install themes
     git:
       repo: "{{ item.repo }}"
-      dest: "{{ redmine_theme_dir }}/{{ item.directory if item.directory is defined else item.name  }}"
+      dest: "{{ redmine_theme_dir }}/{{ item.directory if item.directory is defined else item.name }}"
       version: master
-    with_items: "{{ redmine_themes }}"
+    loop: "{{ redmine_themes | default([]) }}"
   - name: install plugin from git
     git:
       repo: "{{ item.repo }}"
       dest: "{{ redmine_plugin_dir }}/{{ item.directory if item.directory is defined else 'redmine_' +  item.name }}"
-      version: "{{ item.version|default('master') }}"
-    with_items: "{{ redmine_plugins|selectattr('repo', 'defined')|list }}"
+      version: "{{ item.version | default('master') }}"
+    loop: "{{ redmine_plugins | selectattr('repo', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_git_result
   - name: download plugin archive file
     get_url:
       url: "{{ item.url }}"
-      dest: "{{ redmine_home }}/tmp/{{ item.url|basename }}"
-    with_items: "{{ redmine_plugins|selectattr('url', 'defined')|list }}"
+      dest: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
+    loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
   - name: unarchive downloaded plugin archive file
     unarchive:
-      src: "{{ redmine_home }}/tmp/{{ item.url|basename }}"
+      src: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
       dest: "{{ redmine_plugin_dir }}"
       remote_src: yes
-    with_items: "{{ redmine_plugins|selectattr('url', 'defined')|list }}"
+    loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_url_result
   - name: unarchive plugin archive file
     unarchive:
       src: "{{ item.file }}"
       dest: "{{ redmine_plugin_dir }}"
-    with_items: "{{ redmine_plugins|selectattr('file', 'defined')|list }}"
+    loop: "{{ redmine_plugins | selectattr('file', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_file_result
   - name: install plugin dependency packages
     apt:
       name: "{{ item.1 }}"
-    with_subelements:
-      - "{{ redmine_plugins|selectattr('required_packages', 'defined')|list }}"
-      - required_packages
+    loop: "{{ redmine_plugins | subelements('required_packages', {'skip_missing': True}) }}"
     notify: restart redmine
     become: yes
     become_user: root

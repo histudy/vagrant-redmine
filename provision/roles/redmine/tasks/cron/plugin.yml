@@ -7,4 +7,4 @@
     day: "{{ item.cron.day|default('*') }}"
     month: "{{ item.cron.month|default('*') }}"
     user: "{{ redmine_user }}"
-  with_items: "{{ redmine_plugins|selectattr('cron', 'defined')|list }}"
+  loop: "{{ redmine_plugins | selectattr('cron', 'defined') | list }}"
