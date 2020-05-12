@@ -622,7 +622,7 @@ redmine_projects:
     # ホームページ
     homepage: https://redmine.tokyo/projects/shinared
     # 公開
-    is_public: yes
+    is_public: true
     # トラッカー
     trackers:
       - 不具合
@@ -641,9 +641,9 @@ redmine_projects:
     # 親プロジェクト(プロジェクト名または識別子で指定)
     parent: redmine.tokyo
     # メンバーを継承
-    inherit_members: yes
+    inherit_members: true
     # 公開
-    is_public: yes
+    is_public: true
     # モジュール
     modules:
       # チケットトラッキング
@@ -658,7 +658,6 @@ redmine_projects:
       - boards
       # チケットテンプレート
       - issue_templates
-
 
 # --------------------
 # インストールするテーマ

@@ -498,8 +498,8 @@ redmine_settings:
   ## -------------
   ## 表示
   ## -------------
-  ## 新規オブジェクト作成タブ
-  new_item_menu_tab: 1
+  ## テーマ
+  ui_theme: ""
   ## -------------
   ## API
   ## -------------
@@ -631,7 +631,7 @@ redmine_projects:
     # ホームページ
     homepage: https://redmine.tokyo/projects/shinared
     # 公開
-    is_public: yes
+    is_public: true
     # トラッカー
     trackers:
       - 不具合
@@ -650,9 +650,9 @@ redmine_projects:
     # 親プロジェクト(プロジェクト名または識別子で指定)
     parent: redmine.tokyo
     # メンバーを継承
-    inherit_members: yes
+    inherit_members: true
     # 公開
-    is_public: yes
+    is_public: true
     # モジュール
     modules:
       # チケットトラッキング
