@@ -19,6 +19,15 @@ redmine_mode: development
 redmine_user: vagrant
 
 # --------------------
+# ディレクトリのカスタムマッピング情報
+# --------------------
+redmine_custom_directory_mappings:
+  - src: myplugin
+    dest: plugins/myplugin
+  - src: mytheme
+    dest: public/themes/mytheme
+
+# --------------------
 # Redmineの設定(システム管理者)
 # --------------------
 redmine_admin:
