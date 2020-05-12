@@ -4,23 +4,27 @@ roles = YAML.load(<<EOT)
 {{ redmine_roles | to_yaml }}
 EOT
 roles.each do |item|
-  role = Role.find_by_name(item['name'])
+  if item.key?('id')
+    role = Role.find_by_id(item['id'])
+  else
+    role = Role.find_by_name(item['name'])
+  end
   is_new = false
   unless role
     role = Role.new
     is_new = true
-    role.name = item['name']
     role.assignable = true
     role.issues_visibility = 'default'
     role.users_visibility = 'all'
     role.time_entries_visibility = 'all'
   end
+  role.name = item['name']
   # このロールにチケットを割り当て可能
   role.assignable = item['assignable'] if item.key?('assignable')
   # 表示できるチケット
-  role.issues_visibility = item['issues_visibility'] if item.key?('assignable')
+  role.issues_visibility = item['issues_visibility'] if item.key?('issues_visibility')
   # 表示できるユーザー
-  role.users_visibility = item['users_visibility'] if item.key?('assignable')
+  role.users_visibility = item['users_visibility'] if item.key?('users_visibility')
   # 表示できる作業時間
   if item.key?('time_entries_visibility')
     role.time_entries_visibility = item['time_entries_visibility']
