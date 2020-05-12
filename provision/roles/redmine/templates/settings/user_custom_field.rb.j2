@@ -1,12 +1,12 @@
-# カスタムフィールド(プロジェクト)
-{% if redmine_project_custom_fields is defined %}
-project_custom_fields = YAML.load(<<EOT)
-{{ redmine_project_custom_fields | to_yaml }}
+# カスタムフィールド(ユーザー)
+{% if redmine_user_custom_fields is defined %}
+user_custom_fields = YAML.load(<<EOT)
+{{ redmine_user_custom_fields | to_yaml }}
 EOT
-project_custom_fields.each do |item|
-  next unless allow_field_formats.include?(item['field_format'])
-  cf = ProjectCustomField.find_by_name(item['name'])
-  cf = ProjectCustomField.new unless cf
+user_custom_fields.each do |item|
+  next unless allow_user_field_formats.include?(item['field_format'])
+  cf = UserCustomField.find_by_name(item['name'])
+  cf = UserCustomField.new unless cf
   # 形式
   cf.field_format = item['field_format']
   # 名称
@@ -55,17 +55,9 @@ project_custom_fields.each do |item|
   if item.key?('multiple') && allow_multiple_formats.include?(item['field_format'])
     cf.multiple = item['multiple'] ? true : false
   end
-  # 検索対象
-  if item.key?('searchable') && allow_searchable_formats.include?(item['field_format'])
-    cf.searchable = item['searchable'] ? true : false
-  end
   # 選択肢
   if item.key?('possible_values') && item['field_format'] == 'list'
     cf.possible_values = item['possible_values']
-  end
-  # ロール
-  if item.key?('user_role') && item['field_format'] == 'user'
-    cf.user_role = Role.where(:name => item['user_role']).pluck(:id).map {|v| v.to_s }
   end
   # ステータス
   if item.key?('version_status') && item['field_format'] == 'version'
