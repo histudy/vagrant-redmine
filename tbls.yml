@@ -43,6 +43,8 @@ er:
   # Distance between tables that display relations in the ER
   # ( Default:1 )
   distance: 1
+exclude:
+  - schema_migrations
 # comments:
 #   - table: users
 #     # table comment
