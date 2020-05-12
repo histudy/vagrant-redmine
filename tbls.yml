@@ -1,0 +1,59 @@
+redmine_db_cfg:
+  production:
+    adapter: mysql2
+    database: redmine
+    host: localhost
+    username: redmine_user
+    password: redmine_password
+    encoding: utf8
+name: Redmine
+desc: |
+  RedmineはWebベースのプロジェクト管理ソフトウェアでです。
+  課題管理、ガントチャート、リポジトリブラウザ、Wiki、フォーラムなど、プロジェクトの運営を支援するためのさまざまな機能を備えています。
+  Ruby on Railsで開発されています。
+dict:
+  Tables: テーブル一覧
+  Description: 概要
+  Columns: カラム一覧
+  Indexes: INDEX一覧
+  Constraints: 制約一覧
+  Triggers: トリガー
+  Relations: ER図
+  Name: 名前
+  Comment: コメント
+  Type: タイプ
+  Default: デフォルト値
+  Nullable: NULL許可
+  Children: 子テーブル
+  Parents: 親テーブル
+  Definition: 定義
+  "Table Definition": テーブル定義
+dsn: mysql://redmine_user:redmine_password@localhost:3306/redmine
+docPath: /vagrant/docs/schema
+er:
+  # Skip generation of ER diagram
+  # ( Default:false )
+  skip: false
+  # ER diagram format
+  # ( Default:png )
+  format: svg
+  # Add table/column comment to ER diagram
+  # ( Default:false )
+  comment: true
+  # Distance between tables that display relations in the ER
+  # ( Default:1 )
+  distance: 1
+# comments:
+#   - table: users
+#     # table comment
+#     tableComment: Users table
+#     # column comments
+#     columnComments:
+#       email: Email address as login id. ex. user@example.com
+# relations:
+#   - table: logs
+#     columns:
+#       - user_id
+#     parentTable: users
+#     parentColumns:
+#       - id
