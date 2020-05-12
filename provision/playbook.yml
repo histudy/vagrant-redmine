@@ -7,6 +7,21 @@
   vars:
     tbls_version: "1.38.2"
   tasks:
+    - name: create mysql connection file
+      ini_file:
+        path: ~/.my.cnf
+        create: true
+        section: client
+        option: "{{ item.key | replace('_', '-') }}"
+        value: "{{ item.value | string }}"
+      with_dict:
+        host: "{{ redmine_db_cfg.production.host }}"
+        database: "{{ redmine_db_cfg.production.database }}"
+        user: "{{ redmine_db_cfg.production.username }}"
+        password: "{{ redmine_db_cfg.production.password }}"
+        default_character_set: "{{ redmine_db_cfg.production.encoding }}"
+      no_log: true
+      become: false
     - name: download tbls
       get_url:
         url: "https://github.com/k1LoW/tbls/releases/download/v{{ tbls_version }}/tbls_{{ tbls_version }}-1_amd64.deb"
@@ -20,8 +35,7 @@
         dest: "~/{{ item | basename }}"
         mode: "0755"
       loop: "{{ query('fileglob', 'scripts/tbls_*.sh') }}"
-      become: true
-      become_user: vagrant
+      become: false
     - block:
         - name: apply custom directory mapping
           file:
