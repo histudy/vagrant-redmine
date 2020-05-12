@@ -77,7 +77,6 @@ mariadb_cfg:
     innodb_buffer_pool_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100))|int }}"
     innodb_log_file_size: "{{ (((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100)) / 4)|int }}"
     innodb_log_files_in_group: 2
-    innodb_additional_mem_pool_size: 32M
     innodb_log_buffer_size: 32M
     # innodb_strict_mode: no
     # innodb_large_prefix: yes
