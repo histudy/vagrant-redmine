@@ -19,12 +19,16 @@ default_core_fields = [
 not_exists_copy_from_trackers = trackers.reject {|item| item['copy_workflow_from'].present? }
 if not_exists_copy_from_trackers
   not_exists_copy_from_trackers.each do |item|
-    tracker = Tracker.find_by_name(item['name'])
+    if item.key?('id')
+      tracker = Tracker.find_by_id(item['id'])
+    else
+      tracker = Tracker.find_by_name(item['name'])
+    end
     unless tracker
       tracker = Tracker.new
-      tracker.name = item['name']
       tracker.core_fields = default_core_fields
     end
+    tracker.name = item['name']
     tracker.core_fields = item['core_fields'] if item['core_fields'].present?
     tracker.default_status_id = default_issue_status.id
     if item['default_status'].present?
@@ -44,7 +48,11 @@ end
 exists_copy_from_trackers = trackers.select {|item| item['copy_workflow_from'].present? }
 if exists_copy_from_trackers
   exists_copy_from_trackers.each do |item|
-    tracker = Tracker.find_by_name(item['name'])
+    if item.key?('id')
+      tracker = Tracker.find_by_id(item['id'])
+    else
+      tracker = Tracker.find_by_name(item['name'])
+    end
     unless tracker
       tracker = Tracker.new
       tracker.name = item['name']
