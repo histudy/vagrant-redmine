@@ -24,7 +24,7 @@
   systemd:
     name: mariadb
     state: started
-    enabled: yes
+    enabled: true
 - name: create/remove databases
   mysql_db:
     name: "{{ item.name }}"
@@ -42,7 +42,7 @@
     - "{{ mariadb_databases }}"
     - hosts
     - flags:
-        skip_missing: yes
+        skip_missing: true
   no_log: true
 - name: import data
   mysql_db:

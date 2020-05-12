@@ -7,7 +7,7 @@ nginx_vhosts: []
     # # Simple static site
     # #--------------
     # - name: default
-    #   default: yes
+    #   default: true
     #   server_name: www.exampe.com
     #   access_log: /var/log/nginx/access.log
     #   error_log: /var/log/nginx/error.log
@@ -66,10 +66,10 @@ nginx_vhosts: []
     #     trusted_certificate: /path/to/chain.pem
     #     session_timeout: "1d"
     #     session_cache: "shared:SSL:50m"
-    #     session_tickets: no
+    #     session_tickets: false
     #     hsts: "max-age=15768000; includeSubDomains;"
-    #     stapling: yes
-    #     stapling_verify: yes
+    #     stapling: true
+    #     stapling_verify: true
     # # --------------
     # # Reverse proxy
     # # --------------
@@ -93,7 +93,7 @@ nginx_vhosts: []
     #         allow 127.0.0.1;
     #         deny all;
 
-nginx_generate_dh_key: yes
+nginx_generate_dh_key: true
 nginx_dh_key_bit: 2048
 nginx_dh_key_path: /etc/nginx/dhparam.pem
 
@@ -105,15 +105,15 @@ nginx_cfg:
     worker_connections: 1024
     # multi_accept: "on"
   http:
-    sendfile: yes
-    tcp_nopush: yes
-    tcp_nodelay: yes
+    sendfile: true
+    tcp_nopush: true
+    tcp_nodelay: true
     keepalive_timeout: 65
     types_hash_max_size: 2048
-    server_tokens: no
+    server_tokens: false
     default_type: "application/octet-stream"
     # server_names_hash_bucket_size: 64
-    # server_name_in_redirect: no
+    # server_name_in_redirect: false
     access_log: /var/log/nginx/access.log
     error_log: /var/log/nginx/error.log
     client_max_body_size: 8M
@@ -132,15 +132,15 @@ nginx_cfg:
         - ECDHE-ECDSA-AES128-SHA256
         - ECDHE-RSA-AES128-SHA256
       # dhparam: "{{ nginx_dh_key_path }}"
-      prefer_server_ciphers: yes
+      prefer_server_ciphers: true
       session_timeout: "1d"
       session_cache: "shared:SSL:50m"
-      session_tickets: no
+      session_tickets: false
       # hsts: "max-age={{ 60 * 60 * 24 * (365 / 2) }}; includeSubDomains;"
-      stapling: yes
-      stapling_verify: yes
-    gzip: yes
-    gzip_vary: yes
+      stapling: true
+      stapling_verify: true
+    gzip: true
+    gzip_vary: true
     gzip_proxied: any
     gzip_comp_level: 6
     gzip_buffers: "16 8k"

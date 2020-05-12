@@ -117,20 +117,20 @@ ansible:
             minute: 0
             hour: 1
       redmine_send_reminders_cron_job:
-        enabled: yes
+        enabled: true
         params:
           - 'days=7'
         hour: 9
         minute: 0
       redmine_receive_imap_cron_job:
-        enabled: yes
+        enabled: true
         params:
           - "username=imap_acount"
           - "password=imap_password"
         hour: "*"
         minute: "*/5"
       redmine_receive_pop3_cron_job:
-        enabled: yes
+        enabled: true
         params:
           - "username=pop3_acount"
           - "password=pop3_password"
@@ -143,14 +143,14 @@ ansible:
         stdout_redirect:
           stdout: "/opt/redmine/log/stdout.log"
           stderr: "/opt/redmine/log/stderr.log"
-          append: yes
-        quiet: yes
+          append: true
+        quiet: true
         threads:
           min: 0
           max: 16
         workers: 2
-        prune_bundler: no
-        preload_app: yes
+        prune_bundler: false
+        preload_app: true
 dependency:
   name: galaxy
 driver:

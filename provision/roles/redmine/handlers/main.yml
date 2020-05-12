@@ -1,7 +1,7 @@
 ---
 - name: restart redmine
   systemd:
-    daemon_reload: yes
+    daemon_reload: true
     name: redmine
     state: restarted
 - name: reload redmine

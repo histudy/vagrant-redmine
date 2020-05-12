@@ -28,7 +28,7 @@ redmine_admin:
   mail: taro@example.net
   language: ja
   password: password
-  must_change_passwd: no
+  must_change_passwd: false
 
 # --------------------
 # Redmineの設定(ロール)

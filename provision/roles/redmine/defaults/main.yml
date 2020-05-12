@@ -61,7 +61,7 @@ redmine_cfg:
       #   user_name: 'myaccount'
       #   password: 'password'
       #   # SMTP server at example.com using LOGIN authentication and checking HELO for foo.com
-      #   enable_starttls_auto: yes
+      #   enable_starttls_auto: true
       #   address: "example.com"
       #   port: 587
       #   authentication: :plain
@@ -286,7 +286,7 @@ redmine_settings:
   #   - Git
 
 redmine_send_reminders_cron_job:
-  enabled: no
+  enabled: false
   params:
     - 'days=7'
     # - 'tracker=1'
@@ -295,7 +295,7 @@ redmine_send_reminders_cron_job:
   minute: 0
 
 redmine_receive_imap_cron_job:
-  enabled: no
+  enabled: false
   params:
     - "username=imap_acount"
     - "password=imap_password"
@@ -307,7 +307,7 @@ redmine_receive_imap_cron_job:
   # minute: "*/5"
 
 redmine_receive_pop3_cron_job:
-  enabled: no
+  enabled: false
   params:
     - "username=pop3_acount"
     - "password=pop3_password"
@@ -325,11 +325,11 @@ redmine_puma_cfg:
   stdout_redirect:
     stdout: "{{ redmine_home }}/log/stdout.log"
     stderr: "{{ redmine_home }}/log/stderr.log"
-    append: no
-  # quiet: no
+    append: false
+  # quiet: false
   threads:
     min: 0
     max: 16
   workers: 2
-  # prune_bundler: no
-  preload_app: yes
+  # prune_bundler: false
+  preload_app: true

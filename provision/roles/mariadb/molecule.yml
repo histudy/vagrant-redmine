@@ -20,7 +20,7 @@ ansible:
           ## Network
           max_connections: 123
           connect_timeout: 10
-          skip_name_resolve: no
+          skip_name_resolve: false
           max_allowed_packet: 4K
           interactive_timeout: 3600
           wait_timeout: 600
@@ -31,15 +31,15 @@ ansible:
           query_cache_size: 32M
           query_cache_type:  2
           ## InnoDB General
-          innodb_file_per_table: yes
+          innodb_file_per_table: true
           innodb_flush_log_at_trx_commit: 1
           innodb_buffer_pool_size: 500M
           innodb_log_file_size: 100M
           innodb_log_files_in_group: 3
           innodb_additional_mem_pool_size: 48M
           innodb_log_buffer_size: 32M
-          innodb_strict_mode: yes
-          innodb_large_prefix: yes
+          innodb_strict_mode: true
+          innodb_large_prefix: true
           innodb_file_format: Barracuda
           max_heap_table_size: 16M
           tmp_table_size: 16M
@@ -53,14 +53,14 @@ ansible:
           # -----------------
           # Logging
           # -----------------
-          slow_query_log: no
+          slow_query_log: false
           long_query_time: 7
           log_warnings: 1
           min_examined_row_limit: 5
-          log_queries_not_using_indexes: yes
-          log_slow_admin_statements: no
+          log_queries_not_using_indexes: true
+          log_slow_admin_statements: false
           slow_query_log_file: /var/log/mysql/molecule_slow.log
-          general_log: yes
+          general_log: true
           general_log_file: /var/log/mysql/molecule_general.log
           # -----------------
           # Replication
@@ -70,8 +70,8 @@ ansible:
           log_bin: mysql-bin
           binlog_format: ROW
           expire_logs_days: 3
-          read_only: no
-          log_slave_updates: yes
+          read_only: false
+          log_slave_updates: true
 
 dependency:
   name: galaxy

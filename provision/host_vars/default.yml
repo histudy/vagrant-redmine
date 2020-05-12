@@ -1,4 +1,4 @@
-nginx_generate_dh_key: no
+nginx_generate_dh_key: false
 
 nginx_cfg:
   http:
@@ -7,7 +7,7 @@ nginx_cfg:
 nginx_vhosts:
   - name: default
     server_name: example.com
-    default: yes
+    default: true
     locations:
       - pattern: /
         content: |

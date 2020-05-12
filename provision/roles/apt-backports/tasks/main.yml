@@ -4,7 +4,7 @@
     filename: "backports"
 - name: change apt config (Default-Release)
   lineinfile:
-    create: yes
+    create: true
     dest: /etc/apt/apt.conf.d/99target
     regexp: '^APT::Default-Release '
     line: 'APT::Default-Release {{ ansible_distribution_release }}-backports;'

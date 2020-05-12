@@ -2,7 +2,7 @@
 - name: add redmine user
   user:
     name: "{{ redmine_user }}"
-    system: yes
+    system: true
 - name: install dependency packages
   apt:
     name: "{{ redmine_dependency_packages }}"
@@ -95,7 +95,7 @@
     unarchive:
       src: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
       dest: "{{ redmine_plugin_dir }}"
-      remote_src: yes
+      remote_src: true
     loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_url_result
@@ -111,7 +111,7 @@
       name: "{{ item.1 }}"
     loop: "{{ redmine_plugins | subelements('required_packages', {'skip_missing': True}) }}"
     notify: restart redmine
-    become: yes
+    become: true
     become_user: root
   - block:
       - name: execute bundle install
@@ -145,7 +145,7 @@
       src: puma.rb.j2
       dest: "{{ redmine_home }}/config/puma.rb"
     notify: restart redmine
-  become: yes
+  become: true
   become_user: "{{ redmine_user }}"
   environment:
     RAILS_ENV: "{{ redmine_mode }}"
@@ -171,7 +171,7 @@
   register: result
 - name: Redmine is active and enable on system startup
   systemd:
-    daemon_reload: yes
+    daemon_reload: true
     name: redmine
     state: started
-    enabled: yes
+    enabled: true
