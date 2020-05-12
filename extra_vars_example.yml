@@ -6,7 +6,7 @@
 # --------------------
 # Redmineのバージョン
 # --------------------
-# redmine_version: "3.4-stable"
+# redmine_version: "4.1-stable"
 
 # --------------------
 # redmineの動作モード(production / development)
