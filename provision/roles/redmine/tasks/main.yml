@@ -126,6 +126,12 @@
         command: bundle exec rake redmine:plugins:migrate
         args:
           chdir: "{{ redmine_home }}"
+      - name: execute plugin post install action
+        shell: "{{ item.post_install_action }}"
+        args:
+          chdir: "{{ redmine_home }}"
+          warn: false
+        loop: "{{ redmine_plugins | selectattr('post_install_action', 'defined') | list }}"
     when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
   - name: create settings file
     template:
