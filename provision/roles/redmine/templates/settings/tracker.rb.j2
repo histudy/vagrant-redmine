@@ -36,11 +36,7 @@ if not_exists_copy_from_trackers
       tracker.default_status_id = issue_status.id
     end
     tracker.position = item['position'] if item['position'].present?
-    if tracker.save
-      if item['copy_workflow_from'].present? && (copy_from = Tracker.find_by_name(item['copy_workflow_from']))
-        tracker.copy_workflow_rules(copy_from)
-      end
-    end
+    tracker.save
   end
 end
 
