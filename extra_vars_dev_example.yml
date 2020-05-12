@@ -40,39 +40,135 @@ redmine_admin:
   must_change_passwd: no
 
 # --------------------
+# Redmineの設定(ロール)
+# --------------------
+# redmine_roles:
+#   - id: 3
+#     name: 管理者
+#   - id: 4
+#     name: 開発者
+#   - id: 5
+#     name: 報告者
+#     permissions:
+#     ## ----
+#       ## プロジェクト
+#       ## ----
+#       ### クエリの保存
+#       - save_queries
+#       ## ----
+#       ## フォーラム
+#       ## ----
+#       ### メッセージの閲覧
+#       - view_messages
+#       ### メッセージの追加
+#       - add_messages
+#       ### 自分が追加したメッセージの編集
+#       - edit_own_messages
+#       ## ----
+#       ## チケットトラッキング
+#       ## ----
+#       ### チケットの閲覧
+#       - view_issues
+#       ### チケットの追加
+#       - add_issues
+#       ### 自分が追加したチケットの編集
+#       - edit_own_issues
+#       ### コメントの追加
+#       - add_issue_notes
+#       ### 自分が追加したコメントの編集
+#       - edit_own_issue_notes
+#       ## ----
+#       ## ガントチャート
+#       ## ----
+#       ### ガントチャートの閲覧
+#       - view_gantt
+#       ## ----
+#       ## カレンダー
+#       ## ----
+#       ### カレンダーの閲覧
+#       - view_calendar
+#       ## ----
+#       ## 時間管理
+#       ## ----
+#       ### 作業時間の記録
+#       - log_time
+#       ###  作業時間の閲覧
+#       - view_time_entries
+#       ## ----
+#       ## ニュース
+#       ## ----
+#       ### ニュースの閲覧
+#       - view_news
+#       ### ニュースへのコメント
+#       - comment_news
+#       ## ----
+#       ## 文書
+#       ## ----
+#       ### 文書の閲覧
+#       - view_documents
+#       ## ----
+#       ## Wiki
+#       ## ----
+#       ### Wikiの閲覧
+#       - view_wiki_pages
+#       ### Wiki履歴の閲覧
+#       - view_wiki_edits
+#       ## ----
+#       ## ファイル
+#       ## ----
+#       ### ファイルの閲覧
+#       - view_files
+#       ## ----
+#       ## リポジトリ
+#       ## ----
+#       ### リポジトリの閲覧
+#       - browse_repository
+#       ### 変更履歴の閲覧
+#       - view_changesets
+
+# --------------------
 # Redmineの設定(チケットのステータス)
 # --------------------
-redmine_issue_statuses:
-  - name: 未対応
-    is_closed: no
-    position: 1
-  - name: 対応中
-    is_closed: no
-    position: 2
-  - name: 対応済み
-    is_closed: no
-    position: 3
-  - name: フィードバック
-    is_closed: no
-    position: 4
-  - name: 確認待ち
-    position: 5
-  - name: 終了
-    is_closed: yes
-    position: 7
-  - name: 破棄
-    is_closed: yes
-    position: 8
+# redmine_issue_statuses:
+#   - id: 1
+#     name: 未対応
+#     is_closed: false
+#     position: 1
+#   - id: 2
+#     name: 対応中
+#     is_closed: false
+#     position: 2
+#   - id: 3
+#     name: 対応済み
+#     is_closed: false
+#     position: 3
+#   - id: 4
+#     name: フィードバック
+#     is_closed: false
+#     position: 4
+#   - name: 確認待ち
+#     position: 5
+#   - id: 5
+#     name: 終了
+#     is_closed: true
+#     position: 6
+#   - id: 6
+#     name: 破棄
+#     is_closed: true
+#     position: 7
 
 # --------------------
 # Redmineの設定(トラッカー)
 # --------------------
 redmine_trackers:
-  - name: 不具合
+  - id: 1
+    name: 不具合
     position: 1
-  - name: 機能
+  - id: 2
+    name: 機能
     position: 2
-  - name: 運用保守
+  - id: 3
+    name: 運用保守
     position: 3
   - name: その他
     position: 4
@@ -100,50 +196,130 @@ redmine_trackers:
 # --------------------
 # Redmineの設定(ワークフロー)
 # --------------------
-redmine_workflows:
-  - roles: [管理者]
-    trackers: [不具合, 機能 ,運用保守, その他]
-    transitions:
-      - from: 未対応
-        to: [対応中, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
-      - from: 対応中
-        to: [未対応, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
-      - from: 対応済み
-        to: [未対応, 対応中, 確認待ち, フィードバック, 終了, 破棄]
-      - from: 確認待ち
-        to: [未対応, 対応中, 対応済み, フィードバック, 終了, 破棄]
-      - from: フィードバック
-        to: [未対応, 対応中, 対応済み, 確認待ち, 終了, 破棄]
-      - from: 終了
-        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 破棄]
-      - from: 破棄
-        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 終了]
-  - roles: [開発者]
-    trackers: [不具合, 機能 ,運用保守, その他]
-    transitions:
-      - from: 未対応
-        to: [対応中, 対応済み, 確認待ち, フィードバック, 終了]
-      - from: 対応中
-        to: [未対応, 対応済み, 確認待ち, フィードバック, 終了]
-      - from: 対応済み
-        to: [未対応, 対応中, 確認待ち, フィードバック, 終了]
-      - from: 確認待ち
-        to: [未対応, 対応中, 対応済み, フィードバック, 終了]
-      - from: フィードバック
-        to: [未対応, 対応中, 対応済み, 確認待ち, 終了]
-  - roles: [報告者]
-    trackers: [不具合, 機能 ,運用保守, その他]
-    transitions:
-      - from: 未対応
-        to: [終了]
-      - from: 対応中
-        to: [終了]
-      - from: 対応済み
-        to: [終了]
-      - from: 確認待ち
-        to: [フィードバック, 終了]
-      - from: フィードバック
-        to: [確認待ち, 終了]
+# redmine_workflows:
+#   - roles:
+#       - 管理者
+#     trackers:
+#       - 不具合
+#       - 機能
+#       - 運用保守
+#       - その他
+#     transitions:
+#       - from: 未対応
+#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 対応中
+#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 対応済み
+#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了, 破棄]
+#       - from: 確認待ち
+#         to: [未対応, 対応中, 対応済み, フィードバック, 終了, 破棄]
+#       - from: フィードバック
+#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了, 破棄]
+#       - from: 終了
+#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 破棄]
+#       - from: 破棄
+#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 終了]
+#   - roles:
+#       - 開発者
+#     trackers:
+#       - 不具合
+#       - 機能
+#       - 運用保守
+#       - その他
+#     transitions:
+#       - from: 未対応
+#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了]
+#       - from: 対応中
+#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了]
+#       - from: 対応済み
+#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了]
+#       - from: 確認待ち
+#         to: [未対応, 対応中, 対応済み, フィードバック, 終了]
+#       - from: フィードバック
+#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了]
+#   - roles:
+#       - 報告者
+#     trackers:
+#       - 不具合
+#       - 機能
+#       - 運用保守
+#       - その他
+#     transitions:
+#       - from: 未対応
+#         to: [終了, 破棄]
+#       - from: 対応中
+#         to: [終了]
+#       - from: 対応済み
+#         to: [終了, 破棄]
+#       - from: 確認待ち
+#         to: [フィードバック, 終了]
+#       - from: フィードバック
+#         to: [確認待ち, 終了]
+
+# --------------------
+# Redmineの設定(選択肢の値)
+# --------------------
+# redmine_enumerations:
+#   ## チケットの優先度
+#   - id: 1
+#     name: 低い
+#     type: IssuePriority
+#     active: true
+#     is_default: false
+#   - id: 2
+#     name: 通常
+#     type: IssuePriority
+#     active: true
+#     is_default: true
+#   - id: 3
+#     name: 高い
+#     type: IssuePriority
+#     active: true
+#     is_default: false
+#   - id: 4
+#     name: 至急
+#     type: IssuePriority
+#     active: true
+#     is_default: false
+#   - id: 5
+#     name: 緊急
+#     type: IssuePriority
+#     active: true
+#     is_default: false
+#   ## 文書カテゴリ
+#   - id: 6
+#     name: ユーザーマニュアル
+#     type: DocumentCategory
+#     active: true
+#     is_default: false
+#   - id: 7
+#     name: 技術ドキュメント
+#     type: DocumentCategory
+#     active: true
+#     is_default: false
+#   ## 作業分類
+#   - id: 8
+#     name: 設計
+#     type: TimeEntryActivity
+#     active: true
+#     is_default: false
+#   - id: 9
+#     name: コーディング
+#     type: TimeEntryActivity
+#     active: true
+#     is_default: false
+#   - name: デザイン
+#     type: TimeEntryActivity
+#     active: true
+#     is_default: false
+#   - name: テスト
+#     type: TimeEntryActivity
+#     active: true
+#     is_default: false
+#   - name: ドキュメント作成
+#     type: TimeEntryActivity
+#     active: true
+#     is_default: false
 
 # --------------------
 # Redmineの設定(カスタムフィールド[プロジェクト])
@@ -153,151 +329,160 @@ redmine_project_custom_fields:
     field_format: string
   - name: Slack URL
     field_format: link
-    visible: no
+    visible: false
 
 # --------------------
 # Redmineの設定(カスタムフィールド[チケット])
 # --------------------
-redmine_issue_custom_fields:
-    ## 名称
-  - name: テキスト
-    ## 形式
-    ## * string:テキスト
-    ## * version:バージョン
-    ## * attachment:ファイル
-    ## * user:ユーザー
-    ## * list:リスト
-    ## * link:リンク
-    ## * float:小数
-    ## * int:整数
-    ## * date:日付
-    ## * bool:真偽値
-    ## * text:長いテキスト
-    ## * enumeration:キー・バリュー リスト
+# redmine_issue_custom_fields:
+#     ## 名称
+#   - name: テキスト
+#     ## 形式
+#     ## * string:テキスト
+#     ## * version:バージョン
+#     ## * attachment:ファイル
+#     ## * user:ユーザー
+#     ## * list:リスト
+#     ## * link:リンク
+#     ## * float:小数
+#     ## * int:整数
+#     ## * date:日付
+#     ## * bool:真偽値
+#     ## * text:長いテキスト
+#     ## * enumeration:キー・バリュー リスト
+#     field_format: string
+#     ## 説明
+#     # description: ""
+#     ## 最小(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # min_length: ""
+#     ## 最大(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # max_length: ""
+#     ## 正規表現(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * 整数
+#     ## * 小数
+#     ## * リンク
+#     ## * 長いテキスト
+#     # regexp: ""
+#     ## デフォルト値(形式が以下の場合のみ)
+#     ## * テキスト
+#     ## * リンク
+#     ## * 整数
+#     ## * 小数
+#     ## * 日付
+#     ## * 真偽値(1:はい/0:いいえ)
+#     ## * 長いテキスト
+#     # default_value: ""
+#     ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
+#     # text_formatting: false
+#     ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * ファイル
+#     ## * 長いテキスト
+#     # url_pattern: ""
+#     ## 表示(入力形式)
+#     ## ※形式が以下の場合のみ
+#     ## * バージョン
+#     ## * ユーザー
+#     ## * リスト
+#     ## * 真偽値
+#     ## * キー・バリュー リスト
+#     ## ※設定値一覧
+#     ## *(空):ドロップダウンリスト
+#     ## * check_box:チェックボックス
+#     ## * radio:ラジオ(形式が「真偽値」の場合のみ)
+#     # edit_tag_style: ""
+#     ## 複数選択可(形式が以下の場合のみ)
+#     ## * ユーザー
+#     ## * バージョン
+#     ## * リスト
+#     ## * キー・バリュー リスト
+#     # multiple: false
+#     ## 必須
+#     # is_required: false
+#     ## 表示(すべて)
+#     # visible: true
+#     ## 表示(表示するロールを限定)
+#     # visible:
+#     #   - 管理者
+#     #   - 開発者
+#     ## 検索対象(形式が以下の場合のみの場合のみ)
+#     ## * テキスト
+#     ## * リスト
+#     ## * 長いテキスト
+#     # searchable: false
+#     ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
+#     # is_filter: false
+#     ## トラッカー
+#     # trackers:
+#     #   - 不具合
+#     #   - 機能
+#     ## プロジェクト
+#     # projects:
+#     #     - プロジェクト1
+#     #     - プロジェクト2
+#     #     - プロジェクト3
+#   - name: バージョン
+#     field_format: version
+#     ## ステータス(形式が「バージョン」の場合のみ)
+#     version_status:
+#       - open
+#       - locked
+#   - name: ファイル
+#     field_format: attachment
+#     ## 許可する拡張子(形式が「ファイル」の場合のみ)
+#     extensions_allowed:
+#       - jpg
+#       - gif
+#       - png
+#   - name: ユーザー
+#     field_format: user
+#     ## ロール(形式が「ユーザー」の場合のみ)
+#     user_role:
+#       - 管理者
+#       - 開発者
+#   - name: リスト
+#     field_format: list
+#     ## 選択肢(形式が「リスト」の場合のみ)
+#     possible_values: |
+#       選択肢1
+#       選択肢2
+#       選択肢3
+#       選択肢4
+#   - name: リンク
+#     field_format: link
+#   - name: 小数
+#     field_format: float
+#   - name: 整数
+#     field_format: int
+#   - name: 日付
+#     field_format: date
+#   - name: 真偽値
+#     field_format: bool
+#   - name: 長いテキスト
+#     field_format: text
+#   - name: キー・バリュー リスト
+#     field_format: enumeration
+
+# --------------------
+# Redmineの設定(カスタムフィールド[ユーザー])
+# --------------------
+redmine_user_custom_fields:
+  - name: Slack Username
     field_format: string
-    ## 説明
-    # description: ""
-    ## 最小(形式が以下の場合のみ)
-    ## * テキスト
-    ## * 整数
-    ## * 小数
-    ## * リンク
-    ## * 長いテキスト
-    # min_length: ""
-    ## 最大(形式が以下の場合のみ)
-    ## * テキスト
-    ## * 整数
-    ## * 小数
-    ## * リンク
-    ## * 長いテキスト
-    # max_length: ""
-    ## 正規表現(形式が以下の場合のみ)
-    ## * テキスト
-    ## * 整数
-    ## * 小数
-    ## * リンク
-    ## * 長いテキスト
-    # regexp: ""
-    ## デフォルト値(形式が以下の場合のみ)
-    ## * テキスト
-    ## * リンク
-    ## * 整数
-    ## * 小数
-    ## * 日付
-    ## * 真偽値(1:はい/0:いいえ)
-    ## * 長いテキスト
-    # default_value: ""
-    ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
-    # text_formatting: no
-    ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
-    ## * ユーザー
-    ## * バージョン
-    ## * ファイル
-    ## * 長いテキスト
-    # url_pattern: ""
-    ## 表示(入力形式)
-    ## ※形式が以下の場合のみ
-    ## * バージョン
-    ## * ユーザー
-    ## * リスト
-    ## * 真偽値
-    ## * キー・バリュー リスト
-    ## ※設定値一覧
-    ## *(空):ドロップダウンリスト
-    ## * check_box:チェックボックス
-    ## * radio:ラジオ(形式が「真偽値」の場合のみ)
-    # edit_tag_style: ""
-    ## 複数選択可(形式が以下の場合のみ)
-    ## * ユーザー
-    ## * バージョン
-    ## * リスト
-    ## * キー・バリュー リスト
-    # multiple: no
-    ## 必須
-    # is_required: no
-    ## 表示(すべて)
-    # visible: yes
-    ## 表示(表示するロールを限定)
-    # visible:
-    #   - 管理者
-    #   - 開発者
-    ## 検索対象(形式が以下の場合のみの場合のみ)
-    ## * テキスト
-    ## * リスト
-    ## * 長いテキスト
-    # searchable: no
-    ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
-    # is_filter: no
-    ## トラッカー
-    # trackers:
-    #   - 不具合
-    #   - 機能
-    ## プロジェクト
-    # projects:
-    #     - プロジェクト1
-    #     - プロジェクト2
-    #     - プロジェクト3
-  - name: バージョン
-    field_format: version
-    ## ステータス(形式が「バージョン」の場合のみ)
-    version_status:
-      - open
-      - locked
-  - name: ファイル
-    field_format: attachment
-    ## 許可する拡張子(形式が「ファイル」の場合のみ)
-    extensions_allowed:
-      - jpg
-      - gif
-      - png
-  - name: ユーザー
-    field_format: user
-    ## ロール(形式が「ユーザー」の場合のみ)
-    user_role:
-      - 管理者
-      - 開発者
-  - name: リスト
-    field_format: list
-    ## 選択肢(形式が「リスト」の場合のみ)
-    possible_values: |
-      選択肢1
-      選択肢2
-      選択肢3
-      選択肢4
-  - name: リンク
-    field_format: link
-  - name: 小数
-    field_format: float
-  - name: 整数
-    field_format: int
-  - name: 日付
-    field_format: date
-  - name: 真偽値
-    field_format: bool
-  - name: 長いテキスト
-    field_format: text
-  - name: キー・バリュー リスト
-    field_format: enumeration
+  - name: ChatWork ID
+    field_format: string
 
 # --------------------
 # Redmineの設定(管理)
@@ -330,10 +515,10 @@ redmine_settings:
     ## チケットトラッキング
     - issue_tracking
     ## 時間管理
-    # - time_tracking
-    ## お知らせ(ニュース)
+    - time_tracking
+    ## ニュース
     - news
-    ## マニュアル(文書)
+    ## 文書
     - documents
     ## ファイル
     - files
@@ -347,6 +532,8 @@ redmine_settings:
     - calendar
     ## ガントチャート
     # - gantt
+    ## Easy Gantt(プラグイン)
+    - easy_gantt
     ## Agail(プラグイン)
     - agile
     ## チケットテンプレート(プラグイン)
@@ -369,12 +556,6 @@ redmine_settings:
   ## issue_templates
   plugin_redmine_issue_templates:
     apply_global_template_to_all_projects: 'true'
-  ## plantuml
-  plugin_plantuml:
-    plantuml_binary_default: '/usr/bin/plantuml'
-  ## graphviz
-  plugin_graphviz:
-    graphviz_binary_default: '/usr/bin/dot'
   ## slack
   plugin_redmine_slack:
     slack_url: ''
@@ -390,65 +571,49 @@ redmine_settings:
     room: ''
     post_updates: '1'
     post_wiki_updates: '1'
-  ## issues_tree
-  plugin_redmine_issues_tree:
-    default_redirect_to_tree_view: 'true'
-    default_redirect_to_tree_view_without_project: 'true'
-  ## recurring_tasks
-  plugin_recurring_tasks:
-    journal_attributed_to_user: '1'
-    show_top_menu: '0'
-    reopen_issue: '0'
-  ## tags
-  plugin_redmine_tags:
-    issues_sidebar: list
-    issues_show_count: '1'
-    issues_open_only: '1'
-    issues_sort_by: count
-    issues_sort_order: desc
 
 # --------------------
 # Redmineの設定(ユーザー)
 # --------------------
-redmine_users:
-  - login: ichiro
-    firstname: 一郎
-    lastname: 田中
-    mail: ichiro@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-  - login: jiro
-    firstname: 二郎
-    lastname: 鈴木
-    mail: jiro@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-  - login: saburo
-    firstname: 三郎
-    lastname: 山本
-    mail: saburo@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-  - login: shiro
-    firstname: 四郎
-    lastname: 小林
-    mail: shiro@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-  - login: goro
-    firstname: 五郎
-    lastname: 土井
-    mail: goro@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-  - login: hanako
-    firstname: 花子
-    lastname: 山田
-    mail: hanako@example.net
-    password: str0ng@p455w0rd
-    must_change_passwd: yes
-    mail_notification: none
-    locked: yes
+# redmine_users:
+#   - login: ichiro
+#     firstname: 一郎
+#     lastname: 田中
+#     mail: ichiro@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#   - login: jiro
+#     firstname: 二郎
+#     lastname: 鈴木
+#     mail: jiro@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#   - login: saburo
+#     firstname: 三郎
+#     lastname: 山本
+#     mail: saburo@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#   - login: shiro
+#     firstname: 四郎
+#     lastname: 小林
+#     mail: shiro@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#   - login: goro
+#     firstname: 五郎
+#     lastname: 土井
+#     mail: goro@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#   - login: hanako
+#     firstname: 花子
+#     lastname: 山田
+#     mail: hanako@example.net
+#     password: str0ng@p455w0rd
+#     must_change_passwd: true
+#     mail_notification: none
+#     locked: true
 
 # --------------------
 # Redmineの設定(プロジェクト)
@@ -537,8 +702,8 @@ redmine_plugins:
     repo: "https://github.com/wate/redmine_chatwork.git"
   - name: drawio
     repo: "https://github.com/mikitex70/redmine_drawio.git"
-  - name: easy_gantt
-    url: "http://www.easyredmine.com/packages/EasyGanttFree.zip"
+  # - name: easy_gantt
+  #   file: /vagrant/plugins/EasyGanttFree-4.x.zip
   # - name: agile
   #   file: /vagrant/plugins/redmine_agile-1_5_3-light.zip
   # - name: checklists
