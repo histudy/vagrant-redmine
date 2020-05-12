@@ -4,7 +4,24 @@
     - role: mariadb
     - role: redmine
     - role: nginx
+  vars:
+    tbls_version: "1.38.2"
   tasks:
+    - name: download tbls
+      get_url:
+        url: "https://github.com/k1LoW/tbls/releases/download/v{{ tbls_version }}/tbls_{{ tbls_version }}-1_amd64.deb"
+        dest: /tmp/tbls_{{ tbls_version }}-1_amd64.deb
+    - name: install tbls
+      apt:
+        deb: /tmp/tbls_{{ tbls_version }}-1_amd64.deb
+    - name: copy tbls commands
+      copy:
+        src: "{{ item }}"
+        dest: "~/{{ item | basename }}"
+        mode: "0755"
+      loop: "{{ query('fileglob', 'scripts/tbls_*.sh') }}"
+      become: true
+      become_user: vagrant
     - block:
         - name: apply custom directory mapping
           file:
@@ -13,7 +30,7 @@
             owner: "{{ redmine_user }}"
             group: "{{ redmine_user }}"
             state: link
-          with_items: "{{ redmine_custom_directory_mappings }}"
+          loop: "{{ redmine_custom_directory_mappings }}"
           notify: restart redmine
           register: result
         - block:
