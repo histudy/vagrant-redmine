@@ -28,6 +28,13 @@ dict:
   Parents: 親テーブル
   Definition: 定義
   "Table Definition": テーブル定義
+format:
+  # Adjust the column width of Markdown format table
+  # ( Default:false )
+  adjust: true
+  # Sort the order of table list and  columns
+  # ( Default:false )
+  sort: false
 dsn: mysql://redmine_user:redmine_password@localhost:3306/redmine
 docPath: /vagrant/docs/schema
 er:
