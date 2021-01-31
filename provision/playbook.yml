@@ -5,7 +5,7 @@
     - role: redmine
     - role: nginx
   vars:
-    tbls_version: "1.38.2"
+    tbls_version: "1.48.1"
   tasks:
     - name: create mysql connection file
       ini_file:

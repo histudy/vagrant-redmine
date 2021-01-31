@@ -101,7 +101,7 @@
       src: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
       dest: "{{ redmine_plugin_dir }}"
       remote_src: true
-      mode: "0644"
+      mode: "0755"
     loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_url_result
@@ -109,7 +109,7 @@
     unarchive:
       src: "{{ item.file }}"
       dest: "{{ redmine_plugin_dir }}"
-      mode: "0644"
+      mode: "0755"
     loop: "{{ redmine_plugins | selectattr('file', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_file_result
