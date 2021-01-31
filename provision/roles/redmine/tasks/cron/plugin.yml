@@ -2,9 +2,9 @@
   cron:
     name: Plugin job({{ item.name }})
     job: cd {{ redmine_home }} && {{ item.cron.command }}
-    minute: "{{ item.cron.minute|default('*') }}"
-    hour: "{{ item.cron.hour|default('*') }}"
-    day: "{{ item.cron.day|default('*') }}"
-    month: "{{ item.cron.month|default('*') }}"
+    minute: "{{ item.cron.minute | default('*') | string }}"
+    hour: "{{ item.cron.hour | default('*') | string }}"
+    day: "{{ item.cron.day | default('*') | string }}"
+    month: "{{ item.cron.month | default('*') | string }}"
     user: "{{ redmine_user }}"
   loop: "{{ redmine_plugins | selectattr('cron', 'defined') | list }}"

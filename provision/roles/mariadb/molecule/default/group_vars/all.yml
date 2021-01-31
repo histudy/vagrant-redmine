@@ -1,0 +1,23 @@
+mariadb_databases: 
+  - name: sample
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
+  - name: sample2
+    encoding: utf8mb4
+    collation: utf8mb4_general_ci
+    user: sample2222
+    password: pa55word_N0t_f0unD
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+
+mariadb_users: 
+  - name: sample_user
+    password: sample_user_password
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+    privs: 
+      - "sample.*:ALL"

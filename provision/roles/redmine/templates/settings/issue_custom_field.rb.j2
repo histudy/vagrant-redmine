@@ -19,7 +19,7 @@ issue_custom_fields.each do |item|
   if item.key?('min_length') && allow_length_formats.include?(item['field_format'])
     cf.min_length = item['min_length'].to_s
   end
-  # 最大値または最大文字列長
+  # 最大値値または最小文字列長
   if item.key?('max_length') && allow_length_formats.include?(item['field_format'])
     cf.max_length = item['max_length'].to_s
   end

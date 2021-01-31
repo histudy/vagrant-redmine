@@ -25,16 +25,13 @@ mariadb_packages:
 ```yml
 mariadb_databases:
   - name: sample
-    state: yes
+    state: true
     # 文字コード(オプション)
     encoding: utf8mb4
     # 照合順序(オプション)
     collation: utf8mb4_general_ci
     # インポートするデータ(オプション)
     import_data: /tmp/sample.sql.bz2
-    # stateがno似設定されていた場合、
-    # 同名のデータベースが存在する場合は削除されます
-    state: yes
   # データベースの作成とユーザーの登録を同時に行う
   # hostsが設定されているか否かで
   - name: db_with_user_info
@@ -63,7 +60,7 @@ mariadb_users:
       - "::1"
       - localhost
     priv: "sample.*:ALL"
-    state: no
+    state: false
 ```
 
 ### mariadb_cfg
@@ -89,7 +86,7 @@ mariadb_cfg:
     ## Network
     max_connections: "{{ mariadb_max_connections }}"
     # connect_timeout: 10
-    skip_name_resolve: no
+    skip_name_resolve: false
     # max_allowed_packet: 16M
     # interactive_timeout: 3600
     # wait_timeout: 600
@@ -111,15 +108,15 @@ mariadb_cfg:
     # InnoDB
     # ------------------
     ## InnoDB General
-    innodb_file_per_table: yes
+    innodb_file_per_table: true
     innodb_flush_log_at_trx_commit: 1
     innodb_buffer_pool_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100))|int }}"
     innodb_log_file_size: "{{ (((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100)) / 4)|int }}"
     innodb_log_files_in_group: 2
     innodb_additional_mem_pool_size: 32M
     innodb_log_buffer_size: 32M
-    # innodb_strict_mode: no
-    # innodb_large_prefix: yes
+    # innodb_strict_mode: false
+    # innodb_large_prefix: true
     # innodb_file_format: Antelope
     max_heap_table_size: 32M
     tmp_table_size: 32M
@@ -145,14 +142,14 @@ mariadb_cfg:
     # -----------------
     # Logging
     # -----------------
-    slow_query_log: yes
+    slow_query_log: true
     long_query_time: 1
     # log_warnings: 0
     # min_examined_row_limit: 0
-    # log_queries_not_using_indexes: no
-    # log_slow_admin_statements: no
+    # log_queries_not_using_indexes: false
+    # log_slow_admin_statements: false
     slow_query_log_file: /var/log/mysql/slow_query.log
-    # general_log: no
+    # general_log: false
     # general_log_file: /var/log/mysql/general.log
     # -----------------
     # Replication
@@ -162,8 +159,8 @@ mariadb_cfg:
     # log_bin: mysql-bin
     # binlog_format: ROW
     # expire_logs_days: 10
-    # read_only: no
-    # log_slave_updates: no
+    # read_only: false
+    # log_slave_updates: false
     # -----------------
     # Other Extra Setting
     # -----------------
@@ -179,7 +176,7 @@ Example Playbook
 ```yml
 - hosts: servers
   roles:
-     - { role: mariadb }
+     - role: mariadb
 ```
 
 License

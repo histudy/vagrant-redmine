@@ -14,7 +14,6 @@ mariadb_databases: []
   #   ## optional database setting
   #   encoding: utf8mb4
   #   collation: utf8mb4_general_ci
-  #   import_data: /tmp/sample.sql.bz2
   #   state: true
 
 mariadb_users: []
@@ -24,7 +23,8 @@ mariadb_users: []
   #     - "127.0.0.1"
   #     - "::1"
   #     - localhost
-  #   priv: "sample.*:ALL"
+  #   privs: 
+  #     - "sample.*:ALL"
   #   state: false
 
 mariadb_max_connections: 100
@@ -50,7 +50,7 @@ mariadb_cfg:
     ## Network
     max_connections: "{{ mariadb_max_connections }}"
     # connect_timeout: 10
-    skip_name_resolve: false
+    skip_name_resolve: no
     # max_allowed_packet: 16M
     # interactive_timeout: 3600
     # wait_timeout: 600
@@ -112,7 +112,7 @@ mariadb_cfg:
     # log_queries_not_using_indexes: false
     # log_slow_admin_statements: false
     slow_query_log_file: /var/log/mysql/slow_query.log
-    # general_log: false
+    # general_log: no
     # general_log_file: /var/log/mysql/general.log
     # -----------------
     # Replication

@@ -9,3 +9,4 @@
     regexp: '^APT::Default-Release '
     line: 'APT::Default-Release {{ ansible_distribution_release }}-backports;'
     state: "{{ 'present' if apt_backports_default_target else 'absent' }}"
+    mode: "0644"

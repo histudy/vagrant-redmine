@@ -45,18 +45,18 @@ nginx_cfg:
   events:
     worker_connections: 1024
   http:
-    sendfile: yes
-    tcp_nopush: yes
-    tcp_nodelay: yes
+    sendfile: true
+    tcp_nopush: true
+    tcp_nodelay: true
     keepalive_timeout: 65
     types_hash_max_size: 2048
-    server_tokens: no
+    server_tokens: false
     default_type: "application/octet-stream"
     access_log: /var/log/nginx/access.log
     error_log: /var/log/nginx/error.log
     client_max_body_size: 8M
-    gzip: yes
-    gzip_vary: yes
+    gzip: true
+    gzip_vary: true
     gzip_proxied: any
     gzip_comp_level: 6
     gzip_buffers: "16 8k"
@@ -83,7 +83,7 @@ serverディレクティブの内容を設定します。
 ```yml
 nginx_vhosts:
   - name: default
-    default: yes
+    default: true
     server_name: www.exampe.com
     # server_name:
     #   - exampe.com
@@ -124,10 +124,10 @@ nginx_vhosts:
         - ECDHE-RSA-AES128-SHA256
       session_timeout: "1d"
       session_cache: "shared:SSL:50m"
-      session_tickets: no
+      session_tickets: false
       hsts: "max-age=15768000; includeSubDomains;"
-      stapling: yes
-      stapling_verify: yes
+      stapling: true
+      stapling_verify: true
     extra_setting: |
       # some extra setting here
 ```
@@ -139,7 +139,7 @@ Diffie-Hellman鍵共有用の鍵を生成するか否かを設定します。
 #### Example
 
 ```yml
-nginx_generate_dh_key: yes
+nginx_generate_dh_key: true
 ```
 
 ### nginx_dh_key_bit
@@ -170,7 +170,7 @@ Example Playbook
 ```yml
 - hosts: servers
   roles:
-     - { role: nginx }
+     - role: nginx
 ```
 
 License

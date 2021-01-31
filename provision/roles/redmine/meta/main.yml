@@ -3,11 +3,11 @@ galaxy_info:
   author: yoshiaki tanaka
   description: setup Redmine
   license: MIT
-  min_ansible_version: 2.5
+  min_ansible_version: 2.9
   platforms:
-    - name: Debian
-      versions:
-        - stretch
+  - name: Debian
+    versions:
+      - buster
   galaxy_tags: []
 
 dependencies:

@@ -12,6 +12,7 @@
     owner: "{{ redmine_user }}"
     group: "{{ redmine_user }}"
     state: directory
+    mode: "0755"
 - name: setup database(MySQL/Postgresql)
   include_tasks: "database/{{ redmine_db_cfg.production.adapter }}.yml"
   when:
@@ -31,10 +32,12 @@
     file:
       path: "{{ redmine_home }}/.bundle"
       state: directory
+      mode: "0755"
   - name: copy bundler setting file
     copy:
       src: config
       dest: "{{ redmine_home }}/.bundle/config"
+      mode: "0644"
   - name: set redmine database config variable
     set_fact:
       redmine_db_cfg:
@@ -44,11 +47,13 @@
     template:
       src: database.yml.j2
       dest: "{{ redmine_home }}/config/database.yml"
+      mode: "0644"
     register: db_config_result
   - name: create Redmine config file
     template:
       src: configuration.yml.j2
       dest: "{{ redmine_home }}/config/configuration.yml"
+      mode: "0644"
     notify: restart redmine
   - name: execute bundle update
     command: bundle update
@@ -96,6 +101,7 @@
       src: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
       dest: "{{ redmine_plugin_dir }}"
       remote_src: true
+      mode: "0644"
     loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_url_result
@@ -103,6 +109,7 @@
     unarchive:
       src: "{{ item.file }}"
       dest: "{{ redmine_plugin_dir }}"
+      mode: "0644"
     loop: "{{ redmine_plugins | selectattr('file', 'defined') | list }}"
     notify: restart redmine
     register: plugin_install_from_file_result
@@ -137,6 +144,7 @@
     template:
       src: settings.rb.j2
       dest: "{{ redmine_home }}/tmp/settings.rb"
+      mode: "0644"
     register: result
   - name: update redmine settings
     shell: "bundle exec rails console <{{ redmine_home }}/tmp/settings.rb"
@@ -150,6 +158,7 @@
     template:
       src: puma.rb.j2
       dest: "{{ redmine_home }}/config/puma.rb"
+      mode: "0644"
     notify: restart redmine
   become: true
   become_user: "{{ redmine_user }}"
@@ -173,6 +182,7 @@
   template:
     src: redmine.service.j2
     dest: /lib/systemd/system/redmine.service
+    mode: "0644"
   notify: restart redmine
   register: result
 - name: Redmine is active and enable on system startup

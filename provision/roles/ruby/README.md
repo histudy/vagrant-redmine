@@ -24,7 +24,7 @@ Example Playbook
 ```yml
 - hosts: servers
   roles:
-     - { role: ruby }
+     - role: ruby
 ```
 
 License

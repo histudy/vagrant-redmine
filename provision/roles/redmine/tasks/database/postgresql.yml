@@ -19,4 +19,4 @@
   postgresql_db:
     name: "{{ redmine_db_cfg.production.database }}"
     owner: "{{ redmine_db_cfg.production.username }}"
-    encoding: "{{ redmine_db_cfg.production.encoding|default('utf8') }}"
+    encoding: "{{ redmine_db_cfg.production.encoding | default('utf8') }}"

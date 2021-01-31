@@ -4,9 +4,8 @@ require 'yaml'
 {% include "settings/issue_status.rb.j2" %}
 {% include "settings/tracker.rb.j2" %}
 {% include "settings/setting.rb.j2" %}
-{% include "settings/role.rb.j2" %}
 {% include "settings/workflow.rb.j2" %}
-{% include "settings/enumeration.rb.j2" %}
+{% include "settings/role.rb.j2" %}
 
 allow_field_formats = [
   'string',
@@ -22,17 +21,6 @@ allow_field_formats = [
   'attachment',
   'enumeration'
 ]
-allow_user_field_formats = [
-  'string',
-  'text',
-  'link',
-  'date',
-  'list',
-  'int',
-  'float',
-  'bool',
-  'attachment',
-]
 allow_length_formats = ['string', 'text', 'link', 'int', 'float']
 allow_regexp_formats = ['string', 'text', 'link', 'int', 'float']
 allow_default_value_formats = ['string', 'text', 'link', 'int', 'float', 'date', 'bool']
@@ -44,20 +32,6 @@ allow_searchable_formats = ['string', 'text', 'list']
 
 {% include "settings/project_custom_field.rb.j2" %}
 {% include "settings/issue_custom_field.rb.j2" %}
-
-allow_user_field_formats = [
-  'string',
-  'text',
-  'link',
-  'date',
-  'list',
-  'int',
-  'float',
-  'bool',
-  'attachment',
-]
-{% include "settings/user_custom_field.rb.j2" %}
-
 {% include "settings/user.rb.j2" %}
 {% include "settings/project.rb.j2" %}
 

@@ -17,7 +17,7 @@ Role Variables
 #### Example
 
 ```yml
-apt_backports_default_target: yes
+apt_backports_default_target: true
 ```
 
 Example Playbook
@@ -26,7 +26,7 @@ Example Playbook
 ```yml
 - hosts: servers
   roles:
-     - { role: apt-backports }
+     - role: apt-backports
 ```
 
 License
