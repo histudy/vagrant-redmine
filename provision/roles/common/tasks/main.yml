@@ -48,6 +48,9 @@
 - name: manage log
   import_tasks: log.yml
   tags: log
+- name: setup sshd
+  import_tasks: sshd.yml
+  tags: sshd
 - name: setup ssh
   import_tasks: ssh.yml
   tags: ssh
