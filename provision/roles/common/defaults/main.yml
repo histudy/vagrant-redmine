@@ -126,6 +126,10 @@ common_users: []
 common_hostname: "{{ inventory_hostname }}"
 
 common_ssh_port: 22
+
+common_sshd_custom_cfg: |
+  #Port 10022
+
 common_ssh_ufw_rule: allow
 
 common_ssh_use_geoip_filter: true
