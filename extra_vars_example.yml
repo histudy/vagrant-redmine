@@ -27,119 +27,82 @@ redmine_cfg:
     sudo_mode: true
 
 # --------------------
-# Redmineの設定(チケットのステータス)
-# --------------------
-redmine_issue_statuses:
-  - id: 1
-    name: 未対応
-    is_closed: false
-    position: 1
-  - id: 2
-    name: 対応中
-    is_closed: false
-    position: 2
-  - id: 3
-    name: 対応済み
-    is_closed: false
-    position: 3
-  - id: 4
-    name: フィードバック
-    is_closed: false
-    position: 4
-  - name: 確認待ち
-    position: 5
-  - name: 経過観察
-    position: 6
-  - id: 5
-    name: 完了
-    is_closed: true
-    position: 7
-  - id: 6
-    name: 破棄
-    is_closed: true
-    position: 8
-
-# --------------------
 # Redmineの設定(トラッカー)
 # --------------------
 redmine_trackers:
-  - id: 1
-    name: 不具合
-    position: 3
-  - id: 2
-    name: タスク
-    position: 2
-  - id: 3
-    name: 運用・保守
-    position: 4
-  - name: 要望
+  - name: タスク
+    id: 2
+    description: 対応することが決まったチケットです。
     position: 1
+  - name: 不具合
+    id: 1
+    description: 不具合が発生したことを表すチケットです。
+    position: 2
+  - name: 運用保守
+    id: 3
+    description:
+    position: 3
+  - name: 要望
+    description: 対応することが決まっていないチケットです。
+    position: 4
+    copy_workflow_from: タスク
 
 # --------------------
-# Redmineの設定(ワークフロー)
+# Redmineの設定(チケットのステータス)
 # --------------------
-# redmine_workflows:
-#   - roles:
-#       - 管理者
-#     trackers:
-#       - 不具合
-#       - 機能
-#       - 運用保守
-#       - その他
-#     transitions:
-#       - from: 未対応
-#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
-#       - from: 対応中
-#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了, 破棄]
-#       - from: 対応済み
-#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了, 破棄]
-#       - from: 確認待ち
-#         to: [未対応, 対応中, 対応済み, フィードバック, 終了, 破棄]
-#       - from: フィードバック
-#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了, 破棄]
-#       - from: 終了
-#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 破棄]
-#       - from: 破棄
-#         to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 終了]
-#   - roles:
-#       - 開発者
-#     trackers:
-#       - 不具合
-#       - 機能
-#       - 運用保守
-#       - その他
-#     transitions:
-#       - from: 未対応
-#         to: [対応中, 対応済み, 確認待ち, フィードバック, 終了]
-#       - from: 対応中
-#         to: [未対応, 対応済み, 確認待ち, フィードバック, 終了]
-#       - from: 対応済み
-#         to: [未対応, 対応中, 確認待ち, フィードバック, 終了]
-#       - from: 確認待ち
-#         to: [未対応, 対応中, 対応済み, フィードバック, 終了]
-#       - from: フィードバック
-#         to: [未対応, 対応中, 対応済み, 確認待ち, 終了]
-#   - roles:
-#       - 報告者
-#     trackers:
-#       - 不具合
-#       - 機能
-#       - 運用保守
-#       - その他
-#     transitions:
-#       - from: 未対応
-#         to: [終了, 破棄]
-#       - from: 対応中
-#         to: [終了]
-#       - from: 対応済み
-#         to: [終了, 破棄]
-#       - from: 確認待ち
-#         to: [フィードバック, 終了]
-#       - from: フィードバック
-#         to: [確認待ち, 終了]
+redmine_issue_statuses:
+  - name: 未対応
+    id: 1
+    is_closed: false
+    position: 1
+  - name: 対応中
+    id: 2
+    is_closed: false
+    position: 2
+  - name: 対応済み
+    id: 3
+    is_closed: false
+    position: 3
+  - name: 確認待ち
+    position: 4
+  - name: フィードバック
+    id: 4
+    is_closed: false
+    position: 5
+  - name: 保留
+    is_closed: false
+    position: 6
+  - name: 経過観察
+    is_closed: false
+    position: 7
+  - name: 完了
+    id: 5
+    is_closed: true
+    position: 8
+  - name: 破棄
+    id: 6
+    is_closed: true
+    position: 9
 
 # --------------------
-# Redmineの設定(優先順位))
+# Redmineの設定(カスタムフィールド：チケット)
+# --------------------
+redmine_issue_custom_fields:
+  - name: 理由
+    field_format: string
+    description: ステータスを変更した理由を記載します
+    is_required: false
+    visible: true
+    searchable: false
+    is_filter: true
+    trackers:
+      - 要望
+      - タスク
+      - 不具合
+      - 運用保守
+
+# --------------------
+# Redmineの設定(チケットの優先度)
 # --------------------
 redmine_priorities:
   - name: 低い
@@ -172,7 +135,190 @@ redmine_time_entry_activities:
   - name: コーディング
     id: 9
   - name: テスト
+  - name: ディレクション
   - name: ドキュメント
+  - name: 営業
+  - name: その他
+
+# --------------------
+# Redmineの設定(ワークフロー)
+# --------------------
+redmine_workflows:
+  - roles: [管理者]
+    trackers: [要望, タスク, 不具合, 運用保守]
+    transitions:
+      - from: null
+        to: [未対応, 対応中]
+      - from: 未対応
+        to: [対応中, 対応済み, 確認待ち, フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: 対応中
+        to: [未対応, 対応済み, 確認待ち, フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: 対応済み
+        to: [未対応, 対応中, 確認待ち, フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: 確認待ち
+        to: [未対応, 対応中, 対応済み, フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: フィードバック
+        to: [未対応, 対応中, 対応済み, 確認待ち, 保留, 経過観察, 完了, 破棄]
+      - from: 保留
+        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 経過観察, 完了, 破棄]
+      - from: 経過観察
+        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 保留, 完了, 破棄]
+      - from: 完了
+        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 保留, 経過観察, 破棄]
+      - from: 破棄
+        to: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 保留, 経過観察, 完了]
+  - roles: [開発者]
+    trackers: [要望]
+    transitions:
+      - from: null
+        to: [未対応, 対応中]
+      - from: 未対応
+        to: [対応中, 対応済み, 確認待ち, 保留, 破棄]
+      - from: 対応中
+        to: [未対応, 対応済み, 確認待ち, 保留, 完了, 破棄]
+      - from: 対応済み
+        to: [対応中, 確認待ち, 保留, 完了]
+      - from: 確認待ち
+        to: [フィードバック, 保留, 完了, 破棄]
+      - from: フィードバック
+        to: [未対応, 対応中, 確認待ち, 保留, 完了, 破棄]
+      - from: 保留
+        to: [未対応, 対応中, 対応済み, 確認待ち, 完了, 破棄]
+  - roles: [開発者]
+    trackers: [タスク, 運用保守]
+    transitions:
+      - from: null
+        to: [未対応, 対応中]
+      - from: 未対応
+        to: [対応中, 対応済み, 確認待ち, 保留, 経過観察, 破棄]
+      - from: 対応中
+        to: [未対応, 対応済み, 確認待ち, 保留, 経過観察, 完了, 破棄]
+      - from: 対応済み
+        to: [対応中, 確認待ち, 保留, 経過観察, 完了]
+      - from: 確認待ち
+        to: [フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: フィードバック
+        to: [未対応, 対応中, 確認待ち, 保留, 経過観察, 完了, 破棄]
+      - from: 保留
+        to: [未対応, 対応中, 対応済み, 確認待ち, 経過観察, 完了, 破棄]
+      - from: 経過観察
+        to: [未対応, 対応中, 確認待ち, フィードバック, 保留, 完了, 破棄]
+  - roles: [開発者]
+    trackers: [不具合]
+    transitions:
+      - from: null
+        to: [未対応, 対応中]
+      - from: 未対応
+        to: [対応中, 対応済み, 確認待ち, 保留, 経過観察, 破棄]
+      - from: 対応中
+        to: [未対応, 対応済み, 確認待ち, 保留, 経過観察, 破棄]
+      - from: 対応済み
+        to: [対応中, 確認待ち, 保留, 経過観察, 完了]
+      - from: 確認待ち
+        to: [フィードバック, 保留, 経過観察, 完了, 破棄]
+      - from: フィードバック
+        to: [未対応, 対応中, 確認待ち, 保留, 経過観察, 破棄]
+      - from: 保留
+        to: [未対応, 対応中, 対応済み, 確認待ち, 完了, 破棄]
+      - from: 経過観察
+        to: [未対応, 対応中, 確認待ち, フィードバック, 保留, 完了, 破棄]
+  - roles: [報告者]
+    trackers: [要望, タスク, 不具合, 運用保守]
+    transitions:
+      - from: null
+        to: [未対応]
+      - from: 未対応
+        to: [完了, 破棄]
+      - from: 対応中
+        to: [完了, 破棄]
+      - from: 対応済み
+        to: [完了, 破棄]
+      - from: 確認待ち
+        to: [フィードバック, 完了, 破棄]
+      - from: フィードバック
+        to: [確認待ち, 完了, 破棄]
+
+# --------------------
+# Redmineの設定(ワークフロー：フィールドの権限)
+# --------------------
+redmine_workflow_permissions:
+  - roles: [管理者, 開発者, 報告者]
+    trackers: [要望, タスク, 不具合, 運用保守]
+    permissions:
+      - statuses: [未対応, 対応中, 対応済み, 確認待ち, フィードバック, 経過観察, 完了]
+        fields: 理由
+        permission: readonly
+      - statuses: [保留, 破棄]
+        fields: 理由
+        permission: required
+  - roles: [管理者, 開発者, 報告者]
+    trackers: [タスク, 不具合, 運用保守]
+    permissions:
+      - statuses: [対応中, 対応済み, 確認待ち, フィードバック, 経過観察, 完了]
+        fields: assigned_to
+        permission: required
+      - statuses: 経過観察
+        fields: due_date
+        permission: required
+      - statuses: [対応済み, 完了]
+        fields: done_ratio
+        permission: required
+
+# --------------------
+# Redmineの設定(設定)
+# --------------------
+redmine_settings:
+  ## -------------
+  ## 認証
+  ## -------------
+  ## 認証が必要
+  login_required: 1
+  ## 自動ログイン
+  autologin: 30
+  ## -------------
+  ## API
+  ## -------------
+  ## RESTによるWebサービスを有効にする
+  rest_api_enabled: 1
+  host_name: "{{ inventory_hostname }}"
+  ## -------------
+  ## 表示
+  ## -------------
+  ## テーマ
+  ui_theme: PurpleMine2
+  ## 新規オブジェクト作成タブ
+  # new_item_menu_tab: 0
+  ## -------------
+  ## チケットトラッキング
+  ## -------------
+  # 異なるプロジェクトのチケット間で関連の設定を許可
+  cross_project_issue_relations: 1
+  # チケットをコピーしたときに関連を設定
+  link_copied_issue: 0
+  # 現在の日付を新しいチケットの開始日とする
+  default_issue_start_date_to_creation_date: 0
+  ## -------------
+  ## プロジェクト
+  ## -------------
+  default_projects_public: 0
+  ## ----------------------
+  ## 各プラグインの設定
+  ## ----------------------
+  ## issue templates
+  plugin_redmine_issue_templates:
+    apply_global_template_to_all_projects: 'true'
+    apply_template_when_edit_issue: 'false'
+    enable_builtin_fields: 'false'
+  ## issues tree
+  plugin_redmine_issues_tree:
+    default_redirect_to_tree_view: 'true'
+    default_redirect_to_tree_view_without_project: 'true'
+  ## view customize
+  plugin_view_customize:
+    create_api_access_key: '1'
+  ## additionals
+  plugin_additionals:
+    new_ticket_message: 完了条件の記載を忘れないようにしましょう
 
 
 # --------------------
@@ -239,3 +385,62 @@ redmine_plugins:
     repo: https://github.com/AlphaNodes/redmine_sudo.git
     version: stable
 
+
+# --------------------
+# Redmineの設定(メッセージカスタマイズ)
+# --------------------
+redmine_message_customize:
+  ja:
+    activerecord:
+      errors:
+        messages:
+          open_issue_with_closed_parent: "完了済みのチケットに未完了の子チケットを追加することはできません"
+    label_closed_issues: 完了済み
+    label_closed_issues_plural: 完了済み
+    label_x_closed_issues_abbr:
+      zero:  0件完了済み
+      one:   1件完了済み
+      other: "%{count}件完了済み"
+    # トラッカー => チケット種別
+    error_no_tracker_in_project: 'このプロジェクトにはチケット種別が登録されていません。プロジェクト設定を確認してください。'
+    error_workflow_copy_source: 'コピー元となるチケット種別またはロールを選択してください'
+    error_workflow_copy_target: 'コピー先となるチケット種別とロールを選択してください'
+    error_can_not_delete_tracker: 'このチケット種別は使用中です。削除できません。'
+    field_tracker: チケット種別
+    setting_default_projects_tracker_ids: 新規プロジェクトにおいてデフォルトで有効になるチケット種別
+    label_tracker: チケット種別
+    label_tracker_plural: チケット種別
+    label_tracker_new: 新しいチケット種別
+    label_display_used_statuses_only: このチケット種別で使用中のステータスのみ表示
+    text_workflow_edit: ワークフローを編集するロールとチケットを選んでください
+    text_tracker_no_workflow: このチケット種別にワークフローが定義されていません
+    text_no_configuration_data: "ロール、チケット種別、チケットのステータス、ワークフローがまだ設定されていません。\nデフォルト設定のロードを強くお勧めします。ロードした後、それを修正することができます。"
+    error_no_tracker_allowed_for_new_issue_in_project: このプロジェクトにはチケットの追加が許可されているチケット種別がありません
+    label_tracker_all: すべてのチケット種別
+    text_status_no_workflow: このステータスはどのチケット種別のワークフローでも使われていません
+    label_trackers_description: チケット種別の説明
+    label_open_trackers_description: すべてのチケット種別の説明を表示
+    text_select_apply_tracker: このチケット種別を適用
+    # 文書 => ドキュメント
+    project_module_documents: ドキュメント
+    label_document: ドキュメント
+    label_document_new: 新しいドキュメント
+    label_document_plural: ドキュメント
+    label_document_added: ドキュメントの追加
+    enumeration_doc_categories: ドキュメントカテゴリ
+    permission_view_documents: ドキュメントの閲覧
+    permission_add_documents: ドキュメントの追加
+    permission_edit_documents: ドキュメントの編集
+    permission_delete_documents: ドキュメントの削除
+    # ニュース => お知らせ
+    permission_view_news: お知らせの閲覧
+    permission_manage_news: お知らせの管理
+    permission_comment_news: お知らせへのコメント
+    project_module_news: お知らせ
+    label_news: お知らせ
+    label_news_new: お知らせを追加
+    label_news_plural: お知らせ
+    label_news_latest: 最新お知らせ
+    label_news_view_all: すべてのお知らせを表示
+    label_news_added: お知らせの追加
+    label_news_comment_added: お知らせへのコメント追加
