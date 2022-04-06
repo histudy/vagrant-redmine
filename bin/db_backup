@@ -1,0 +1,26 @@
+#!/bin/sh
+
+DB_HOST=${DB_HOST:-"localhost"}
+DB_NAME=${DB_NAME:-"redmine"}
+DB_USER=${DB_USER:-"redmine_user"}
+DB_PASSWORD=${DB_PASSWORD:-"redmine_password"}
+
+#ダンプパラメーター
+DB_DUMP_PARAM='--no-create-db'
+# CREATE DATABASE文を出力しない
+# -n, --no-create-db
+# CREATE TABLE文を出力しない
+# -t, --no-create-info
+# テーブルダンプのテーブルの内容(INSERT文)を出力しない
+# -d, --no-data
+# INSERT文にカラム名を含める
+# -c, --complete-insert
+# DROP TABLE ステートメントを各 CREATE TABLE ステートメントの前に追加する
+# --add-drop-table
+
+echo Dump Database ${DB_NAME}
+
+DUMP_PREFIX=dump_${DB_NAME}_$(date +"%Y%m%d")
+DUMP_FILE=${DUMP_PREFIX}.sql
+mysqldump -h ${DB_HOST} -u ${DB_USER} -p${DB_PASSWORD} ${DB_DUMP_PARAM} ${DB_NAME} >${DUMP_FILE}
+sed -i -e '/^\/\*\!50013 DEFINER=/d' ${DUMP_FILE};
