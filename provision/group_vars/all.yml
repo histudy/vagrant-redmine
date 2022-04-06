@@ -1,0 +1,34 @@
+## --
+# Webサーバー(Nginx)の設定
+## --
+# バーチャルホストの設定
+nginx_vhosts:
+  - name: default
+    default: true
+    server_name: demo.redmine.local
+    upstream:
+      name: backend
+      content: |
+        server unix:{{ redmine_home }}/tmp/redmine.sock;
+    client_max_body_size: 0
+    locations:
+      - pattern: /
+        content: |
+          proxy_pass http://backend;
+          include proxy_params;
+
+redmine_db_cfg:
+  production:
+    adapter: mysql2
+    database: redmine
+    host: localhost
+    username: redmine_user
+    password: redmine_password
+    encoding: utf8mb4
+  development:
+    adapter: mysql2
+    database: redmine
+    host: localhost
+    username: redmine_user
+    password: redmine_password
+    encoding: utf8mb4

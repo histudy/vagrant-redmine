@@ -1,40 +1,36 @@
 - name: Deploy Redmine
   hosts: all
   roles:
-    - role: mariadb
-    - role: redmine
-    - role: nginx
+    - name: common
+    - name: mariadb
+    - name: nginx
+    - name: dehydrated
+    - name: redmine
+    - name: tools
   vars:
     tbls_version: "1.48.1"
   tasks:
-    - name: create mysql connection file
-      ini_file:
-        path: ~/.my.cnf
-        create: true
-        section: client
-        option: "{{ item.key | replace('_', '-') }}"
-        value: "{{ item.value | string }}"
-      with_dict:
-        host: "{{ redmine_db_cfg.production.host }}"
-        database: "{{ redmine_db_cfg.production.database }}"
-        user: "{{ redmine_db_cfg.production.username }}"
-        password: "{{ redmine_db_cfg.production.password }}"
-        default_character_set: "{{ redmine_db_cfg.production.encoding }}"
-      no_log: true
-      become: false
-    - name: download tbls
-      get_url:
-        url: "https://github.com/k1LoW/tbls/releases/download/v{{ tbls_version }}/tbls_{{ tbls_version }}-1_amd64.deb"
-        dest: /tmp/tbls_{{ tbls_version }}-1_amd64.deb
-    - name: install tbls
-      apt:
-        deb: /tmp/tbls_{{ tbls_version }}-1_amd64.deb
-    - name: copy tbls commands
-      copy:
-        src: "{{ item }}"
-        dest: "~/{{ item | basename }}"
-        mode: "0755"
-      loop: "{{ query('fileglob', 'scripts/tbls_*.sh') }}"
+    - block:
+        - name: set enviromnet variables
+          blockinfile:
+            path: ~/.bashrc
+            block: |
+              export TBLS_DSN=my://{{ redmine_db_cfg.production.username }}:{{ redmine_db_cfg.production.password }}@{{ redmine_db_cfg.production.host }}:3306/{{ redmine_db_cfg.production.database }}
+              export TBLS_DOC_PATH=/vagrant/dbdoc/{{ redmine_version }}
+        - name: create mysql connection file
+          ini_file:
+            path: ~/.my.cnf
+            create: true
+            section: client
+            option: "{{ item.key | replace('_', '-') }}"
+            value: "{{ item.value | string }}"
+            mode: "0640"
+          with_dict:
+            host: "{{ redmine_db_cfg.production.host }}"
+            database: "{{ redmine_db_cfg.production.database }}"
+            user: "{{ redmine_db_cfg.production.username }}"
+            password: "{{ redmine_db_cfg.production.password }}"
+            default_character_set: "{{ mariadb_databases[0].encoding | default(mariadb_default_charset | default('utf8')) }}"
       become: false
     - block:
         - name: apply custom directory mapping

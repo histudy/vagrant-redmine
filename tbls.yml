@@ -1,8 +1,13 @@
+## -------------
+## tbls setting
+## https://github.com/k1LoW/tbls
+## -------------
 name: Redmine
-desc: |
-  RedmineはWebベースのプロジェクト管理ソフトウェアでです。
-  課題管理、ガントチャート、リポジトリブラウザ、Wiki、フォーラムなど、プロジェクトの運営を支援するためのさまざまな機能を備えています。
-  Ruby on Railsで開発されています。
+er:
+  format: svg
+  comment: true
+format:
+  adjust: true
 dict:
   Tables: テーブル一覧
   Description: 概要
@@ -10,51 +15,483 @@ dict:
   Indexes: INDEX一覧
   Constraints: 制約一覧
   Triggers: トリガー
+  Nullable: NULL許可
   Relations: ER図
   Name: 名前
   Comment: コメント
   Type: タイプ
   Default: デフォルト値
-  Nullable: NULL許可
   Children: 子テーブル
   Parents: 親テーブル
   Definition: 定義
-  "Table Definition": テーブル定義
-format:
-  # Adjust the column width of Markdown format table
-  # ( Default:false )
-  adjust: true
-  # Sort the order of table list and  columns
-  # ( Default:false )
-  sort: false
-dsn: mysql://redmine_user:redmine_password@localhost:3306/redmine
-docPath: /vagrant/docs/schema
-er:
-  # Skip generation of ER diagram
-  # ( Default:false )
-  skip: false
-  # ER diagram format
-  # ( Default:png )
-  format: svg
-  # Add table/column comment to ER diagram
-  # ( Default:false )
-  comment: true
-  # Distance between tables that display relations in the ER
-  # ( Default:1 )
-  distance: 1
+  Table Definition: テーブル定義
 exclude:
   - schema_migrations
-# comments:
-#   - table: users
-#     # table comment
-#     tableComment: Users table
-#     # column comments
-#     columnComments:
-#       email: Email address as login id. ex. user@example.com
-# relations:
-#   - table: logs
-#     columns:
-#       - user_id
-#     parentTable: users
-#     parentColumns:
-#       - id
+lint:
+  requireTableComment:
+    enabled: true
+    allOrNothing: false
+  requireColumnComment:
+    enabled: true
+    allOrNothing: true
+    exclude:
+      - id
+      - created_on
+      - updated_on
+comments:
+  - table: ar_internal_metadata
+  - table: attachments
+  - table: auth_sources
+  - table: boards
+    tableComment: フォーラム
+  - table: changes
+  - table: changeset_parents
+  - table: changesets
+  - table: changesets_issues
+  - table: comments
+  - table: custom_field_enumerations
+  - table: custom_fields
+    tableComment: カスタムフィールド
+  - table: custom_fields_projects
+    tableComment: カスタムフィールド⇔プロジェクト
+  - table: custom_fields_roles
+    tableComment: カスタムフィールド⇔ロール
+  - table: custom_fields_trackers
+    tableComment: カスタムフィールド⇔トラッカー
+  - table: custom_values
+  - table: documents
+    tableComment: 文書
+  - table: email_addresses
+    tableComment: メールアドレス
+  - table: enabled_modules
+  - table: enumerations
+    tableComment: 選択肢の値
+    columnComments:
+      type: IssuePriority:チケットの優先度 / DocumentCategory:文書カテゴリ / TimeEntryActivity:作業分類 (時間管理)
+  - table: groups_users
+    tableComment: グループ⇔ユーザー
+  - table: import_items
+    tableComment: インポート項目
+  - table: imports
+    tableComment: インポート
+  - table: issue_categories
+    tableComment: カテゴリー
+  - table: issue_relations
+    tableComment: 関連チケット
+  - table: issue_statuses
+    tableComment: ステータス
+  - table: issues
+    tableComment: チケット
+    columnComments:
+      tracker_id: トラッカーID
+      project_id: プロジェクトID
+      subject: 題名
+      description: 説明
+      due_date: 期日
+      category_id: カテゴリーID
+      status_id: ステータスID
+      assigned_to_id: 担当者ID
+      priority_id: 優先度ID
+      fixed_version_id: 対象バージョンID
+      lock_version: ロックバージョン
+      author_id: 登録者ID
+      start_date: 開始日
+      done_ratio: 進捗率
+      estimated_hours: 予定工数
+      parent_id: 親チケット
+      root_id: ルートID
+      lft: 左ノードポインタ
+      rgt: 右ノードポインタ
+      is_private: プライベート
+      closed_on: 完了日時
+  - table: journal_details
+  - table: journals
+  - table: member_roles
+  - table: members
+  - table: messages
+  - table: news
+    tableComment: ニュース
+  - table: projects
+    tableComment: プロジェクト
+  - table: projects_trackers
+    tableComment: プロジェクト⇔トラッカー
+  - table: queries
+    tableComment: カスタムクエリ
+  - table: queries_roles
+  - table: repositories
+    tableComment: リポジトリ
+  - table: roles
+    tableComment: ロール
+  - table: roles_managed_roles
+  - table: settings
+    tableComment: 設定
+  - table: time_entries
+    tableComment: 時間管理
+  - table: tokens
+  - table: trackers
+    tableComment: トラッカー
+  - table: user_preferences
+    tableComment: ユーザー設定
+    columnComments:
+      hide_mail: メールアドレスを隠す
+      time_zone: タイムゾーン
+  - table: users
+    tableComment: ユーザー / グループ
+    columnComments:
+      login: ログインID
+      firstname: 名
+      lastname: 姓
+      language: 言語
+      admin: システム管理者
+      mail_notification: メール通知
+      hashed_password: パスワード(ハッシュ化済み)
+      must_change_passwd: 次回ログイン時にパスワード変更を強制
+      type: User:ユーザー / Group:グループ
+  - table: versions
+    tableComment: バージョン
+  - table: watchers
+    tableComment: ウォッチャー
+  - table: wiki_content_versions
+  - table: wiki_contents
+  - table: wiki_pages
+    tableComment: Wikiページ
+  - table: wiki_redirects
+  - table: wikis
+  - table: workflows
+    tableComment: ワークフロー
+
+## 外部参照
+common_relations:
+  author_id: &relation_author_id
+    columns:
+      - author_id
+    parentTable: users
+    parentColumns:
+      - id
+  project_id: &relation_project_id
+    columns:
+      - project_id
+    parentTable: projects
+    parentColumns:
+      - id
+  tracker_id: &relation_tracker_id
+    columns:
+      - tracker_id
+    parentTable: trackers
+    parentColumns:
+      - id
+  role_id: &relation_role_id
+    columns:
+      - role_id
+    parentTable: roles
+    parentColumns:
+      - id
+  user_id: &relation_user_id
+    columns:
+      - user_id
+    parentTable: users
+    parentColumns:
+      - id
+  role: &relation_role_id
+    columns:
+      - role_id
+    parentTable: roles
+    parentColumns:
+      - id
+  custom_field_id: &relation_custom_field_id
+    columns:
+      - custom_field_id
+    parentTable: custom_fields
+    parentColumns:
+      - id
+  assigned_to_id: &relation_assigned_to_id
+    columns:
+      - assigned_to_id
+    parentTable: users
+    parentColumns:
+      - id
+  page_id: &relation_page_id
+    columns:
+      - page_id
+    parentTable: wiki_pages
+    parentColumns:
+      - id
+
+## 外部参照
+relations:
+  ## user_preferences
+  - table: user_preferences
+    <<: *relation_user_id
+  ## email_addresses
+  - table: email_addresses
+    <<: *relation_user_id
+  ## groups_users
+  - table: groups_users
+    <<: *relation_user_id
+  - table: groups_users
+    columns:
+      - group_id
+    parentTable: users
+    parentColumns:
+      - id
+  ## trackers
+  - table: trackers
+    columns:
+      - default_status_id
+    parentTable: issue_statuses
+    parentColumns:
+      - id
+  ## workflows
+  - table: workflows
+    <<: *relation_tracker_id
+  - table: workflows
+    columns:
+      - old_status_id
+    parentTable: issue_statuses
+    parentColumns:
+      - id
+  - table: workflows
+    columns:
+      - new_status_id
+    parentTable: issue_statuses
+    parentColumns:
+      - id
+  ## custom_fields_roles
+  - table: custom_fields_roles
+    <<: *relation_custom_field_id
+  - table: custom_fields_roles
+    <<: *relation_role_id
+  ## custom_fields_projects
+  - table: custom_fields_projects
+    <<: *relation_custom_field_id
+  - table: custom_fields_projects
+    <<: *relation_project_id
+  ## custom_fields_trackers
+  - table: custom_fields_trackers
+    <<: *relation_custom_field_id
+  - table: custom_fields_trackers
+    <<: *relation_tracker_id
+  ## custom_field_enumerations
+  - table: custom_field_enumerations
+    <<: *relation_custom_field_id
+  ## custom_values
+  - table: custom_values
+    <<: *relation_custom_field_id
+  ## projects
+  - table: projects
+    columns:
+      - parent_id
+    parentTable: projects
+    parentColumns:
+      - id
+  - table: projects
+    columns:
+      - default_version_id
+    parentTable: versions
+    parentColumns:
+      - id
+  - table: projects
+    columns:
+      - default_assigned_to_id
+    parentTable: users
+    parentColumns:
+      - id
+  ## projects_trackers
+  - table: projects_trackers
+    <<: *relation_project_id
+  - table: projects_trackers
+    <<: *relation_tracker_id
+  ## versions
+  - table: versions
+    <<: *relation_project_id
+  ## issues
+  - table: issues
+    <<: *relation_project_id
+  - table: issues
+    <<: *relation_author_id
+  - table: issues
+    <<: *relation_tracker_id
+  - table: issues
+    columns:
+      - priority_id
+    parentTable: enumerations
+    parentColumns:
+      - id
+  - table: issues
+    columns:
+      - status_id
+    parentTable: issue_statuses
+    parentColumns:
+      - id
+  - table: issues
+    <<: *relation_assigned_to_id
+  - table: issues
+    columns:
+      - category_id
+    parentTable: issue_categories
+    parentColumns:
+      - id
+  - table: issues
+    columns:
+      - parent_id
+    parentTable: issues
+    parentColumns:
+      - id
+  - table: issues
+    columns:
+      - root_id
+    parentTable: issues
+    parentColumns:
+      - id
+  ## issue_relations
+  - table: issue_relations
+    columns:
+      - issue_from_id
+    parentTable: issues
+    parentColumns:
+      - id
+  - table: issue_relations
+    columns:
+      - issue_to_id
+    parentTable: issues
+    parentColumns:
+      - id
+  ## import_items
+  - table: import_items
+    columns:
+      - import_id
+    parentTable: imports
+    parentColumns:
+      - id
+  ## issue_categories
+  - table: issue_categories
+    <<: *relation_project_id
+  - table: issue_categories
+    <<: *relation_assigned_to_id
+  ## wikis
+  - table: wikis
+    <<: *relation_project_id
+  ## wiki_pages
+  - table: wiki_pages
+    columns :
+      - wiki_id
+    parentTable: wikis
+    parentColumns:
+      - id
+  - table: wiki_pages
+    columns :
+      - parent_id
+    parentTable: wiki_pages
+    parentColumns:
+      - id
+  ## wiki_contents
+  - table: wiki_contents
+    <<: *relation_author_id
+  - table: wiki_contents
+    columns :
+      - page_id
+    parentTable: wiki_pages
+    parentColumns:
+      - id
+  ## wiki_content_versions
+  - table: wiki_content_versions
+    <<: *relation_author_id
+  - table: wiki_content_versions
+    <<: *relation_page_id
+  - table: wiki_content_versions
+    columns:
+      - wiki_content_id
+    parentTable: wiki_contents
+    parentColumns:
+      - id
+  ## wiki_redirects
+  - table: wiki_redirects
+    columns:
+      - wiki_id
+    parentTable: wikis
+    parentColumns:
+      - id
+  - table: wiki_redirects
+    columns:
+      - redirects_to_wiki_id
+    parentTable: wikis
+    parentColumns:
+      - id
+  ## news
+  - table: news
+    <<: *relation_project_id
+  - table: news
+    <<: *relation_author_id
+  ## repositories
+  - table: repositories
+    <<: *relation_project_id
+  ## queries
+  - table: queries
+    <<: *relation_project_id
+  ## boards
+  - table: boards
+    <<: *relation_project_id
+  ## projects_trackers
+  - table: projects_trackers
+    <<: *relation_project_id
+  ## members
+  - table: members
+    <<: *relation_project_id
+  - table: members
+    <<: *relation_user_id
+  ## enabled_modules
+  - table: enabled_modules
+    <<: *relation_project_id
+  ## time_entries
+  - table: time_entries
+    <<: *relation_project_id
+  - table: time_entries
+    <<: *relation_author_id
+  ## enumerations
+  - table: enumerations
+    <<: *relation_project_id
+  ## documents
+  - table: documents
+    <<: *relation_project_id
+  - table: documents
+    columns:
+      - category_id
+    parentTable: enumerations
+    parentColumns:
+      - id
+  ## attachments
+  - table: attachments
+    <<: *relation_author_id
+  ## messages
+  - table: messages
+    <<: *relation_author_id
+  ## comments
+  - table: comments
+    <<: *relation_author_id
+  ## watchers
+  - table: watchers
+    <<: *relation_user_id
+  ## tokens
+  - table: tokens
+    <<: *relation_user_id
+  ## queries_roles
+  - table: queries_roles
+    <<: *relation_role_id
+  - table: queries_roles
+    columns:
+      - query_id
+    parentTable: queries
+    parentColumns:
+      - id
+  ## member_roles
+  - table: member_roles
+    <<: *relation_role_id
+  - table: member_roles
+    columns:
+      - member_id
+    parentTable: members
+    parentColumns:
+      - id
+  ## roles_managed_roles
+  - table: roles_managed_roles
+    <<: *relation_role_id
