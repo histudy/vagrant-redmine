@@ -1,0 +1,9 @@
+---
+- name: install ufw
+  apt:
+    name: ufw
+- name: firewall is active and enabled on system startup
+  systemd:
+    name: ufw
+    state: started
+    enabled: true

@@ -1,11 +1,11 @@
 [Unit]
 Description=Redmine
-{% if redmine_db_cfg.production.host is defined and redmine_db_cfg.production.host == 'localhost' -%}
+{% if redmine_db_cfg.production.host is defined and redmine_db_cfg.production.host in ['localhost', '127.0.0.1']  -%}
 {% if redmine_db_cfg.production.adapter in 'mysql2'%}
 Requires=mariadb.service
 After=network.target mariadb.service
 {% endif -%}
-{% if redmine_db_cfg.production.adapter == 'postgresql' and redmine_db_cfg.production.host == 'localhost' -%}
+{% if redmine_db_cfg.production.adapter == 'postgresql' and redmine_db_cfg.production.host  in ['localhost', '127.0.0.1'] -%}
 Requires=postgresql.service
 After=network.target postgresql.service
 {% endif -%}

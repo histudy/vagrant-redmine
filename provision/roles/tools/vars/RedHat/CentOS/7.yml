@@ -1,0 +1,25 @@
+---
+tools_dependency_packages:
+  - unzip
+  - zip
+  - perl
+  - cpp
+  - make
+  - autoconf
+  - automake
+  - m4
+  - libtool
+  - gcc
+  - gcc-c++
+  - patch
+  - git
+  - yum-utils
+
+tools_add_repository_dependency_packages:
+  - epel-release
+
+mecab_packages:
+  - mecab
+  - mecab-ipadic
+  - mecab-utils
+  - mecab-devel

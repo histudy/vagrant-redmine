@@ -1,0 +1,5 @@
+mariadb_dependency_packages:
+  - python3-pymysql
+mariadb_expect_dependency_packages:
+  - python3-pexpect
+mariadb_unix_socket_path: /run/mysqld/mysqld.sock

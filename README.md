@@ -28,12 +28,12 @@ ok: [default] => {
 
 | ユーザー名 | パスワード |
 | ---------- | ---------- |
-| admin      | admin      |
+| admin      | password   |
 
 システム構成
 -----------------
 
-* Debian 10
+* Debian 11
 * MariaDB
 * Nginx
 

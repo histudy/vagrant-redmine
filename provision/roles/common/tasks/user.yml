@@ -1,0 +1,124 @@
+---
+- name: manage groups
+  group:
+    name: "{{ item.name }}"
+    gid: "{{ item.id | default(omit) }}"
+    system: "{{ item.system | default(omit) }}"
+    state: "{{ item.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ common_groups }}"
+  loop_control:
+    label: "{{ item.name }}"
+- name: manage users
+  user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(omit) }}"
+    update_password: "{{ item.update_password | default('on_create') }}"
+    password_lock: "{{ item.password_lock | default(false) }}"
+    shell: "{{ item.shell | default('/usr/bin/bash') }}"
+    groups: "{{ item.groups | default(omit) }}"
+    uid: "{{ item.id | default(omit) }}"
+    system: "{{ item.system | default(omit) }}"
+    home: "{{ item.home | default(omit) }}"
+    state: "{{ item.removed | default(false) | ternary('absent', 'present') }}"
+    # `userdel` command `--remove` option
+    remove: "{{ item.removed | default(false) }}"
+  loop: "{{ common_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+- name: filter removed users
+  set_fact:
+    existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
+- name: set authorized keys
+  authorized_key:
+    user: "{{ item.0.name }}"
+    key: "{{ item.1.key }}"
+    state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ existing_users | subelements('authorized_keys', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1 }}"
+- name: create ~/.ssh directory
+  file:
+    path: ~/.ssh
+    state: directory
+    mode: "0700"
+  loop: "{{ existing_users | selectattr('ssh_config', 'defined') | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  become_user: "{{ item.name }}"
+- name: manage ~/.ssh/config setting
+  blockinfile:
+    path: ~/.ssh/config
+    block: |
+      {% for ssh_config in item.ssh_config -%}
+      Host {{ ssh_config.name }}
+      {{ ssh_config.content | indent(2, true) }}
+      {% endfor -%}
+    mode: "0600"
+    create: true
+  loop: "{{ existing_users | selectattr('ssh_config', 'defined') | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  become_user: "{{ item.name }}"
+- name: deploy ssh private keys
+  copy:
+    dest: ~/.ssh/{{ item.1.name }}
+    src: "{{ item.1.src }}"
+    mode: "0600"
+  loop: "{{ existing_users | subelements('upload_private_keys', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1.name }}"
+  become: true
+  become_user: "{{ item.0.name }}"
+- name: manage secret variable
+  lineinfile:
+    path: ~/.secret
+    regexp: "^export {{ item.1.name }}=.*"
+    line: 'export {{ item.1.name }}="{{ item.1.value | default("") }}"'
+    create: true
+    mode: "0600"
+    state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
+  become_user: "{{ item.0.name }}"
+  become: true
+  loop: "{{ existing_users | subelements('secret_vars', skip_missing=True) | list }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1.name }}"
+  tags: secret
+- name: add admin group for admin users
+  user:
+    name: "{{ item.name }}"
+    groups: wheel
+    append: true
+  loop: "{{ existing_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+- name: Manage cron job variavle
+  cronvar:
+    user: "{{ item.0.name }}"
+    name: "{{ item.1.name }}"
+    value: "{{ omit if item.1.removed | default(false) else item.1.value | default('') }}"
+    state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ existing_users | subelements('cron_vars', skip_missing=True) | list }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1.name }}"
+- name: Manage cron jobs
+  cron:
+    user: "{{ item.0.name }}"
+    name: "{{ item.1.name }}"
+    job: "{{ item.1.job }}"
+    month: "{{ item.1.month | default('*') | string }}"
+    day: "{{ item.1.day | default('*') | string }}"
+    hour: "{{ item.1.hour | default('*') | string }}"
+    minute: "{{ item.1.minute | default('*') | string }}"
+    weekday: "{{ item.1.weekday | default('*') | string }}"
+    disabled: "{{ item.1.disable | default(false) }}"
+    state: "{{ item.1.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ existing_users | subelements('cron_jobs', skip_missing=True) | list }}"
+  loop_control:
+    label: "{{ item.0.name }} : {{ item.1.name }}"
+- name: set root lock status
+  user:
+    name: root
+    password_lock: "{{ common_root_lock }}"
+  when: common_root_lock is defined

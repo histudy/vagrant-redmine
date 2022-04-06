@@ -1,0 +1,26 @@
+---
+language: python
+services: docker
+env:
+  global:
+    - ROLE_NAME: mariadb
+before_install:
+  - sudo apt-get -qq update
+install:
+  - python3 -m pip install "ansible<2.10"
+  - python3 -m pip install molecule[docker,lint]
+before_script:
+  - cd ../
+  - git clone --depth=1 https://github.com/wate/ansible-role-repo-epel.git repo-epel
+  - mv ansible-role-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
+script:
+  - molecule --version
+  - ansible --version
+  - ansible-lint --version
+  - yamllint --version
+  - molecule test
+notifications:
+  email: false
+  slack:
+    secure: cbDjT5qnzaqfWKG8DkQTN6TeQiToN7MH+u2TXOB63Na5WI2a9ZDN2o8kTf0lY6VPfDZS4xX0GdRGE97ZaLatzmin+exSCkqOnqZh4SVB9eoc6jnYyA3D73LqoxMXP6fbWY1b4uw+qgsh6MXkpaDV3HyGNh/W6JvGkTeYEJQdwnD9hGTJcIauna8NceyS1TjICX+ADLGl2s6mzCbQesB/bgNTKqcaDB7HyOkNOzEWvVEo4HvMCJOHTqiWKvMP0dctoBjJ6+ffe+C8OpkJt8CPjKa9sxAyMfapoV8mitm8o4OF/kdUbstZLEs/742/6Vd/fiGki6Aj4gXcK3EIeBLjNwZw8HClJm2JS2ll3Fvor6ApW0hvFE75rvmgcEwhWRmlgurjdoTJBveR8WX3Tjbat3/LssDuIqHFs99bL9Ik+XVkwVPd/35Z284KvmEtP7EsWVq7WEyxKbDYw8kLFQbzNuZP2Y6OgXIsYG87lpq2YMccfGz7Ed7Aq2petfvhMrDGDb4MP7Cxg9gm32CPJtA4N5M6lOJ55y4rFOoIH2/8bUWyTd2HKc6E7YlORbsgbpDUUAXj1IaXmHgALoQJk5LPXExUXOBfaYSIPLro1ch7MGd4KN3DagIWAosDc9AmRHH6MEsi9+U7BT9tGqEtXmsGpbWwFKBnyzcA6HN7yghLslg=

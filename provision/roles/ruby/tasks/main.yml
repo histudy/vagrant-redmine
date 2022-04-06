@@ -1,4 +1,0 @@
----
-- name: install packages
-  apt:
-    name: "{{ ruby_packages }}"

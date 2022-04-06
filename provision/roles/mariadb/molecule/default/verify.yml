@@ -1,0 +1,20 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  check_mode: true
+  tasks:
+    - name: test client package
+      apt:
+        name: mariadb-client
+      register: result
+    - name: assert client package
+      assert:
+        that: result is not changed
+    - name: test server package
+      apt:
+        name: mariadb-server
+      register: result
+    - name: assert server package
+      assert:
+        that: result is not changed

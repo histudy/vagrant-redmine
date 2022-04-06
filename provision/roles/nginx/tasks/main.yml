@@ -5,12 +5,12 @@
 - name: install nginx
   apt:
     name: "{{ nginx_packages }}"
-    default_release: "{{ ansible_distribution_release }}-backports"
 - name: create config directories
   file:
     path: /etc/nginx/{{ item }}
     state: directory
-  with_items:
+    mode: "0755"
+  loop:
     - conf.d
     - snippets
     - modules-available
@@ -21,43 +21,51 @@
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+    mode: "0644"
   notify: restart nginx
 - name: generate OpenSSL Diffie-Hellman parameters
   openssl_dhparam:
     path: "{{ nginx_dh_key_path }}"
     size: "{{ nginx_dh_key_bit }}"
   when: nginx_generate_dh_key
+  tags:
+    - skip_ansible_lint
 - name: copy snippet files
   copy:
     src: "{{ item }}"
-    dest: "/etc/nginx/snippets/{{ item|basename }}"
-  with_fileglob: files/snippets/*.conf
-  notify: reload nginx
+    dest: "/etc/nginx/snippets/{{ item | basename }}"
+    mode: "0644"
+  loop: "{{ lookup('fileglob', 'files/snippets/*.conf', wantlist=True) }}"
+  notify: restart nginx
 - name: create nginx extra config files
   template:
     src: "{{ item }}"
-    dest: "/etc/nginx/conf.d/{{ item[:-3]|basename }}"
-  with_fileglob: templates/conf/*.conf.j2
+    dest: "/etc/nginx/conf.d/{{ item[:-3] | basename }}"
+    mode: "0644"
+  loop: "{{ lookup('fileglob', 'templates/conf/*.conf.j2', wantlist=True) }}"
 - name: change extra config status
   file:
-    path: "/etc/nginx/modules-enabled/{{ item.name }}.conf"
-    src: "{{ '/etc/nginx/modules-available/' + item.name + '.conf' if item.state|default(true) else omit }}"
-    state: "{{ 'link' if item.state|default(true) else 'absent' }}"
-  with_items: "{{ nginx_modules }}"
+    path: /etc/nginx/modules-enabled/{{ item.name }}.conf
+    src: "{{ item.state | default(true) | ternary('/etc/nginx/modules-available/' + item.name +  '.conf', omit) }}"
+    state: "{{ item.state | default(true) | ternary('link', 'absent') }}"
+    mode: "0644"
+  loop: "{{ nginx_modules }}"
   notify: restart nginx
 - name: create site config files
   template:
     src: vhost.j2
-    dest: "/etc/nginx/sites-available/{{ item.name|default(item.server_name) }}"
-  with_items: "{{ nginx_vhosts }}"
-  notify: reload nginx
+    dest: /etc/nginx/sites-available/{{ item.name | default(item.server_name) }}
+    mode: "0644"
+  loop: "{{ nginx_vhosts }}"
+  notify: restart nginx
 - name: change site config
   file:
-    path: /etc/nginx/sites-enabled/{{ item.name|default(item.server_name) }}
-    src: "{{ '/etc/nginx/sites-available/' + item.name|default(item.server_name) if item.state|default(true) else omit }}"
-    state: "{{ 'link' if item.state|default(true) else 'absent' }}"
-  with_items: "{{ nginx_vhosts }}"
-  notify: reload nginx
+    path: /etc/nginx/sites-enabled/{{ item.name | default(item.server_name) }}
+    src: "{{ item.state | default(true) | ternary('/etc/nginx/sites-available/' + item.name | default(item.server_name), omit) }}"
+    state: "{{ item.state | default(true) | ternary('link', 'absent') }}"
+    mode: "0644"
+  loop: "{{ nginx_vhosts }}"
+  notify: restart nginx
 - name: nginx is active and enabled on system startup
   service:
     name: nginx

@@ -1,0 +1,21 @@
+- block:
+    - name: create custom script directory
+      file:
+        path: "{{ redmine_script_dir }}"
+        state: directory
+        mode: "0750"
+    - name: create custom script
+      template:
+        src: "{{ item.file }}"
+        dest: "{{ redmine_script_dir }}/{{ item.remote_name | default( item.file | basename ) }}"
+        owner: "{{ redmine_user }}"
+        group: "{{ redmine_user }}"
+        mode: "{{ item.mode | default( '0700' ) }}"
+      loop: "{{ redmine_custom_script_files | default([]) | selectattr('removed', 'undefined') | list }}"
+    - name: remove custom script
+      file:
+        path: "{{ redmine_script_dir }}/{{ item.remote_name | default( item.file | basename ) }}"
+        state: absent
+      loop: "{{ redmine_custom_script_files | default([]) | selectattr('removed', 'defined') | list }}"
+  become_user: "{{ redmine_user }}"
+  become: true

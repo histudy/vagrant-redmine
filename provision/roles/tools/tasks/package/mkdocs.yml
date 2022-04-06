@@ -1,0 +1,3 @@
+- name: install mkdocs
+  apt:
+    name: mkdocs

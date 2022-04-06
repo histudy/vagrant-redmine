@@ -1,0 +1,9 @@
+---
+- name: install ruby packages
+  apt:
+    name:
+      - ruby
+      - rubygems-integration
+      - ruby-rmagick
+      - libmagickcore-dev
+      - bundler

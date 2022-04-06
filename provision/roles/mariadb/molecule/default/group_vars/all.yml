@@ -1,0 +1,43 @@
+---
+mariadb_databases:
+  - name: app_dev
+    password: app_dev_p455w0rd
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+  - name: app_staging
+    user: staging
+    password: staging_p455w0rd
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+  - name: app_test
+  - name: app_prod
+
+mariadb_users:
+  - name: mackerel_agent
+    password: m4ckerel_4gent_p455w0rd
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+    privs:
+      - "*.*:PROCESS,REPLICATION CLIENT"
+  - name: app_test
+    password: app_test_p455w0rd
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+    privs:
+      - "*.*:All"
+  - name: app_prod
+    password: app_prod_p455w0rd
+    hosts:
+      - "127.0.0.1"
+      - "::1"
+      - localhost
+    privs:
+      - "*.*:All"

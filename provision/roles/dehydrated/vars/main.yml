@@ -1,0 +1,6 @@
+---
+dehydrated_config_base_dir: /etc/dehydrated
+dehydrated_config_dir: /etc/dehydrated/conf.d
+dehydrated_base_dir: /var/lib/dehydrated
+dehydrated_wellknown_dir: "{{ dehydrated_base_dir }}/acme-challenges"
+dehydrated_domains_txt: /etc/dehydrated/domains.txt

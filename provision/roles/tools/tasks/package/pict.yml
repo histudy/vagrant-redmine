@@ -1,0 +1,17 @@
+---
+- name: checkout source
+  git:
+    repo: https://github.com/microsoft/pict.git
+    dest: /usr/local/src/pict
+    version: main
+  register: git_result
+- name: build
+  command: make
+  args:
+    chdir: /usr/local/src/pict
+  when: git_result is changed
+- name: create symlink
+  file:
+    src: /usr/local/src/pict/pict
+    dest: /usr/local/bin/pict
+    state: link

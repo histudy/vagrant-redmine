@@ -1,0 +1,5 @@
+---
+- name: add/update mecab setting
+  blockinfile:
+    path: /etc/mecabrc
+    block: "{{ mecab_extra_cfg  }}"

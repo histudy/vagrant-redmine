@@ -1,0 +1,13 @@
+---
+- name: restart firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+- name: restart fail2ban
+  systemd:
+    name: fail2ban
+    state: restarted
+- name: restart rsyslog
+  systemd:
+    name: rsyslog
+    state: restarted

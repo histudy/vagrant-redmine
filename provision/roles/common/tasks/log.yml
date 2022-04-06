@@ -1,0 +1,7 @@
+---
+- name: add/update log setting
+  template:
+    src: log/rsyslog/custom.conf.j2
+    dest: /etc/rsyslog.d/custom.conf
+    mode: "0644"
+  notify: restart rsyslog

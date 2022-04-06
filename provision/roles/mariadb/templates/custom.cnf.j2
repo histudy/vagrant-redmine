@@ -18,183 +18,196 @@ collation-server = {{ mariadb_default_collation }}
 # -----------------
 # General
 # -----------------
-sql_mode = "{{ mariadb_cfg.mysqld.sql_mode if mariadb_cfg.mysqld.sql_mode is string else mariadb_cfg.mysqld.sql_mode|join(',') }}"
-bind-address = {{ mariadb_cfg.mysqld.bind_address }}
-{% if mariadb_cfg.mysqld.datadir is defined -%}
-datadir = {{ mariadb_cfg.mysqld.datadir }}
+sql_mode = "{{ mariadb_mysqld_cfg.sql_mode if mariadb_mysqld_cfg.sql_mode is string else mariadb_mysqld_cfg.sql_mode|join(',') }}"
+{% if mariadb_mysqld_cfg.bind_address is defined -%}
+bind-address = {{ mariadb_mysqld_cfg.bind_address }}
 {% endif %}
-{% if mariadb_cfg.mysqld.socket is defined -%}
-socket = {{ mariadb_cfg.mysqld.socket }}
+{% if mariadb_mysqld_cfg.datadir is defined -%}
+datadir = {{ mariadb_mysqld_cfg.datadir }}
 {% endif %}
-{% if mariadb_cfg.mysqld.innodb_data_home_dir is defined -%}
-innodb_data_home_dir = {{ mariadb_cfg.mysqld.innodb_data_home_dir }}
+{% if mariadb_mysqld_cfg.socket is defined -%}
+socket = {{ mariadb_mysqld_cfg.socket }}
+{% endif %}
+{% if mariadb_mysqld_cfg.innodb_data_home_dir is defined -%}
+innodb_data_home_dir = {{ mariadb_mysqld_cfg.innodb_data_home_dir }}
 {% endif %}
 
 # -----------------
 # Network
 # -----------------
-{% if mariadb_cfg.mysqld.max_connections is defined -%}
-max_connections = {{ mariadb_cfg.mysqld.max_connections }}
+{% if mariadb_mysqld_cfg.max_connections is defined -%}
+max_connections = {{ mariadb_mysqld_cfg.max_connections }}
 {% endif %}
-{% if mariadb_cfg.mysqld.connect_timeout is defined -%}
-connect_timeout = {{ mariadb_cfg.mysqld.connect_timeout }}
+{% if mariadb_mysqld_cfg.connect_timeout is defined -%}
+connect_timeout = {{ mariadb_mysqld_cfg.connect_timeout }}
 {% endif %}
-{% if mariadb_cfg.mysqld.skip_name_resolve is defined -%}
-skip_name_resolve = {{ 'ON' if mariadb_cfg.mysqld.skip_name_resolve else 'OFF' }}
+{% if mariadb_mysqld_cfg.skip_name_resolve is defined -%}
+skip_name_resolve = {{ 'ON' if mariadb_mysqld_cfg.skip_name_resolve else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.max_allowed_packet is defined -%}
-max_allowed_packet = {{ mariadb_cfg.mysqld.max_allowed_packet }}
+{% if mariadb_mysqld_cfg.max_allowed_packet is defined -%}
+max_allowed_packet = {{ mariadb_mysqld_cfg.max_allowed_packet }}
 {% endif %}
-{% if mariadb_cfg.mysqld.interactive_timeout is defined -%}
-interactive_timeout = {{ mariadb_cfg.mysqld.interactive_timeout }}
+{% if mariadb_mysqld_cfg.interactive_timeout is defined -%}
+interactive_timeout = {{ mariadb_mysqld_cfg.interactive_timeout }}
 {% endif %}
-{% if mariadb_cfg.mysqld.wait_timeout is defined -%}
-wait_timeout = {{ mariadb_cfg.mysqld.wait_timeout }}
+{% if mariadb_mysqld_cfg.wait_timeout is defined -%}
+wait_timeout = {{ mariadb_mysqld_cfg.wait_timeout }}
 {% endif %}
 
 # -----------------
 # Cache
 # -----------------
-query_cache_limit = {{ mariadb_cfg.mysqld.query_cache_limit }}
-query_cache_size = {{ mariadb_cfg.mysqld.query_cache_size }}
-query_cache_type = {{ mariadb_cfg.mysqld.query_cache_type }}
-{% if mariadb_cfg.mysqld.table_open_cache is defined -%}
-table_open_cache = {{ mariadb_cfg.mysqld.table_open_cache }}
+query_cache_limit = {{ mariadb_mysqld_cfg.query_cache_limit }}
+query_cache_size = {{ mariadb_mysqld_cfg.query_cache_size }}
+query_cache_type = {{ mariadb_mysqld_cfg.query_cache_type }}
+{% if mariadb_mysqld_cfg.table_open_cache is defined -%}
+table_open_cache = {{ mariadb_mysqld_cfg.table_open_cache }}
 {% endif %}
-{% if mariadb_cfg.mysqld.thread_cache_size is defined -%}
-thread_cache_size = {{ mariadb_cfg.mysqld.thread_cache_size }}
+{% if mariadb_mysqld_cfg.thread_cache_size is defined -%}
+thread_cache_size = {{ mariadb_mysqld_cfg.thread_cache_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.table_definition_cache is defined -%}
-table_definition_cache = {{ mariadb_cfg.mysqld.table_definition_cache }}
+{% if mariadb_mysqld_cfg.table_definition_cache is defined -%}
+table_definition_cache = {{ mariadb_mysqld_cfg.table_definition_cache }}
 {% endif %}
 
 # ------------------
 # InnoDB
 # ------------------
 ## General
-innodb_file_per_table = {{ 'ON' if mariadb_cfg.mysqld.innodb_file_per_table else 'OFF' }}
-innodb_flush_log_at_trx_commit = {{ mariadb_cfg.mysqld.innodb_flush_log_at_trx_commit }}
-{% if mariadb_cfg.mysqld.innodb_log_file_size is defined -%}
-innodb_log_file_size = {{ mariadb_cfg.mysqld.innodb_log_file_size }}
+innodb_file_per_table = {{ 'ON' if mariadb_mysqld_cfg.innodb_file_per_table else 'OFF' }}
+innodb_flush_log_at_trx_commit = {{ mariadb_mysqld_cfg.innodb_flush_log_at_trx_commit }}
+{% if mariadb_mysqld_cfg.innodb_log_file_size is defined -%}
+innodb_log_file_size = {{ mariadb_mysqld_cfg.innodb_log_file_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.innodb_log_files_in_group is defined -%}
-innodb_log_files_in_group = {{ mariadb_cfg.mysqld.innodb_log_files_in_group }}
+{% if mariadb_mysqld_cfg.innodb_log_files_in_group is defined -%}
+innodb_log_files_in_group = {{ mariadb_mysqld_cfg.innodb_log_files_in_group }}
 {% endif %}
 
-{% if mariadb_cfg.mysqld.innodb_strict_mode is defined -%}
-innodb_strict_mode = {{ 'ON' if  mariadb_cfg.mysqld.innodb_strict_mode else 'OFF' }}
+{% if mariadb_mysqld_cfg.innodb_strict_mode is defined -%}
+innodb_strict_mode = {{ 'ON' if  mariadb_mysqld_cfg.innodb_strict_mode else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.innodb_large_prefix is defined -%}
-innodb_large_prefix = {{ 'ON' if  mariadb_cfg.mysqld.innodb_large_prefix else 'OFF' }}
+{% if mariadb_mysqld_cfg.innodb_large_prefix is defined -%}
+innodb_large_prefix = {{ 'ON' if  mariadb_mysqld_cfg.innodb_large_prefix else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.innodb_file_format is defined -%}
-innodb_file_format = {{ mariadb_cfg.mysqld.innodb_file_format }}
+{% if mariadb_mysqld_cfg.innodb_file_format is defined -%}
+innodb_file_format = {{ mariadb_mysqld_cfg.innodb_file_format }}
 {% endif %}
 
 ## Global Buffer
-innodb_buffer_pool_size = {{ mariadb_cfg.mysqld.innodb_buffer_pool_size}}
-innodb_log_buffer_size = {{ mariadb_cfg.mysqld.innodb_log_buffer_size }}
+innodb_buffer_pool_size = {{ mariadb_mysqld_cfg.innodb_buffer_pool_size}}
+innodb_log_buffer_size = {{ mariadb_mysqld_cfg.innodb_log_buffer_size }}
 
 ## Thread Buffer
-{% if mariadb_cfg.mysqld.sort_buffer_size is defined -%}
-sort_buffer_size = {{ mariadb_cfg.mysqld.sort_buffer_size }}
+{% if mariadb_mysqld_cfg.sort_buffer_size is defined -%}
+sort_buffer_size = {{ mariadb_mysqld_cfg.sort_buffer_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.join_buffer_size is defined -%}
-join_buffer_size = {{ mariadb_cfg.mysqld.join_buffer_size }}
+{% if mariadb_mysqld_cfg.join_buffer_size is defined -%}
+join_buffer_size = {{ mariadb_mysqld_cfg.join_buffer_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.read_buffer_size is defined -%}
-read_buffer_size = {{ mariadb_cfg.mysqld.read_buffer_size }}
+{% if mariadb_mysqld_cfg.read_buffer_size is defined -%}
+read_buffer_size = {{ mariadb_mysqld_cfg.read_buffer_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.read_rnd_buffer_size is defined -%}
-read_rnd_buffer_size = {{ mariadb_cfg.mysqld.read_rnd_buffer_size }}
+{% if mariadb_mysqld_cfg.read_rnd_buffer_size is defined -%}
+read_rnd_buffer_size = {{ mariadb_mysqld_cfg.read_rnd_buffer_size }}
 {% endif %}
 
 # ------------------
 # MyISAM
 # ------------------
 ## Global Buffer
-key_buffer_size = {{ mariadb_cfg.mysqld.key_buffer_size }}
+key_buffer_size = {{ mariadb_mysqld_cfg.key_buffer_size }}
 
 ## Thread Buffer
-{% if mariadb_cfg.mysqld.myisam_sort_buffer_size is defined -%}
-myisam_sort_buffer_size = {{ mariadb_cfg.mysqld.myisam_sort_buffer_size }}
+{% if mariadb_mysqld_cfg.myisam_sort_buffer_size is defined -%}
+myisam_sort_buffer_size = {{ mariadb_mysqld_cfg.myisam_sort_buffer_size }}
 {% endif %}
 
 # -----------------
 # Temp Tables
 # -----------------
-{% if mariadb_cfg.mysqld.max_heap_table_size is defined -%}
-max_heap_table_size = {{ mariadb_cfg.mysqld.max_heap_table_size }}
+{% if mariadb_mysqld_cfg.max_heap_table_size is defined -%}
+max_heap_table_size = {{ mariadb_mysqld_cfg.max_heap_table_size }}
 {% endif %}
-{% if mariadb_cfg.mysqld.tmp_table_size is defined -%}
-tmp_table_size = {{ mariadb_cfg.mysqld.tmp_table_size }}
+{% if mariadb_mysqld_cfg.tmp_table_size is defined -%}
+tmp_table_size = {{ mariadb_mysqld_cfg.tmp_table_size }}
 {% endif %}
 
 # -----------------
 # Logging
 # -----------------
-{% if mariadb_cfg.mysqld.slow_query_log is defined -%}
-slow_query_log = {{ 'ON' if mariadb_cfg.mysqld.slow_query_log else 'OFF' }}
+{% if mariadb_mysqld_cfg.slow_query_log is defined -%}
+slow_query_log = {{ 'ON' if mariadb_mysqld_cfg.slow_query_log else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.long_query_time is defined -%}
-long_query_time = {{ mariadb_cfg.mysqld.long_query_time }}
+{% if mariadb_mysqld_cfg.long_query_time is defined -%}
+long_query_time = {{ mariadb_mysqld_cfg.long_query_time }}
 {% endif %}
-{% if mariadb_cfg.mysqld.log_warnings is defined -%}
-log_warnings = {{ mariadb_cfg.mysqld.log_warnings }}
+{% if mariadb_mysqld_cfg.log_warnings is defined -%}
+log_warnings = {{ mariadb_mysqld_cfg.log_warnings }}
 {% endif %}
-{% if mariadb_cfg.mysqld.min_examined_row_limit is defined -%}
-min_examined_row_limit = {{ mariadb_cfg.mysqld.min_examined_row_limit }}
+{% if mariadb_mysqld_cfg.min_examined_row_limit is defined -%}
+min_examined_row_limit = {{ mariadb_mysqld_cfg.min_examined_row_limit }}
 {% endif %}
-{% if mariadb_cfg.mysqld.log_queries_not_using_indexes is defined -%}
-log_queries_not_using_indexes = {{ 'ON' if mariadb_cfg.mysqld.log_queries_not_using_indexes else 'OFF' }}
+{% if mariadb_mysqld_cfg.log_queries_not_using_indexes is defined -%}
+log_queries_not_using_indexes = {{ 'ON' if mariadb_mysqld_cfg.log_queries_not_using_indexes else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.log_slow_admin_statements is defined -%}
-log_slow_admin_statements = {{ 'ON' if mariadb_cfg.mysqld.log_slow_admin_statements else 'OFF' }}
+{% if mariadb_mysqld_cfg.log_slow_admin_statements is defined -%}
+log_slow_admin_statements = {{ 'ON' if mariadb_mysqld_cfg.log_slow_admin_statements else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.slow_query_log_file is defined -%}
-slow_query_log_file = {{ mariadb_cfg.mysqld.slow_query_log_file }}
+{% if mariadb_mysqld_cfg.slow_query_log_file is defined -%}
+slow_query_log_file = {{ mariadb_mysqld_cfg.slow_query_log_file }}
 {% endif %}
 
-{% if mariadb_cfg.mysqld.general_log is defined -%}
-general_log = {{ 'ON' if mariadb_cfg.mysqld.general_log else 'OFF' }}
+{% if mariadb_mysqld_cfg.general_log is defined -%}
+general_log = {{ 'ON' if mariadb_mysqld_cfg.general_log else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.general_log_file is defined -%}
-general_log_file = {{ mariadb_cfg.mysqld.general_log_file }}
+{% if mariadb_mysqld_cfg.general_log_file is defined -%}
+general_log_file = {{ mariadb_mysqld_cfg.general_log_file }}
 {% endif %}
 
 # -----------------
 # Replication
 # -----------------
-{% if mariadb_cfg.mysqld.gtid_domain_id is defined -%}
-gtid_domain_id = {{ mariadb_cfg.mysqld.gtid_domain_id }}
+{% if mariadb_mysqld_cfg.gtid_domain_id is defined -%}
+gtid_domain_id = {{ mariadb_mysqld_cfg.gtid_domain_id }}
 {% endif %}
-{% if mariadb_cfg.mysqld.server_id is defined -%}
-server_id = {{ mariadb_cfg.mysqld.server_id }}
+{% if mariadb_mysqld_cfg.server_id is defined -%}
+server_id = {{ mariadb_mysqld_cfg.server_id }}
 {% endif %}
-{% if mariadb_cfg.mysqld.log_bin is defined -%}
-log_bin = {{ mariadb_cfg.mysqld.log_bin }}
+{% if mariadb_mysqld_cfg.log_bin is defined -%}
+log_bin = {{ mariadb_mysqld_cfg.log_bin }}
 {% endif %}
-{% if mariadb_cfg.mysqld.binlog_format is defined -%}
-binlog_format = {{ mariadb_cfg.mysqld.binlog_format }}
+{% if mariadb_mysqld_cfg.binlog_format is defined -%}
+binlog_format = {{ mariadb_mysqld_cfg.binlog_format }}
 {% endif %}
-{% if mariadb_cfg.mysqld.expire_logs_days is defined -%}
-expire_logs_days = {{ mariadb_cfg.mysqld.expire_logs_days }}
+{% if mariadb_mysqld_cfg.expire_logs_days is defined -%}
+expire_logs_days = {{ mariadb_mysqld_cfg.expire_logs_days }}
 {% endif %}
-{% if mariadb_cfg.mysqld.read_only is defined -%}
-read_only = {{ 'ON' if mariadb_cfg.mysqld.read_only else 'OFF' }}
+{% if mariadb_mysqld_cfg.read_only is defined -%}
+read_only = {{ 'ON' if mariadb_mysqld_cfg.read_only else 'OFF' }}
 {% endif %}
-{% if mariadb_cfg.mysqld.log_slave_updates is defined -%}
-log_slave_updates = {{ 'ON' if mariadb_cfg.mysqld.log_slave_updates else 'OFF' }}
-{% endif %}
-
-{% if mariadb_cfg.mysqld.extra_setting is defined -%}
-{{ mariadb_cfg.mysqld.extra_setting }}
+{% if mariadb_mysqld_cfg.log_slave_updates is defined -%}
+log_slave_updates = {{ 'ON' if mariadb_mysqld_cfg.log_slave_updates else 'OFF' }}
 {% endif %}
 
+{% if mariadb_mysqld_cfg.extra_setting is defined -%}
+# -----------------
+# mysqld Other Extra Setting
+# -----------------
+{{ mariadb_mysqld_cfg.extra_setting }}
+{% endif %}
+
+{% if mariadb_mysqld_safe_cfg is defined -%}
 [mysqld_safe]
-{% if mariadb_cfg.mysqld_safe is defined and mariadb_cfg.mysqld_safe.datadir is defined -%}
-datadir = {{ mariadb_cfg.mysqld_safe.datadir }}
+{% if mariadb_mysqld_safe_cfg is defined and mariadb_mysqld_safe_cfg.datadir is defined -%}
+datadir = {{ mariadb_mysqld_safe_cfg.datadir }}
 {% endif %}
-{% if mariadb_cfg.mysqld_safe is defined and mariadb_cfg.mysqld_safe.socket is defined -%}
-socket = {{ mariadb_cfg.mysqld_safe.socket }}
+{% if mariadb_mysqld_cfg_safe is defined and mariadb_mysqld_cfg_safe.socket is defined -%}
+socket = {{ mariadb_mysqld_safe_cfg.socket }}
+{% endif %}
+{% if mariadb_mysqld_cfg.extra_setting is defined -%}
+# -----------------
+# mysqld_safe Other Extra Setting
+# -----------------
+{{ mariadb_mysqld_safe_cfg.extra_setting }}
+{% endif %}
 {% endif %}

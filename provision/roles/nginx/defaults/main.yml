@@ -1,97 +1,162 @@
 ---
 nginx_packages:
   - nginx
+  - goaccess
+  # - libnginx-mod-http-image-filter
+  # - libnginx-mod-http-lua
 
-nginx_vhosts: []
-    # #--------------
-    # # Simple static site
-    # #--------------
-    # - name: default
-    #   default: true
-    #   server_name: www.exampe.com
-    #   access_log: /var/log/nginx/access.log
-    #   error_log: /var/log/nginx/error.log
-    #   document_root: /var/www/html
-    #   add_headers:
-    #     - name: X-Content-Type-Options
-    #       value: nosniff
-    #     - name: X-Frame-Options
-    #       value: SAMEORIGIN
-    #     - name: X-XSS-Protection
-    #       value: '"1; mode=block"'
-    #   locations:
-    #     - pattern: "/\\.ht"
-    #       match_type: "~"
-    #       content: "deny all;"
-    # # --------------
-    # # WordPress
-    # # --------------
-    # - name: wordpress
-    #   server_name: wordpress.exampe.com
-    #   index:
-    #     - index.html
-    #     - index.htm
-    #     - index.php
-    #   access_log: /var/log/nginx/access.log
-    #   error_log: /var/log/nginx/error.log
-    #   document_root: "/var/www/html"
-    #   client_max_body_size: 16M
-    #   includes:
-    #     - snippets/wordpress.conf
-    # # --------------
-    # # PHP and SSL
-    # # --------------
-    # - name: ssl
-    #   server_name: ssl.exampe.com
-    #   index: "index.html index.htm index.php"
-    #   access_log: /var/log/nginx/ssl.access.log
-    #   error_log: /var/log/nginx/ssl.error.log
-    #   document_root: /var/ssl_site
-    #   client_max_body_size: 50M
-    #   locations:
-    #     - pattern: /
-    #       content: |
-    #         try_files $uri $uri/ /index.php?$query_string;
-    #     - pattern: "\\.php"
-    #       match_type: "~"
-    #       content: |
-    #         fastcgi_pass	unix:/var/run/php/php7.0-fpm.sock;
-    #         include snippets/fastcgi-php.conf;
-    #     - pattern: "/\\.ht"
-    #       match_type: "~"
-    #       content: "deny all;"
-    #   ssl:
-    #     certificate: /path/to/cert.pem
-    #     certificate_key:  /path/to/privkey.pem
-    #     trusted_certificate: /path/to/chain.pem
-    #     session_timeout: "1d"
-    #     session_cache: "shared:SSL:50m"
-    #     session_tickets: false
-    #     hsts: "max-age=15768000; includeSubDomains;"
-    #     stapling: true
-    #     stapling_verify: true
-    # # --------------
-    # # Reverse proxy
-    # # --------------
-    # - name: reverse_proxy
-    #   locations:
-    #     - pattern: /
-    #       content: |
-    #         proxy_pass	http://127.0.0.1:8080;
-    #         include proxy_params;
-    # # --------------
-    # # status page
-    # # --------------
-    # - name: status
-    #   server_name: localhost
-    #     listen: 8080
-    #     access_log: 'off'
-    #     - pattern: "/nginx_status"
-    #       content: |
-    #         stub_status on;
-    #         access_log off;
-    #         allow 127.0.0.1;
-    #         deny all;
+nginx_default_client_max_body_size: "20M"
+
+nginx_vhosts:
+  # --------------
+  # Simple static site
+  # --------------
+  - name: default
+    default: true
+    server_name: www.exampe.com
+    access_log: /var/log/nginx/access.log
+    error_log: /var/log/nginx/error.log
+    document_root: /var/www/html
+    index:
+      - index.html
+      - index.php
+    # upstream:
+    #   name: backend
+    #   content: |
+    #     server backend1.example.com       weight=5;
+    #     server backend2.example.com:8080;
+    #     server unix:/tmp/backend3;
+    #     server backup1.example.com:8080   backup;
+    #     server backup2.example.com:8080   backup;
+    # variables:
+    #   - name: var_name
+    #     value: var_value
+    client_max_body_size: 20M
+    locations:
+      - pattern: "/"
+        content:
+          try_files $uri $uri/ =404;
+      - pattern: "\\.php$"
+        match_type: "~"
+        content: |
+          include snippets/fastcgi-php.conf;
+          fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+      - pattern: "/\\.ht"
+        match_type: "~"
+        content: |
+          deny all;
+      - pattern: "/\\.well-known/acme-challenge/"
+        match_type: "^~"
+        content: |
+          default_type "text/plain";
+          alias /var/lib/dehydrated/acme-challenges/;
+      - pattern: "/\\.well-known/acme-challenge/"
+        match_type: "="
+        content: |
+          return 404;
+  # # --------------
+  # # WordPress
+  # # --------------
+  # - name: wordpress
+  #   server_name: wordpress.exampe.com
+  #   index:
+  #     - index.html
+  #     - index.htm
+  #     - index.php
+  #   access_log: /var/log/nginx/access.log
+  #   error_log: /var/log/nginx/error.log
+  #   document_root: "/var/www/html"
+  #   client_max_body_size: 20M
+  #   includes:
+  #     - snippets/wordpress.conf
+  # # --------------
+  # # PHP and SSL
+  # # --------------
+  # - name: ssl
+  #   server_name: ssl.exampe.com
+  #   index: "index.html index.htm index.php"
+  #   access_log: /var/log/nginx/ssl.access.log
+  #   error_log: /var/log/nginx/ssl.error.log
+  #   document_root: /var/ssl_site
+  #   client_max_body_size: 50M
+  #   locations:
+  #     - pattern: /
+  #       content: |
+  #         try_files $uri $uri/ /index.php?$query_string;
+  #     - pattern: "\\.php"
+  #       match_type: "~"
+  #       content: |
+  #         fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+  #         include snippets/fastcgi-php.conf;
+  #     - pattern: "/\\.ht"
+  #       match_type: "~"
+  #       content: "deny all;"
+  #   ssl:
+  #     certificate: /path/to/cert.pem
+  #     certificate_key: /path/to/privkey.pem
+  #     trusted_certificate: /path/to/chain.pem
+  #     session_timeout: "1d"
+  #     session_cache: "shared:SSL:50m"
+  #     session_tickets: false
+  #     hsts: "max-age=15768000;"
+  #     stapling: true
+  #     stapling_verify: true
+  # # --------------
+  # # Reverse proxy
+  # # --------------
+  # - name: reverse_proxy
+  #   server_name: reverse_proxy.exampe.com
+  #   upstream:
+  #     name: backend
+  #     content: |
+  #       server unix:/path/to/app.sock;
+  #   client_max_body_size: 50M
+  #   locations:
+  #     - pattern: /
+  #       content: |
+  #         # proxy_pass http://127.0.0.1:8080;
+  #         proxy_pass http://backend;
+  #         include proxy_params;
+  # # --------------
+  # # Load Balancer
+  # # --------------
+  # - name: load_balancer
+  #   upstream:
+  #     name: backend
+  #     content: |
+  #       server backend1.example.com       weight=5;
+  #       server backend2.example.com:8080;
+  #       server unix:/tmp/backend3;
+  #       server backup1.example.com:8080   backup;
+  #       server backup2.example.com:8080   backup;
+  #   server_name: www.exampe.com
+  #   locations:
+  #     - pattern: /
+  #       content: |
+  #         proxy_pass http://backend;
+  #         include proxy_params;
+  # --------------
+  # status page
+  # --------------
+  - name: status
+    server_name: localhost
+    listen: 8080
+    access_log: 'off'
+    locations:
+      - pattern: "/nginx_status"
+        content: |
+          stub_status on;
+          access_log off;
+          allow 127.0.0.1;
+          deny all;
+      - pattern: "/status"
+        content: |
+          fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+          include snippets/fastcgi-php.conf;
+          fastcgi_intercept_errors on;
+          access_log off;
+          allow 127.0.0.1;
+          deny all;
 
 nginx_generate_dh_key: true
 nginx_dh_key_bit: 2048

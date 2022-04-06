@@ -1,0 +1,18 @@
+---
+- name: install japanese environment package
+  apt:
+    name: task-japanese
+- name: install font packages
+  apt:
+    name: "{{ common_japanese_fonts }}"
+- name: Ensure a locale exists
+  locale_gen:
+    name: ja_JP.UTF-8
+    state: present
+- name: get system locale
+  command: localectl status
+  register: result
+  changed_when: false
+- name: set locale
+  command: localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+  when: "'LANG=ja_JP.UTF-8' not in result.stdout"

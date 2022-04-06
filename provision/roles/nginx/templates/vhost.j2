@@ -2,33 +2,52 @@
 {% if item.server_name is defined -%}
 # Virtual Host configuration for {{ item.server_name }}
 {% endif -%}
+{% if item.upstream is defined -%}
+upstream {{ item.upstream.name }} {
+    {{ item.upstream.content }}
+}
+{% endif %}
+
+{% if item.ssl is defined -%}
+server {
+  listen {{ item.listen | default(80) }}{{ item.default | default(false) | ternary(' default_server', '') }};
+  listen [::]:{{ item.listen | default(80) }}{{ item.default | default(false) | ternary(' default_server', '') }};
+  {% if item.server_name is defined -%}
+  server_name {{ item.server_name if item.server_name is string else item.server_name | join(' ') }};
+  {% endif -%}
+  location ^~ /.well-known/acme-challenge/ {
+    default_type "text/plain";
+    alias /var/lib/dehydrated/acme-challenges/;
+  }
+  location / {
+      return 301 https://$host$request_uri;
+  }
+}
+{% endif -%}
+
 server {
     {% if item.ssl is undefined -%}
-    listen {{ item.listen|default(80) }}{{ ' default_server' if item.default|default(false) else ''  }};
-    listen [::]:{{ item.listen|default(80) }}{{ ' default_server' if item.default|default(false) else ''  }};
+    listen {{ item.listen | default(80) }}{{ item.default | default(false) | ternary(' default_server', '') }};
+    listen [::]:{{ item.listen | default(80) }}{{ item.default | default(false) | ternary(' default_server', '') }};
     {% else %}
-    listen 443 ssl http2{{ ' default_server' if item.default|default(false) else ''  }};
-    listen [::]:443 ssl http2{{ ' default_server' if item.default|default(false) else ''  }};
+    listen 443 ssl http2{{ item.default | default(false) | ternary(' default_server', '') }};
+    listen [::]:443 ssl http2{{ item.default | default(false) | ternary(' default_server', '') }};
     {% endif -%}
 
     {% if item.variables is defined -%}
-    {% for var_name, var_value in item.variables.items() -%}
-    set ${{ var_name }} "{{ var_value }}";
+    {% for variable in item.variables | default([]) -%}
+    set ${{ variable.name }} {{ variable.value }};
     {% endfor -%}
     {% endif -%}
 
-    {% if item.includes is defined -%}
-    {% for include_file in item.includes -%}
+    {% for include_file in item.includes | default([]) -%}
     include {{ include_file }};
     {% endfor -%}
-    {% endif -%}
 
-    {% if item.client_max_body_size is defined -%}
-    client_max_body_size {{ item.client_max_body_size }};
-    {% endif -%}
+    client_max_body_size {{ item.client_max_body_size | default(nginx_default_client_max_body_size) }};
 
     {% if item.server_name is defined -%}
-    server_name {{ item.server_name if item.server_name is string else item.server_name|join(' ') }};
+    server_name {{ item.server_name is string | ternary(item.server_name, item.server_name | join(' ')) }};
     {% endif -%}
 
     {% if item.access_log is defined -%}
@@ -43,25 +62,21 @@ server {
     {% endif -%}
 
     {% if item.index is defined -%}
-    index {{ item.index if item.index is string else item.index|join(' ') }};
+    index {{ item.index is string | ternary(item.index, item.index | join(' ')) }};
     {% endif -%}
 
-    {% if item.add_headers is defined -%}
-    {% for add_header in item.add_headers -%}
+    {% for add_header in item.add_headers | default([]) -%}
     add_header {{ add_header.name }} {{ add_header.value }};
     {% endfor -%}
-    {% endif -%}
 
-    {% if item.locations is defined -%}
-    {% for location in item.locations -%}
+    {% for location in item.locations | default([]) -%}
     {% if location.comment is defined -%}
     # {{ location.comment }}
     {% endif -%}
-    location {{ location.match_type|default('') }} {{ location.pattern }} {
-        {{ location.content }}
+    location {{ location.match_type | default('') }} {{ location.pattern }} {
+        {{ location.content | indent(8) }}
     }
     {% endfor -%}
-    {% endif -%}
 
     {% if item.ssl is defined -%}
     ssl on;
@@ -75,13 +90,13 @@ server {
     {% endif -%}
 
     {% if item.ssl.protocols is defined -%}
-    ssl_protocols {{ item.ssl.protocols|join(' ') }};
+    ssl_protocols {{ item.ssl.protocols | join(' ') }};
     {% endif -%}
     {% if item.ssl.ciphers is defined -%}
-    ssl_ciphers "{{ item.ssl.ciphers|join(':') }}";
+    ssl_ciphers "{{ item.ssl.ciphers | join(':') }}";
     {% endif -%}
     {% if item.ssl.prefer_server_ciphers is defined -%}
-    ssl_prefer_server_ciphers {{ 'on' if item.ssl.prefer_server_ciphers else 'off' }};
+    ssl_prefer_server_ciphers {{ item.ssl.prefer_server_ciphers | ternary('on', 'off') }};
     {% endif -%}
 
     {% if item.ssl.session_timeout is defined -%}
@@ -91,7 +106,7 @@ server {
     ssl_session_cache {{ item.ssl.session_cache }};
     {% endif -%}
     {% if item.ssl.session_tickets is defined -%}
-    ssl_session_tickets {{ 'on' if item.ssl.session_tickets else 'off' }};
+    ssl_session_tickets {{ item.ssl.session_tickets | ternary('on', 'off') }};
     {% endif -%}
 
     {% if item.ssl.dhparam is defined -%}
@@ -101,20 +116,20 @@ server {
 
     {% if item.ssl.hsts is defined -%}
     # HSTS (ngx_http_headers_module is required)
-    add_header Strict-Transport-Security "{{ item.ssl.hsts }}";
+    add_header Strict-Transport-Security "{{ item.ssl.hsts }}" always;
     {% endif -%}
 
     {% if item.ssl.stapling is defined -%}
     # OCSP Stapling ---
     # fetch OCSP records from URL in ssl_certificate and cache them
-    ssl_stapling {{ 'on' if item.ssl.stapling  else 'off' }};
+    ssl_stapling {{ item.ssl.stapling | ternary('on', 'off') }};
     {% endif -%}
     {% if item.ssl.stapling_verify is defined  -%}
-    ssl_stapling_verify {{ 'on' if item.ssl.stapling_verify else 'off' }};
+    ssl_stapling_verify {{ item.ssl.stapling_verify | ternary('on', 'off') }};
     {% endif -%}
     {% endif -%}
     {% if item.extra_setting is defined -%}
     # Extra setting
-    {{ item.extra_setting }}
+    {{ item.extra_setting | indent(8) }}
     {% endif %}
 }

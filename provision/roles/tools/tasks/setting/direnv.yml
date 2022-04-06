@@ -1,0 +1,9 @@
+- name: append direnv setting on skeleton directory
+  lineinfile:
+    path: /etc/skel/.bashrc
+    line: 'eval "$(direnv hook bash)"'
+- name: append direnv setting on remote user
+  lineinfile:
+    path: ~/.bashrc
+    line: 'eval "$(direnv hook bash)"'
+  become: false

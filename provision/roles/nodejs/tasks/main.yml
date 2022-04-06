@@ -1,0 +1,11 @@
+---
+- name: add repository
+  import_tasks: repository.yml
+  tags: repository
+- name: install nodejs
+  apt:
+    name: nodejs
+- name: install yarn
+  npm:
+    name: yarn
+    global: true

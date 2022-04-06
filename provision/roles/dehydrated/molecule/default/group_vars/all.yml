@@ -1,0 +1,5 @@
+---
+dehydrated_cfg:
+  CA: https://acme-staging-v02.api.letsencrypt.org/directory
+  CHALLENGETYPE: dns-01
+dehydrated_with_lexicon: true

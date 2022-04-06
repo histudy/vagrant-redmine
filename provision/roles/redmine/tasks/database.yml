@@ -1,0 +1,30 @@
+---
+- name: install database adapter(MySQL)
+  apt:
+    name:
+      - mariadb-client
+      - mariadb-server
+      - libmariadb-dev
+      - python{{ ansible_facts.distribution_major_version is version('11', '>=') | ternary('3', '')  }}-pymysql
+  when: redmine_db_cfg.production.adapter == 'mysql2'
+- name: localhost database setting
+  block:
+    - name: create database
+      mysql_db:
+        name: "{{ redmine_db_cfg.production.database }}"
+        encoding: "{{ redmine_db_cfg.production.encoding }}"
+        login_unix_socket: "{{ mariadb_unix_socket_path | default('/run/mysqld/mysqld.sock') }}"
+    - name: create database user
+      mysql_user:
+        name: "{{ redmine_db_cfg.production.username }}"
+        password: "{{ redmine_db_cfg.production.password }}"
+        host: "{{ item }}"
+        priv: "{{ redmine_db_cfg.production.database }}.*:ALL"
+        login_unix_socket: "{{ mariadb_unix_socket_path | default('/run/mysqld/mysqld.sock') }}"
+      loop:
+        - localhost
+        - 127.0.0.1
+      no_log: true
+  when:
+    - redmine_db_cfg.production.adapter == 'mysql2'
+    - redmine_db_cfg.production.host | default('localhost') in ['localhost', '127.0.0.1']

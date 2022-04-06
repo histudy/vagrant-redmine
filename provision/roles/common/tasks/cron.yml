@@ -1,0 +1,21 @@
+---
+- name: manage cron variables
+  cronvar:
+    user: "{{ item.user | default(omit) }}"
+    name: "{{ item.name }}"
+    value: "{{ item.value if item.removed | default(false) else omit }}"
+    state: "{{ tem.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ common_cron_vars }}"
+- name: manage cron jobs
+  cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    minute: "{{ item.minute | string if item.minute is defined else omit }}"
+    hour: "{{ item.hour | string if item.hour is defined else omit }}"
+    day: "{{ item.day | string if item.day is defined else omit }}"
+    month: "{{ item.month | string if item.month is defined else omit }}"
+    weekday: "{{ item.weekday | string if item.weekday is defined else omit }}"
+    disabled: "{{ item.disabled | default(false) }}"
+    user: "{{ item.user | default('root') }}"
+    state: "{{ tem.removed | default(false) | ternary('absent', 'present') }}"
+  loop: "{{ common_cron_jobs }}"

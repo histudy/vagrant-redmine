@@ -1,0 +1,11 @@
+---
+- name: Add backports repository
+  apt_repository:
+    filename: backports
+    repo: deb http://deb.debian.org/debian {{ ansible_facts.distribution_release }}-backports main
+    state: present
+- name: change apt default release
+  template:
+    src: repository/99default_release.j2
+    dest: /etc/apt/apt.conf.d/99default_release
+    mode: "0644"

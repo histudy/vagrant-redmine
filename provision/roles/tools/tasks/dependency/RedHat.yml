@@ -1,0 +1,4 @@
+---
+- name: install dependency packages
+  dnf:
+    name: "{{ tools_dependency_packages }}"

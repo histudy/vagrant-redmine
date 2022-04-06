@@ -1,0 +1,59 @@
+require 'yaml'
+
+REDMINE_HOME = '{{ redmine_home }}'
+REDMINE_ROOT = REDMINE_HOME
+REDMINE_CONFIG_DIR = '{{ redmine_config_dir }}'
+REDMINE_TMP_DIR = '{{ redmine_tmp_dir }}'
+REDMINE_THEME_DIR = '{{ redmine_theme_dir }}'
+REDMINE_PLUGIN_DIR = '{{ redmine_plugin_dir }}'
+REDMINE_SCRIPT_DIR = '{{ redmine_script_dir }}'
+REDMINE_IMPORT_FILE_DIR = REDMINE_TMP_DIR
+
+User.current = User.find(1)
+
+{% include "settings/admin.rb" %}
+{% include "settings/status.rb" %}
+{% include "settings/tracker.rb" %}
+{% include "settings/setting.rb" %}
+{% include "settings/role.rb" %}
+
+ALLOW_FIELD_FORMTS = [
+  'string',
+  'text',
+  'link',
+  'date',
+  'list',
+  'int',
+  'float',
+  'bool',
+  'version',
+  'user',
+  'attachment',
+  'enumeration'
+].map(&:freeze).freeze
+
+{% include "settings/custom_field.rb" %}
+{% include "settings/issue_custom_field.rb" %}
+{% include "settings/project_custom_field.rb" %}
+{% include "settings/user_custom_field.rb" %}
+
+{% include "settings/priority.rb" %}
+{% include "settings/document_category.rb" %}
+{% include "settings/time_entry_activity.rb" %}
+{% include "settings/custom_query.rb" %}
+
+{% include "settings/workflow.rb" %}
+{% include "settings/workflow_permission.rb" %}
+{% include "settings/user.rb" %}
+{% include "settings/group.rb" %}
+{% include "settings/project.rb" %}
+{% include "settings/attachment.rb" %}
+
+# -------------
+# プラグイン
+# -------------
+
+{% include "settings/message_customize.rb" %}
+{% include "settings/view_customize.rb" %}
+{% include "settings/issue_templates.rb" %}
+{% include "settings/note_templates.rb" %}

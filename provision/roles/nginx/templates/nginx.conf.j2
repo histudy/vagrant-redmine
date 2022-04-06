@@ -84,8 +84,8 @@ http {
 
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
+    {% if nginx_cfg.extra_setting is defined -%}
+    {{ nginx_cfg.extra_setting | indent(4) }}
+    {% endif %}
 }
 
-{% if nginx_cfg.extra_setting is defined -%}
-{{ nginx_cfg.extra_setting }}
-{% endif %}

@@ -1,0 +1,20 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  check_mode: true
+  tasks:
+    - name: test dehydrated package
+      apt:
+        name: dehydrated
+      register: result
+    - name: assert package
+      assert:
+        that: result is not changed
+    - name: test lexicon package
+      apt:
+        name: lexicon
+      register: result
+    - name: assert package
+      assert:
+        that: result is not changed

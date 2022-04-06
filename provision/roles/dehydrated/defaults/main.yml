@@ -1,0 +1,35 @@
+---
+dehydrated_cfg: {}
+  # CA: https://acme-v02.api.letsencrypt.org/directory
+  ## challenge type: http-01 / dns-01 / tls-plain-01
+  # CHALLENGETYPE: dns-01
+
+dehydrated_with_lexicon: true
+
+dehydrated_domains: []
+  # - name: example.com
+  #   domains:
+  #     - example.com
+  #     - *.example.com
+  # - name: example.net
+  #   domains: example.net
+
+dehydrated_auto_execute: false
+
+dehydrated_cron:
+  job: dehydrated --cron
+  hour: 4
+  minute: 5
+
+dehydrated_hook_initialize: ""
+dehydrated_hook_deploy_challenge: ""
+dehydrated_hook_clean_challenge: ""
+dehydrated_hook_sync_cert: ""
+dehydrated_hook_deploy_cert: ""
+dehydrated_hook_deploy_ocsp: ""
+dehydrated_hook_unchanged_cert: ""
+dehydrated_hook_invalid_challenge: ""
+dehydrated_hook_request_failure: ""
+dehydrated_hook_generate_csr: ""
+dehydrated_hook_startup_hook: ""
+dehydrated_hook_exit_hook: ""
