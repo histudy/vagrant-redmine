@@ -34,7 +34,7 @@ redmine_settings:
   rest_api_enabled: 1
 
 ## -----------------
-## Redmuneの初期ユーザ0
+## Redmineの設定(システム管理者)
 ## -----------------
 redmine_admin:
   login: admin
@@ -48,9 +48,9 @@ redmine_admin:
 ## -----------------
 ## Redmuneの動作設定(sudoモードを有効化)
 ## -----------------
-redmine_cfg:
-  default:
-    sudo_mode: true
+# redmine_cfg:
+#   default:
+#     sudo_mode: true
 
 # --------------------
 # Redmineにインストールするテーマ
@@ -66,44 +66,4 @@ redmine_themes:
 # --------------------
 # Redmineにインストールするプラグイン
 # --------------------
-redmine_plugins: 
-  ## -------
-  ## 定番
-  ## -------
-  - name: issue_templates
-    repo: "https://github.com/agileware-jp/redmine_issue_templates.git"
-  - name: view_customize
-    repo: "https://github.com/onozaty/redmine-view-customize.git"
-    directory: view_customize
-  - name: message_customize
-    repo: "https://github.com/ishikawa999/redmine_message_customize.git"
-    post_install_action: |
-      ln -sf {{ redmine_home }}/plugins/redmine_message_customize/35_change_load_order_locales.rb {{ redmine_home }}/config/initializers/35_change_load_order_locales.rb
-  ## -------
-  ## チケットトラッキング
-  ## -------
-  - name: issues_panel
-    repo: https://github.com/redmica/redmine_issues_panel.git
-  ## -------
-  ## 時間管理
-  ## -------
-  - name: toggl2redmine
-    repo: https://github.com/jigarius/toggl2redmine.git
-    directory: toggl2redmine
-    version: "4.x"
-  ## -------
-  ## ユーティリティ
-  ## -------
-  - name: absolute_dates
-    repo: https://github.com/suer/redmine_absolute_dates.git
-  - name: webhook
-    repo: https://github.com/suer/redmine_webhook.git
-  - name: theme_changer
-    repo: https://github.com/haru/redmine_theme_changer.git
-  - name: additionals
-    repo: https://github.com/AlphaNodes/additionals.git
-    directory: additionals
-    version: stable
-  - name: sudo
-    repo: https://github.com/AlphaNodes/redmine_sudo.git
-    version: stable
+redmine_plugins: []

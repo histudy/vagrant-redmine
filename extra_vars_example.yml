@@ -4,9 +4,9 @@
 # ========================
 
 # --------------------
-# Redmineのバージョン
+# redmineのバージョン
 # --------------------
-# redmine_version: "4.1-stable"
+# redmine_version: "4.2-stable"
 
 # --------------------
 # redmineの動作モード(production / development)
@@ -18,135 +18,46 @@
 # --------------------
 # redmine_user: vagrant
 
-# --------------------
-# Redmineの設定(システム管理者)
-# --------------------
-redmine_admin:
-  login: admin
-  firstname: 太郎
-  lastname: 山田
-  mail: taro@example.net
-  language: ja
-  password: password
-  must_change_passwd: false
 
-# --------------------
-# Redmineの設定(ロール)
-# --------------------
-# redmine_roles:
-#   - id: 3
-#     name: 管理者
-#   - id: 4
-#     name: 開発者
-#   - id: 5
-#     name: 報告者
-#     permissions:
-#     ## ----
-#       ## プロジェクト
-#       ## ----
-#       ### クエリの保存
-#       - save_queries
-#       ## ----
-#       ## フォーラム
-#       ## ----
-#       ### メッセージの閲覧
-#       - view_messages
-#       ### メッセージの追加
-#       - add_messages
-#       ### 自分が追加したメッセージの編集
-#       - edit_own_messages
-#       ## ----
-#       ## チケットトラッキング
-#       ## ----
-#       ### チケットの閲覧
-#       - view_issues
-#       ### チケットの追加
-#       - add_issues
-#       ### 自分が追加したチケットの編集
-#       - edit_own_issues
-#       ### コメントの追加
-#       - add_issue_notes
-#       ### 自分が追加したコメントの編集
-#       - edit_own_issue_notes
-#       ## ----
-#       ## ガントチャート
-#       ## ----
-#       ### ガントチャートの閲覧
-#       - view_gantt
-#       ## ----
-#       ## カレンダー
-#       ## ----
-#       ### カレンダーの閲覧
-#       - view_calendar
-#       ## ----
-#       ## 時間管理
-#       ## ----
-#       ### 作業時間の記録
-#       - log_time
-#       ###  作業時間の閲覧
-#       - view_time_entries
-#       ## ----
-#       ## ニュース
-#       ## ----
-#       ### ニュースの閲覧
-#       - view_news
-#       ### ニュースへのコメント
-#       - comment_news
-#       ## ----
-#       ## 文書
-#       ## ----
-#       ### 文書の閲覧
-#       - view_documents
-#       ## ----
-#       ## Wiki
-#       ## ----
-#       ### Wikiの閲覧
-#       - view_wiki_pages
-#       ### Wiki履歴の閲覧
-#       - view_wiki_edits
-#       ## ----
-#       ## ファイル
-#       ## ----
-#       ### ファイルの閲覧
-#       - view_files
-#       ## ----
-#       ## リポジトリ
-#       ## ----
-#       ### リポジトリの閲覧
-#       - browse_repository
-#       ### 変更履歴の閲覧
-#       - view_changesets
+## -----------------
+## Redmuneの動作設定
+## -----------------
+redmine_cfg:
+  default:
+    sudo_mode: true
 
 # --------------------
 # Redmineの設定(チケットのステータス)
 # --------------------
-# redmine_issue_statuses:
-#   - id: 1
-#     name: 未対応
-#     is_closed: false
-#     position: 1
-#   - id: 2
-#     name: 対応中
-#     is_closed: false
-#     position: 2
-#   - id: 3
-#     name: 対応済み
-#     is_closed: false
-#     position: 3
-#   - id: 4
-#     name: フィードバック
-#     is_closed: false
-#     position: 4
-#   - name: 確認待ち
-#     position: 5
-#   - id: 5
-#     name: 終了
-#     is_closed: true
-#     position: 6
-#   - id: 6
-#     name: 破棄
-#     is_closed: true
-#     position: 7
+redmine_issue_statuses:
+  - id: 1
+    name: 未対応
+    is_closed: false
+    position: 1
+  - id: 2
+    name: 対応中
+    is_closed: false
+    position: 2
+  - id: 3
+    name: 対応済み
+    is_closed: false
+    position: 3
+  - id: 4
+    name: フィードバック
+    is_closed: false
+    position: 4
+  - name: 確認待ち
+    position: 5
+  - name: 経過観察
+    position: 6
+  - id: 5
+    name: 完了
+    is_closed: true
+    position: 7
+  - id: 6
+    name: 破棄
+    is_closed: true
+    position: 8
 
 # --------------------
 # Redmineの設定(トラッカー)
@@ -154,35 +65,15 @@ redmine_admin:
 redmine_trackers:
   - id: 1
     name: 不具合
-    position: 1
+    position: 3
   - id: 2
-    name: 機能
+    name: タスク
     position: 2
   - id: 3
-    name: 運用保守
-    position: 3
-  - name: その他
+    name: 運用・保守
     position: 4
-    core_fields:
-      # 担当者
-      - assigned_to_id
-      # カテゴリ
-      - category_id
-      # バージョン
-      # - fixed_version_id
-      # 親チケット
-      # - parent_issue_id
-      # 開始日
-      # - start_date
-      # 期日
-      - due_date
-      # 予定工数
-      # - estimated_hours
-      # 進捗率
-      # - done_ratio
-      # 説明
-      - description
-    copy_workflow_from: 機能
+  - name: 要望
+    position: 1
 
 # --------------------
 # Redmineの設定(ワークフロー)
@@ -248,453 +139,103 @@ redmine_trackers:
 #         to: [確認待ち, 終了]
 
 # --------------------
-# Redmineの設定(選択肢の値)
+# Redmineの設定(優先順位))
 # --------------------
-# redmine_enumerations:
-#   ## チケットの優先度
-#   - id: 1
-#     name: 低い
-#     type: IssuePriority
-#     active: true
-#     is_default: false
-#   - id: 2
-#     name: 通常
-#     type: IssuePriority
-#     active: true
-#     is_default: true
-#   - id: 3
-#     name: 高い
-#     type: IssuePriority
-#     active: true
-#     is_default: false
-#   - id: 4
-#     name: 至急
-#     type: IssuePriority
-#     active: true
-#     is_default: false
-#   - id: 5
-#     name: 緊急
-#     type: IssuePriority
-#     active: true
-#     is_default: false
-#   ## 文書カテゴリ
-#   - id: 6
-#     name: ユーザーマニュアル
-#     type: DocumentCategory
-#     active: true
-#     is_default: false
-#   - id: 7
-#     name: 技術ドキュメント
-#     type: DocumentCategory
-#     active: true
-#     is_default: false
-#   ## 作業分類
-#   - id: 8
-#     name: 設計
-#     type: TimeEntryActivity
-#     active: true
-#     is_default: false
-#   - id: 9
-#     name: コーディング
-#     type: TimeEntryActivity
-#     active: true
-#     is_default: false
-#   - name: デザイン
-#     type: TimeEntryActivity
-#     active: true
-#     is_default: false
-#   - name: テスト
-#     type: TimeEntryActivity
-#     active: true
-#     is_default: false
-#   - name: ドキュメント作成
-#     type: TimeEntryActivity
-#     active: true
-#     is_default: false
+redmine_priorities:
+  - name: 低い
+    id: 1
+  - name: 通常
+    id: 2
+    is_default: true
+  - name: 高い
+    id: 3
+  - name: 早急に
+    id: 4
+  - name: 緊急
+    id: 5
 
 # --------------------
-# Redmineの設定(カスタムフィールド[プロジェクト])
+# Redmineの設定(文書カテゴリ)
 # --------------------
-redmine_project_custom_fields:
-  - name: Slack Channel
-    field_format: string
-  - name: Slack URL
-    field_format: link
-    visible: false
+redmine_document_categories:
+  - name: ユーザーマニュアル
+    id: 6
+  - name: 開発ドキュメント
+    id: 7
 
 # --------------------
-# Redmineの設定(カスタムフィールド[チケット])
+# Redmineの設定(作業分類)
 # --------------------
-# redmine_issue_custom_fields:
-#     ## 名称
-#   - name: テキスト
-#     ## 形式
-#     ## * string:テキスト
-#     ## * version:バージョン
-#     ## * attachment:ファイル
-#     ## * user:ユーザー
-#     ## * list:リスト
-#     ## * link:リンク
-#     ## * float:小数
-#     ## * int:整数
-#     ## * date:日付
-#     ## * bool:真偽値
-#     ## * text:長いテキスト
-#     ## * enumeration:キー・バリュー リスト
-#     field_format: string
-#     ## 説明
-#     # description: ""
-#     ## 最小(形式が以下の場合のみ)
-#     ## * テキスト
-#     ## * 整数
-#     ## * 小数
-#     ## * リンク
-#     ## * 長いテキスト
-#     # min_length: ""
-#     ## 最大(形式が以下の場合のみ)
-#     ## * テキスト
-#     ## * 整数
-#     ## * 小数
-#     ## * リンク
-#     ## * 長いテキスト
-#     # max_length: ""
-#     ## 正規表現(形式が以下の場合のみ)
-#     ## * テキスト
-#     ## * 整数
-#     ## * 小数
-#     ## * リンク
-#     ## * 長いテキスト
-#     # regexp: ""
-#     ## デフォルト値(形式が以下の場合のみ)
-#     ## * テキスト
-#     ## * リンク
-#     ## * 整数
-#     ## * 小数
-#     ## * 日付
-#     ## * 真偽値(1:はい/0:いいえ)
-#     ## * 長いテキスト
-#     # default_value: ""
-#     ## テキスト書式(形式が「テキスト」または「長いテキスト」の場合のみ)
-#     # text_formatting: false
-#     ## 値に設定するリンクURL / URL(形式が以下以外の場合のみ)
-#     ## * ユーザー
-#     ## * バージョン
-#     ## * ファイル
-#     ## * 長いテキスト
-#     # url_pattern: ""
-#     ## 表示(入力形式)
-#     ## ※形式が以下の場合のみ
-#     ## * バージョン
-#     ## * ユーザー
-#     ## * リスト
-#     ## * 真偽値
-#     ## * キー・バリュー リスト
-#     ## ※設定値一覧
-#     ## *(空):ドロップダウンリスト
-#     ## * check_box:チェックボックス
-#     ## * radio:ラジオ(形式が「真偽値」の場合のみ)
-#     # edit_tag_style: ""
-#     ## 複数選択可(形式が以下の場合のみ)
-#     ## * ユーザー
-#     ## * バージョン
-#     ## * リスト
-#     ## * キー・バリュー リスト
-#     # multiple: false
-#     ## 必須
-#     # is_required: false
-#     ## 表示(すべて)
-#     # visible: true
-#     ## 表示(表示するロールを限定)
-#     # visible:
-#     #   - 管理者
-#     #   - 開発者
-#     ## 検索対象(形式が以下の場合のみの場合のみ)
-#     ## * テキスト
-#     ## * リスト
-#     ## * 長いテキスト
-#     # searchable: false
-#     ## フィルタとして使用(形式が「ファイル」以外の場合のみ)
-#     # is_filter: false
-#     ## トラッカー
-#     # trackers:
-#     #   - 不具合
-#     #   - 機能
-#     ## プロジェクト
-#     # projects:
-#     #     - プロジェクト1
-#     #     - プロジェクト2
-#     #     - プロジェクト3
-#   - name: バージョン
-#     field_format: version
-#     ## ステータス(形式が「バージョン」の場合のみ)
-#     version_status:
-#       - open
-#       - locked
-#   - name: ファイル
-#     field_format: attachment
-#     ## 許可する拡張子(形式が「ファイル」の場合のみ)
-#     extensions_allowed:
-#       - jpg
-#       - gif
-#       - png
-#   - name: ユーザー
-#     field_format: user
-#     ## ロール(形式が「ユーザー」の場合のみ)
-#     user_role:
-#       - 管理者
-#       - 開発者
-#   - name: リスト
-#     field_format: list
-#     ## 選択肢(形式が「リスト」の場合のみ)
-#     possible_values: |
-#       選択肢1
-#       選択肢2
-#       選択肢3
-#       選択肢4
-#   - name: リンク
-#     field_format: link
-#   - name: 小数
-#     field_format: float
-#   - name: 整数
-#     field_format: int
-#   - name: 日付
-#     field_format: date
-#   - name: 真偽値
-#     field_format: bool
-#   - name: 長いテキスト
-#     field_format: text
-#   - name: キー・バリュー リスト
-#     field_format: enumeration
+redmine_time_entry_activities:
+  - name: 設計
+    id: 8
+  - name: コーディング
+    id: 9
+  - name: テスト
+  - name: ドキュメント
 
-# --------------------
-# Redmineの設定(カスタムフィールド[ユーザー])
-# --------------------
-redmine_user_custom_fields:
-  - name: Slack Username
-    field_format: string
-  - name: ChatWork ID
-    field_format: string
-
-# --------------------
-# Redmineの設定(管理)
-# --------------------
-redmine_settings:
-  ## -------------
-  ## 認証
-  ## -------------
-  ## 認証が必要
-  login_required: 1
-  ## 自動ログイン
-  autologin: 7
-  ## -------------
-  ## 表示
-  ## -------------
-  ## 新規オブジェクト作成タブ
-  new_item_menu_tab: 1
-  ## -------------
-  ## API
-  ## -------------
-  ## RESTによるWebサービスを有効にする
-  rest_api_enabled: 1
-  ## -------------
-  ## プロジェクト
-  ## -------------
-  ## デフォルトで新しいプロジェクトは公開にする
-  default_projects_public: 0
-  ## 新規プロジェクトにおいてデフォルトで有効になるモジュール
-  default_projects_modules:
-    ## チケットトラッキング
-    - issue_tracking
-    ## 時間管理
-    - time_tracking
-    ## ニュース
-    - news
-    ## 文書
-    - documents
-    ## ファイル
-    - files
-    ## Wiki
-    - wiki
-    ## リポジトリ
-    # - repository
-    ## フォーラム
-    # - boards
-    ## カレンダー
-    - calendar
-    ## ガントチャート
-    # - gantt
-    ## Easy Gantt(プラグイン)
-    - easy_gantt
-    ## Agail(プラグイン)
-    - agile
-    ## チケットテンプレート(プラグイン)
-    - issue_templates
-  ## 新規プロジェクトにおいてデフォルトで有効になるトラッカー
-  default_projects_trackers:
-    - 不具合
-    - 機能
-    - 運用保守
-    - その他
-  ## -------------
-  ## リポジトリ
-  ## -------------
-  ## 使用するバージョン管理システム
-  enabled_scm:
-    - Git
-  ## -------------
-  ## プラグインの設定
-  ## -------------
-  ## issue_templates
-  plugin_redmine_issue_templates:
-    apply_global_template_to_all_projects: 'true'
-  ## slack
-  plugin_redmine_slack:
-    slack_url: ''
-    channel: ''
-    icon: https://raw.github.com/sciyoshi/redmine-slack/gh-pages/icon.png
-    username: redmine
-    display_watchers: 'no'
-    post_updates: '1'
-    post_wiki_updates: '1'
-  ## chatwork
-  plugin_redmine_chatwork:
-    token: ''
-    room: ''
-    post_updates: '1'
-    post_wiki_updates: '1'
-
-# --------------------
-# Redmineの設定(ユーザー)
-# --------------------
-# redmine_users:
-#   - login: ichiro
-#     firstname: 一郎
-#     lastname: 田中
-#     mail: ichiro@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#   - login: jiro
-#     firstname: 二郎
-#     lastname: 鈴木
-#     mail: jiro@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#   - login: saburo
-#     firstname: 三郎
-#     lastname: 山本
-#     mail: saburo@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#   - login: shiro
-#     firstname: 四郎
-#     lastname: 小林
-#     mail: shiro@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#   - login: goro
-#     firstname: 五郎
-#     lastname: 土井
-#     mail: goro@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#   - login: hanako
-#     firstname: 花子
-#     lastname: 山田
-#     mail: hanako@example.net
-#     password: str0ng@p455w0rd
-#     must_change_passwd: true
-#     mail_notification: none
-#     locked: true
-
-# --------------------
-# Redmineの設定(プロジェクト)
-# --------------------
-redmine_projects:
-    # 識別子
-  - identifier: shinared
-    # 名称
-    name: redmine.tokyo
-    # 説明
-    description: |
-      フリー(OSS)のプロジェクト管理ツール Redmine の恩恵を共有することを目的として、
-      勉強会を開催したりチケットで課題や知見を共有するというような活動を、主に関東を中心に行うコミュニティです。
-      でも中心メンバには関東以外の人間も多いです。
-    # ホームページ
-    homepage: https://redmine.tokyo/projects/shinared
-    # 公開
-    is_public: true
-    # トラッカー
-    trackers:
-      - 不具合
-      - 機能
-      - 運用保守
-  - identifier: unofficialcooking
-    # 名称
-    name: Unofficial Redmine Cooking
-    description: |
-      Redmineの機能が少し不足していて、困る場合がありませんか？
-
-      既に対応方法があっても、探すのに苦労する場合もあります。
-      そのような情報を蓄積して、各自がRedmineをより効率的に活用できるようにしていきましょう。
-    # ホームページ
-    homepage: https://redmine.tokyo/projects/unofficialcooking
-    # 親プロジェクト(プロジェクト名または識別子で指定)
-    parent: redmine.tokyo
-    # メンバーを継承
-    inherit_members: true
-    # 公開
-    is_public: true
-    # モジュール
-    modules:
-      # チケットトラッキング
-      - issue_tracking
-      # お知らせ(ニュース)
-      - news
-      # マニュアル(文書)
-      - documents
-      # Wiki
-      - wiki
-      ## フォーラム
-      - boards
-      # チケットテンプレート
-      - issue_templates
 
 # --------------------
 # インストールするテーマ
 # --------------------
 redmine_themes:
+  - name: PurpleMine2
+    repo: https://github.com/mrliptontea/PurpleMine2.git
   - name: farend_fancy
     repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
   - name: farend_basic
     repo: "https://github.com/farend/redmine_theme_farend_basic.git"
-  - name: PurpleMine2
-    repo: https://github.com/mrliptontea/PurpleMine2.git
 
 # --------------------
 # インストールするプラグイン
 # --------------------
 redmine_plugins:
+  ## -------
+  ## 定番
+  ## -------
+  - name: issue_templates
+    repo: "https://github.com/agileware-jp/redmine_issue_templates.git"
   - name: view_customize
     repo: "https://github.com/onozaty/redmine-view-customize.git"
     directory: view_customize
   - name: message_customize
     repo: "https://github.com/ishikawa999/redmine_message_customize.git"
-  - name: issue_templates
-    repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
-  - name: vividtone_my_page_blocks
-    repo: "https://github.com/vividtone/redmine_vividtone_my_page_blocks.git"
-  - name: wiki_page_tree
-    repo: "https://github.com/ledsun/redmine_wiki_page_tree.git"
-  - name: slack
-    repo: "https://github.com/cat-in-136/redmine-slack.git"
-    version: evolved
-  - name: chatwork
-    repo: "https://github.com/wate/redmine_chatwork.git"
-  - name: drawio
-    repo: "https://github.com/mikitex70/redmine_drawio.git"
-  # - name: easy_gantt
-  #   file: /vagrant/plugins/EasyGanttFree-4.x.zip
-  # - name: agile
-  #   file: /vagrant/plugins/redmine_agile-1_5_3-light.zip
-  # - name: checklists
-  #   file: /vagrant/plugins/redmine_checklists-3_1_17-light.zip
+    post_install_action: |
+      ln -sf {{ redmine_home }}/plugins/redmine_message_customize/35_change_load_order_locales.rb {{ redmine_home }}/config/initializers/35_change_load_order_locales.rb
+  ## -------
+  ## プロジェクト
+  ## -------
+  - name: copy_project
+    repo: https://github.com/wate/redmine_copy_project.git
+  ## -------
+  ## チケットトラッキング
+  ## -------
+  - name: issues_panel
+    repo: https://github.com/redmica/redmine_issues_panel.git
+  ## -------
+  ## 時間管理
+  ## -------
+  - name: toggl2redmine
+    repo: https://github.com/jigarius/toggl2redmine.git
+    directory: toggl2redmine
+    version: "4.x"
+  ## -------
+  ## ユーティリティ
+  ## -------
+  - name: ui_extension
+    repo: https://github.com/redmica/redmica_ui_extension.git
+    directory: redmica_ui_extension
+  - name: absolute_dates
+    repo: https://github.com/suer/redmine_absolute_dates.git
+  - name: webhook
+    repo: https://github.com/suer/redmine_webhook.git
+  - name: theme_changer
+    repo: https://github.com/haru/redmine_theme_changer.git
+  - name: additionals
+    repo: https://github.com/AlphaNodes/additionals.git
+    directory: additionals
+    version: stable
+  - name: sudo
+    repo: https://github.com/AlphaNodes/redmine_sudo.git
+    version: stable
+
