@@ -1,0 +1,66 @@
+---
+- name: add repository
+  import_tasks: repository.yml
+  tags: repository
+- name: install aptitude
+  apt:
+    name: aptitude
+- name: setup sudo
+  import_tasks: sudo.yml
+  tags: sudo
+- name: set hostname
+  hostname:
+    name: "{{ common_hostname }}"
+  tags:
+    - hostname
+- name: change home directory permission
+  file:
+    path: /home
+    mode: "0755"
+    state: directory
+- name: install common packages
+  apt:
+    name: "{{ common_packages }}"
+- name: manage user skeleton directory
+  import_tasks: skeleton.yml
+  tags: skeleton
+- name: manage user
+  import_tasks: user.yml
+  tags: user
+- name: setup firewall
+  import_tasks: firewall.yml
+  tags: firewall
+- name: setup japanese environment
+  import_tasks: japanese.yml
+  tags: japanese
+- name: setup etckeeper
+  import_tasks: etckeeper.yml
+  tags: etckeeper
+- name: setup package auto update
+  import_tasks: auto_update.yml
+  tags: auto_update
+- name: manage files
+  import_tasks: files.yml
+  tags: file
+- name: manage cron
+  import_tasks: cron.yml
+  tags: cron
+- name: manage log
+  import_tasks: log.yml
+  tags: log
+- name: setup ssh
+  import_tasks: ssh.yml
+  tags: ssh
+- name: setup fail2ban
+  import_tasks: fail2ban.yml
+  tags: fail2ban
+- name: setup swap
+  import_tasks: swap.yml
+  when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0
+  tags: swap
+- name: manage backup setting
+  import_tasks: backup.yml
+  tags: backup
+- name: setup other tools
+  import_tasks: tools.yml
+  tags: tools

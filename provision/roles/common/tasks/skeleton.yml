@@ -1,0 +1,21 @@
+---
+- name: create web user directory
+  file:
+    path: /etc/skel/public
+    mode: "0755"
+    state: directory
+- block:
+    - name: create mail qmail-style delivery box user direcrory
+      file:
+        path: /etc/skel/{{ item }}
+        mode: "0700"
+        state: directory
+      loop:
+        - Maildir
+        - Maildir/new
+        - Maildir/cur
+        - Maildir/tmp
+  when:
+    - postfix_cfg is defined
+    - postfix_cfg.home_mailbox is defined
+    - postfix_cfg.home_mailbox == 'Maildir/'

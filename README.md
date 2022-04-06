@@ -33,7 +33,7 @@ ok: [default] => {
 システム構成
 -----------------
 
-* Debian 10
+* Debian 11
 * MariaDB
 * Nginx
 

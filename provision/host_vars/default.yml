@@ -1,19 +1,3 @@
-nginx_generate_dh_key: false
-
-nginx_cfg:
-  http:
-    client_max_body_size: 100M
-
-nginx_vhosts:
-  - name: default
-    server_name: example.com
-    default: true
-    locations:
-      - pattern: /
-        content: |
-          proxy_pass http://unix:///opt/redmine/tmp/redmine.sock;
-          include proxy_params;
-
 redmine_settings:
   ## -------------
   ## 全般
@@ -48,3 +32,122 @@ redmine_settings:
   ## -------------
   ## RESTによるWebサービスを有効にする
   # rest_api_enabled: 1
+
+## -----------------
+## Redmuneの動作設定(sudoモードを有効化)
+## -----------------
+redmine_cfg:
+  default:
+    sudo_mode: true
+
+# --------------------
+# Redmineにインストールするテーマ
+# --------------------
+redmine_themes:
+  - name: PurpleMine2
+    repo: "https://github.com/mrliptontea/PurpleMine2.git"
+  - name: farend_fancy
+    repo: "https://github.com/farend/redmine_theme_farend_fancy.git"
+  - name: farend_basic
+    repo: "https://github.com/farend/redmine_theme_farend_basic.git"
+  - name: gitmike
+    repo: "https://github.com/makotokw/redmine-theme-gitmike.git"
+
+# --------------------
+# Redmineにインストールするプラグイン
+# --------------------
+redmine_plugins:
+  ## -------
+  ## 定番
+  ## -------
+  - name: issue_templates
+    repo: "https://github.com/agileware-jp/redmine_issue_templates.git"
+  - name: view_customize
+    repo: "https://github.com/onozaty/redmine-view-customize.git"
+    directory: view_customize
+  - name: message_customize
+    repo: "https://github.com/ishikawa999/redmine_message_customize.git"
+    post_install_action: |
+      ln -sf {{ redmine_home }}/plugins/redmine_message_customize/35_change_load_order_locales.rb {{ redmine_home }}/config/initializers/35_change_load_order_locales.rb
+  - name: ui_extension
+    repo: https://github.com/redmica/redmica_ui_extension.git
+    directory: redmica_ui_extension
+  # - name: default_custom_query
+  #   repo: https://github.com/hidakatsuya/redmine_default_custom_query.git
+  ## -------
+  ## プロジェクト
+  ## -------
+  - name: copy_project
+    repo: https://github.com/wate/redmine_copy_project.git
+  ## -------
+  ## チケットトラッキング
+  ## -------
+  # - name: issues_tree
+  #   repo: https://github.com/Loriowar/redmine_issues_tree.git
+  #   version: 4.1.x
+  # - name: checklists
+  #   file: ../plugins/redmine_checklists-3_1_19-light.zip
+  - name: issues_panel
+    repo: https://github.com/redmica/redmine_issues_panel.git
+  ## -------
+  ## 時間管理
+  ## -------
+  - name: toggl2redmine
+    repo: https://github.com/jigarius/toggl2redmine.git
+    directory: toggl2redmine
+    version: "5.x"
+  ## -------
+  ## 通知
+  ## -------
+  - name: slack
+    repo: "https://github.com/cat-in-136/redmine-slack.git"
+    version: evolved
+  # - name: chatwork
+  #   repo: "https://github.com/wate/redmine_chatwork.git"
+  # - name: messenger
+  #   repo: "https://github.com/AlphaNodes/redmine_messenger.git"
+  ## -------
+  ## Wiki
+  ## -------
+  # - name: wiki_templates
+  #   repo: https://github.com/wate/redmine_wiki_templates.git
+  # - name: drawio
+  #   repo: https://github.com/mikitex70/redmine_drawio.git
+  - name: graphviz
+    repo: https://github.com/wate/graphviz.git
+    directory: graphviz
+    required_packages:
+      - graphviz
+  # - name: glossary
+  #   repo: https://github.com/torutk/redmine_glossary.git
+  ## -------
+  ## ファイル
+  ## -------
+  # - name: dmsf
+  #   repo: https://github.com/danmunn/redmine_dmsf.git
+  #   version: "v2.4.7"
+  #   required_packages:
+  #     - ruby-xapian
+  ## -------
+  ## ガントチャート
+  ## -------
+  # - name: easy_gantt
+  #   file: ../plugins/EasyGanttFree-4.x.zip
+  ## -------
+  ## ユーティリティ
+  ## -------
+  - name: absolute_dates
+    repo: https://github.com/suer/redmine_absolute_dates.git
+  # - name: full_text_search
+  #   repo: https://github.com/clear-code/redmine_full_text_search.git
+  - name: webhook
+    repo: https://github.com/suer/redmine_webhook.git
+  - name: theme_changer
+    repo: https://github.com/haru/redmine_theme_changer.git
+  - name: additionals
+    repo: https://github.com/AlphaNodes/additionals.git
+    directory: additionals
+    version: stable
+  - name: sudo
+    repo: https://github.com/AlphaNodes/redmine_sudo.git
+    version: stable

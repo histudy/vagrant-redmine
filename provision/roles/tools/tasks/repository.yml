@@ -1,0 +1,18 @@
+---
+- name: find dependency packages install task file
+  set_fact:
+    repository_dependency_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}/{{ ansible_facts.distribution_major_version }}.yml'
+        - '{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}.yml'
+        - '{{ ansible_facts.os_family }}.yml'
+      paths:
+        - tasks/repository/dependency
+- name: install add repository dependency packages
+  include_tasks: "{{ repository_dependency_task_file }}"
+- name: add tool repository
+  include_tasks: "{{ item }}"
+  when: install_tools is undefined or (item | basename)[0:-4] in install_tools
+  loop: "{{ lookup('fileglob', 'tasks/repository/*.yml', wantlist=True) }}"

@@ -1,8 +1,0 @@
-- name: set/unset receive pop3 job
-  cron:
-    name: Redmine receive pop3 job
-    job: cd {{ redmine_home }} && bundle exec rake redmine:email:receive_pop3 {{ redmine_receive_pop3_cron_job.params | join(' ') }}
-    hour: "{{ redmine_receive_pop3_cron_job.hour | default('*') | string }}"
-    minute: "{{ redmine_receive_pop3_cron_job.minute | default('*') | string }}"
-    user: "{{ redmine_user }}"
-    state: "{{ 'present' if redmine_receive_pop3_cron_job.enabled else 'absent' }}"

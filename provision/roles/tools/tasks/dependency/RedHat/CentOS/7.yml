@@ -1,0 +1,4 @@
+---
+- name: install dependency packages
+  yum:
+    name: "{{ tools_dependency_packages }}"

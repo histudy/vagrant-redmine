@@ -2,19 +2,28 @@
 mariadb_packages:
   - mariadb-client
   - mariadb-server
+  - mariadb-backup
+  - mariadb-plugin-mroonga
+  - groonga-tokenizer-mecab
   - mysqltuner
 
-# mariadb_allow_host: "192.168.33.0/24"
+mariadb_root_password: rootP@55w0rd
 
 mariadb_default_charset: utf8mb4
-mariadb_default_collation: utf8mb4_general_ci
+mariadb_default_collation: utf8mb4_unicode_ci
 
 mariadb_databases: []
   # - name: sample
   #   ## optional database setting
   #   encoding: utf8mb4
   #   collation: utf8mb4_general_ci
-  #   state: true
+  #   state: false
+  #   ## optional user setting
+  #   hosts:
+  #     - "127.0.0.1"
+  #     - localhost
+  #   user: sample_user
+  #   password: dsample_p@55w0rd
 
 mariadb_users: []
   # - name: sample_user
@@ -23,7 +32,7 @@ mariadb_users: []
   #     - "127.0.0.1"
   #     - "::1"
   #     - localhost
-  #   privs: 
+  #   privs:
   #     - "sample.*:ALL"
   #   state: false
 
@@ -32,102 +41,110 @@ mariadb_max_table_use_in_query: 3
 mariadb_innodb_baffer_pool_rate: 50
 mariadb_myisam_key_baffer_rate: 15
 
-mariadb_cfg:
-  mysqld:
-    ## General
-    sql_mode:
-      - ONLY_FULL_GROUP_BY
-      - STRICT_TRANS_TABLES
-      - NO_ZERO_IN_DATE
-      - NO_ZERO_DATE
-      - ERROR_FOR_DIVISION_BY_ZERO
-      - NO_AUTO_CREATE_USER
-      - NO_ENGINE_SUBSTITUTION
-    bind_address: 127.0.0.1
-    # datadir: /var/lib/mysql
-    # socket: /var/run/mysqld/mysqld.sock
-    # innodb_data_home_dir: /var/lib/mysql
-    ## Network
-    max_connections: "{{ mariadb_max_connections }}"
-    # connect_timeout: 10
-    skip_name_resolve: no
-    # max_allowed_packet: 16M
-    # interactive_timeout: 3600
-    # wait_timeout: 600
-    table_open_cache: "{{ mariadb_max_connections * mariadb_max_table_use_in_query }}"
-    thread_cache_size: "{{ mariadb_max_connections }}"
-    table_definition_cache: "{{ 400 + (mariadb_max_connections * mariadb_max_table_use_in_query / 2)|int }}"
-    ## Global Buffers
-    # Total Global Buffer Size =
-    #  + key_buffer_size
-    #  + innodb_buffer_pool_size
-    #  + innodb_log_buffer_size
-    #  + max_heap_table_size
-    #  + query_cache_size
-    ## Cache
-    query_cache_limit: 8M
-    query_cache_size: 64M
-    query_cache_type:  1
-    # ------------------
-    # InnoDB
-    # ------------------
-    ## InnoDB General
-    innodb_file_per_table: true
-    innodb_flush_log_at_trx_commit: 1
-    innodb_buffer_pool_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100))|int }}"
-    innodb_log_file_size: "{{ (((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100)) / 4)|int }}"
-    innodb_log_files_in_group: 2
-    innodb_log_buffer_size: 32M
-    # innodb_strict_mode: false
-    # innodb_large_prefix: true
-    # innodb_file_format: Antelope
-    max_heap_table_size: 32M
-    tmp_table_size: 32M
-    ## Thread Buffer
-    # Total Thread Buffer Size =
-    #  + sort_buffer_size
-    #  + read_rnd_buffer_size
-    #  + join_buffer_size
-    #  + read_buffer_size
-    #  + max_allowed_packet
-    #  + thread_stack
-    sort_buffer_size: 512K
-    join_buffer_size: 512K
-    read_buffer_size: 512K
-    read_rnd_buffer_size: 512K
-    # ------------------
-    # MyISAM
-    # ------------------
-    ## Global Buffer
-    key_buffer_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_myisam_key_baffer_rate / 100))|int }}"
-    ## Thread Buffer
-    # myisam_sort_buffer_size: 64M
-    # -----------------
-    # Logging
-    # -----------------
-    slow_query_log: true
-    long_query_time: 1
-    # log_warnings: 0
-    # min_examined_row_limit: 0
-    # log_queries_not_using_indexes: false
-    # log_slow_admin_statements: false
-    slow_query_log_file: /var/log/mysql/slow_query.log
-    # general_log: no
-    # general_log_file: /var/log/mysql/general.log
-    # -----------------
-    # Replication
-    # -----------------
-    # gtid_domain_id: 1
-    # server_id: 1
-    # log_bin: mysql-bin
-    # binlog_format: ROW
-    # expire_logs_days: 10
-    # read_only: false
-    # log_slave_updates: false
-    # -----------------
-    # Other Extra Setting
-    # -----------------
-    # extra_setting: ""
-  # mysqld_safe:
-  #   datadir: /var/lib/mysql
-  #   socket: /var/run/mysqld/mysqld.sock
+mariadb_mysqld_cfg:
+  ## General
+  sql_mode:
+    - STRICT_TRANS_TABLES
+    - NO_ZERO_IN_DATE
+    - NO_ZERO_DATE
+    - ERROR_FOR_DIVISION_BY_ZERO
+    - NO_AUTO_CREATE_USER
+    - NO_ENGINE_SUBSTITUTION
+    # - ONLY_FULL_GROUP_BY
+  # bind_address: 127.0.0.1
+  # datadir: /var/lib/mysql
+  # innodb_data_home_dir: /var/lib/mysql
+  ## Network
+  max_connections: "{{ mariadb_max_connections }}"
+  # connect_timeout: 10
+  skip_name_resolve: false
+  # max_allowed_packet: 16M
+  # interactive_timeout: 3600
+  # wait_timeout: 600
+  table_open_cache: "{{ mariadb_max_connections * mariadb_max_table_use_in_query }}"
+  thread_cache_size: "{{ mariadb_max_connections }}"
+  table_definition_cache: "{{ 400 + (mariadb_max_connections * mariadb_max_table_use_in_query / 2) | int }}"
+  ## Global Buffers
+  # Total Global Buffer Size =
+  #  + key_buffer_size
+  #  + innodb_buffer_pool_size
+  #  + innodb_log_buffer_size
+  #  + max_heap_table_size
+  #  + query_cache_size
+  ## Cache
+  query_cache_limit: 8M
+  query_cache_size: 64M
+  query_cache_type: 1
+  # ------------------
+  # InnoDB
+  # ------------------
+  ## InnoDB General
+  innodb_file_per_table: true
+  innodb_flush_log_at_trx_commit: 1
+  innodb_buffer_pool_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100)) | int }}"
+  # innodb_log_file_size: "{{ (((ansible_memtotal_mb * 1024 * 1024) * (mariadb_innodb_baffer_pool_rate / 100)) / 4) | int }}"
+  # innodb_log_files_in_group: 2
+  innodb_log_buffer_size: 32M
+  # innodb_strict_mode: false
+  # innodb_large_prefix: true
+  # innodb_file_format: Antelope
+  max_heap_table_size: 32M
+  tmp_table_size: 32M
+  ## Thread Buffer
+  # Total Thread Buffer Size =
+  #  + sort_buffer_size
+  #  + read_rnd_buffer_size
+  #  + join_buffer_size
+  #  + read_buffer_size
+  #  + max_allowed_packet
+  #  + thread_stack
+  sort_buffer_size: 512K
+  join_buffer_size: 512K
+  read_buffer_size: 512K
+  read_rnd_buffer_size: 512K
+  # ------------------
+  # MyISAM
+  # ------------------
+  ## Global Buffer
+  key_buffer_size: "{{ ((ansible_memtotal_mb * 1024 * 1024) * (mariadb_myisam_key_baffer_rate / 100)) | int }}"
+  ## Thread Buffer
+  # myisam_sort_buffer_size: 64M
+  # -----------------
+  # Logging
+  # -----------------
+  slow_query_log: true
+  long_query_time: 1
+  # log_warnings: 0
+  # min_examined_row_limit: 0
+  # log_queries_not_using_indexes: false
+  # log_slow_admin_statements: false
+  slow_query_log_file: /var/log/mariadb/slow_query.log
+  # general_log: false
+  # general_log_file: /var/log/mariadb/general.log
+  # -----------------
+  # Replication
+  # -----------------
+  # gtid_domain_id: 1
+  # server_id: 1
+  # log_bin: mysql-bin
+  # binlog_format: ROW
+  # expire_logs_days: 10
+  # read_only: false
+  # log_slave_updates: false
+  # -----------------
+  # Other Extra Setting
+  # -----------------
+  # extra_setting: |
+  #   innodb_fast_shutdown = 0
+  #   innodb_flush_log_at_trx_commit = 0
+  #   innodb_doublewrite = OFF
+
+# mariadb_mysqld_safe_cfg:
+#   datadir: /var/lib/mysql
+#   socket: /var/run/mysqld/mysqld.sock
+#   extra_setting: |
+#     innodb_fast_shutdown = 0
+#     innodb_flush_log_at_trx_commit = 0
+#     innodb_doublewrite = OFF
+
+# mariadb_allow_connect_other_host: true

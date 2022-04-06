@@ -1,0 +1,3 @@
+mariadb_dependency_packages:
+  - python3-PyMySQL
+mariadb_unix_socket_path: /var/lib/mysql/mysql.sock

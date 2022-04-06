@@ -1,0 +1,15 @@
+---
+- name: install cron-apt
+  apt:
+    name: cron-apt
+- name: cron-apt setting
+  lineinfile:
+    path: /etc/cron-apt/config
+    regexp: '^{{ item.key }}='
+    line: '{{ item.key }}="{{ item.value }}"'
+  loop: "{{ auto_update_cfg | dict2items }}"
+- name: remove donload-only option
+  lineinfile:
+    path: /etc/cron-apt/action.d/3-download
+    regexp: '^dist-upgrade '
+    line: dist-upgrade -y -o APT::Get::Show-Upgraded=true

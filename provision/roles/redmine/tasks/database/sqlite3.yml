@@ -1,6 +1,0 @@
----
-- name: install database adapter
-  apt:
-    name:
-      - sqlite3
-      - libsqlite3-dev

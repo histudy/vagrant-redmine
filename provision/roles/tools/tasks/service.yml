@@ -1,0 +1,5 @@
+---
+- name: tool service setting
+  include_tasks: "{{ item }}"
+  when: install_tools is undefined or (item | basename)[0:-4] in install_tools
+  loop: "{{ lookup('fileglob', 'tasks/service/*.yml', wantlist=True) }}"

@@ -1,0 +1,4 @@
+---
+- name: install add repository dependency packages
+  dnf:
+    name: "{{ tools_add_repository_dependency_packages }}"

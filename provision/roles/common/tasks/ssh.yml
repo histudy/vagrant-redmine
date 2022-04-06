@@ -1,0 +1,34 @@
+# ---
+- name: install geoip packages
+  apt:
+    name:
+      - geoip-bin
+      - geoip-database
+- name: create ssh filter script
+  template:
+    src: ssh/sshfilter.j2
+    dest: /usr/local/bin/sshfilter
+    mode: "0755"
+- name: set TCP Wrapper(deny)
+  lineinfile:
+    path: /etc/hosts.deny
+    regexp: "^sshd: "
+    line: 'sshd: ALL'
+    state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
+- name: set TCP Wrapper(allow)
+  lineinfile:
+    path: /etc/hosts.allow
+    regexp: "^sshd: "
+    line: 'sshd: ALL: spawn /usr/local/bin/sshfilter %a'
+    state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
+- name: allow SSH port
+  ufw:
+    port: "{{ common_ssh_port }}"
+    proto: tcp
+    rule: "{{ common_ssh_ufw_rule }}"
+- name: enable ufw and set default policy
+  ufw:
+    logging: "on"
+    state: enabled
+    direction: incoming
+    default: deny

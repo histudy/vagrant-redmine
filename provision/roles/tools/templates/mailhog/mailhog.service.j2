@@ -1,0 +1,30 @@
+[Unit]
+Description=MailHog Service
+After=network.service
+
+[Service]
+Type=simple
+{% if mailhog_cfg.cors_origin -%}
+MH_CORS_ORIGIN=yes
+{% endif %}
+MH_HOSTNAME={{ mailhog_cfg.hostname }}
+MH_API_BIND_ADDR={{ mailhog_cfg.api_bind_addr }}
+MH_UI_BIND_ADDR={{ mailhog_cfg.ui_bind_addr }}
+MH_MAILDIR_PATH={{ mailhog_cfg.maildir_path }}
+MH_MONGO_COLLECTION={{ mailhog_cfg.mongo_coll }}
+MH_MONGO_DB={{ mailhog_cfg.mongo_db }}
+MH_MONGO_URI={{ mailhog_cfg.mongo_uri }}
+MH_SMTP_BIND_ADDR={{ mailhog_cfg.smtp_bind_addr }}
+MH_STORAGE={{ mailhog_cfg.storage }}
+{% if mailhog_cfg.outgoing_smtp -%}
+MH_OUTGOING_SMTP={{ mailhog_cfg.outgoing_smtp }}
+{% endif %}
+{% if mailhog_cfg.outgoing_smtp -%}
+MH_UI_WEB_PATH={{ mailhog_cfg.ui_web_path }}
+{% endif %}
+ExecStart=/usr/local/bin/mailhog
+StandardOutput=journal
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+- name: install packages
+  apt:
+    name: "{{ mecab_packages }}"

@@ -1,0 +1,31 @@
+---
+install_tools:
+  - pict
+  - tbls
+  - mkdocs
+  - hugo
+  - direnv
+  - mailhog
+  - sassc
+  # - mecab
+
+tbls_version: "1.54.2"
+
+mecab_extra_cfg: ""
+
+mailhog_version: v1.0.1
+mailhog_mhsendmail_version: v0.2.0
+
+mailhog_cfg:
+  cors_origin: false
+  hostname: mailhog.example
+  api_bind_addr: "0.0.0.0:8025"
+  ui_bind_addr: "0.0.0.0:8025"
+  maildir_path: ""
+  mongo_coll: messages
+  mongo_db: mailhog
+  mongo_uri: "127.0.0.1:27017"
+  smtp_bind_addr: "0.0.0.0:1025"
+  storage: memory
+  outgoing_smtp: false
+  ui_web_path: false

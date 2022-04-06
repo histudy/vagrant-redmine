@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: yoshiaki tanaka
+  description: install dev tool
+  license: MIT
+  namespace: wate
+  role_name: dev_tool
+  min_ansible_version: 2.11
+  platforms:
+    # - name: EL
+    #   versions:
+    #     - 7
+    - name: Debian
+      versions:
+        - bullseye
+        - buster
+  galaxy_tags: []
+dependencies: []
+  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
+  # if you add dependencies to this list.

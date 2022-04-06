@@ -1,0 +1,26 @@
+---
+language: python
+services: docker
+env:
+  global:
+    - ROLE_NAME: dehydrated
+before_install:
+  - sudo apt-get -qq update
+install:
+  - python3 -m pip install ansible
+  - python3 -m pip install molecule[docker,lint]
+before_script:
+  - cd ../
+  - git clone --depth=1 https://github.com/wate/ansible-role-repo-epel.git repo-epel
+  - mv ansible-role-$ROLE_NAME $ROLE_NAME
+  - cd $ROLE_NAME
+script:
+  - molecule --version
+  - ansible --version
+  - ansible-lint --version
+  - yamllint --version
+  - molecule test
+notifications:
+  email: false
+  slack:
+    secure: BJPyP/tcn4nEkKY6/Z6KZEHLWNY5eA7+hmuSasVDMIbY7YDPKK1qaL0zrsxUUkNtVe5ZtZeCZoSvIVsUU/u7Kozdu2IWjBsTxDxcpXyWhfe8lm9YdfW+efzXfhnYzAfegYy6gXFnaa8hkCVhLq44XVUL+95wVZuRGSJIswZWNmUxAWoyydos+kL8rz8UPXXiTi2Pgc3A6Z3oMxCAtUpDJXW0xvMmn8l29Ir+jFNKT8xGRtU6t2HFY6TGoin3hAe/+pRj7UOSnoXKAMqDbc2tJml6xgx4oenExYve7lkguDW12LPFWvZIcfukWj6B0N/jmyz7NPxN6KMIqXF1iyD+B46zou549CR+THp3BHNyHcOnfrOrDDgNzIXqkAlkq8F+D3A78YVCghGNo2wK6zIXUJ1ouVLhhtkzC5ben1Cv8dRYFeVW94qi34tAKykc6fLdfjVx7PcYDiyccfFkebwJCzTO35ro0c0GIZiqjIU+2ZWdkByspa0v1uxTmH3pQ+qrBYtPeQLK2C3N3zfBsnWKYrR36+BPkar0r1dSdru7TRbUQJDz6lcbTmH8BvT+x4AC7Ul4iuTN6ySoL0JjelOhCwvTgN8/YGC00uSpusundi/0Ctp+0gQjXteZKlj96tVNLMu5SrKNP0dncOq9zDJiVcleoJEt2eCNYhRR4hqOnSY=

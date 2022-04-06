@@ -1,0 +1,35 @@
+- name: check restor file exists
+  stat:
+    path: "{{ redmine_restore_files_archive_file }}"
+  register: redmine_restor_file_result
+- block:
+    - name: restore files archive
+      unarchive:
+        src: "{{ redmine_restore_files_archive_file }}"
+        dest: "{{ redmine_home }}/files"
+        extra_opts: "{{ redmine_restore_files_archive_extra_opts | default(omit) }}"
+        remote_src: true
+    - name: change file owner
+      file:
+        path: "{{ redmine_home }}/files"
+        owner: "{{ redmine_user }}"
+        group: "{{ redmine_user }}"
+        recurse: true
+      become: true
+  when: redmine_restor_file_result.stat.exists
+- name: check restor file exists
+  stat:
+    path: "{{ redmine_restore_database_dump_file }}"
+  register: redmine_restor_file_result
+- block:
+    - name: restore redmine database dump data
+      mysql_db:
+        name: "{{ redmine_db_cfg.production.database }}"
+        state: import
+        target: "{{ redmine_restore_database_dump_file }}"
+  when:
+    - redmine_restor_file_result.stat.exists
+    - redmine_db_cfg.production.adapter == 'mysql2'
+- name: set execute cache clear cariable
+  set_fact:
+    redmine_cache_clear: true

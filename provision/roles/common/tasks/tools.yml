@@ -1,0 +1,4 @@
+---
+- name: install tool packages
+  apt:
+    name: "{{ common_install_tools  }}"

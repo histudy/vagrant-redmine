@@ -1,0 +1,34 @@
+---
+tools_dependency_packages:
+  - build-essential
+  - cpp
+  - curl
+  - rsync
+  - make
+  - unzip
+  - zip
+  - cron
+  - perl
+  - autoconf
+  - automake
+  - git
+  - m4
+  - libtool
+  - gcc
+  - bison
+  - flex
+  - acl
+  - pkg-config
+
+tools_add_repository_dependency_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - software-properties-common
+
+mecab_packages:
+  - mecab
+  - mecab-ipadic
+  - mecab-utils
+  - libmecab-dev

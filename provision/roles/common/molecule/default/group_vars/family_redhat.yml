@@ -1,0 +1,87 @@
+---
+common_files:
+  - dest: /usr/local/bin/upload_file
+    src: files/test_script
+    mode: "0755"
+  - dest: /usr/local/bin/download_file
+    url: "https://dummyimage.com/600x400/000/fff"
+    mode: "0644"
+  - dest: /usr/local/bin/remove_file
+    removed: true
+common_users:
+  - name: simple
+    password: "{{ 'password' | password_hash('sha512') }}"
+  - name: full_set
+    password: "{{ 'password' | password_hash('sha512') }}"
+    authorized_keys:
+      - key: https://github.com/wate.keys
+      - key: https://github.com/nogajun.keys
+        removed: true
+    admin: true
+    shell: /usr/bin/bash
+    ssh_config:
+      - name: github.com
+        content: |
+          HostName github.com
+          User git
+          IdentityFile ~/.ssh/github_deploy_key
+          StrictHostKeyChecking no
+      - name: bitbucket.org
+        content: |
+          HostName bitbucket.org
+          User git
+          IdentityFile ~/.ssh/bitbucket_deploy_key
+          StrictHostKeyChecking no
+      - name: gitlab.com
+        content: |
+          HostName gitlab.com
+          User git
+          IdentityFile ~/.ssh/gitlab_deploy_key
+          StrictHostKeyChecking no
+    upload_private_keys:
+      - name: github_deploy_key
+        src: keypair/dummy1
+      - name: bitbucket_deploy_key
+        src: keypair/dummy2
+    secret_vars:
+      - name: DB_HOST
+        value: localhost
+      - name: DB_NAME
+        value: app
+      - name: DB_USER
+        value: app_db_user
+      - name: DB_PASS
+        value: app_db_pass
+      - name: REMOVE_VAR
+        value: removed
+        removed: true
+    cron_jobs:
+      - name: display date
+        job: mkr wrap -- date
+        minute: 1
+        hour: 2
+        day: 3
+        month: 4
+        weekday: 5
+      - name: disable job
+        job: echo "disable job"
+        minute: 2
+        disable: true
+      - name: remove job
+        job: echo "remove job"
+        minute: 3
+        removed: true
+    cron_vars:
+      - name: EMAIL
+        value: test@example.com
+      - name: SOME_NAME
+        value: SOME_VALUE
+        removed: true
+  - name: pass_lock
+    password_lock: true
+  - name: update_pass_on_create
+    password: "{{ 'password2' | password_hash('sha512') }}"
+    update_password: on_create
+  - name: update_pass_always
+    password: "{{ 'password3' | password_hash('sha512') }}"
+    update_password: always

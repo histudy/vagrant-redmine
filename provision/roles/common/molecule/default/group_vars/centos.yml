@@ -1,0 +1,8 @@
+---
+yum_cron_daily_cfg:
+  - section: commands
+    name: update_cmd
+    value: security
+  - section: commands
+    name: apply_updates
+    value: "yes"
