@@ -58,7 +58,7 @@ vagrant provision
 Redmineのバージョンを指定します。
 
 ```yml
-redmine_version: "4.1-stable"
+redmine_version: "4.2-stable"
 ```
 
 設定する値はGithubのブランチ名やタグ名を指定します。
@@ -81,8 +81,8 @@ redmine_themes:
     # directory: farend_fancy
   - name: farend_basic
     repo: "https://github.com/farend/redmine_theme_farend_basic.git"
-  - name: gitmike
-    repo: "https://github.com/makotokw/redmine-theme-gitmike.git"
+  - name: PurpleMine2
+    repo: https://github.com/mrliptontea/PurpleMine2.git
 ```
 
 ### redmine_plugins
@@ -97,14 +97,16 @@ redmine_plugins:
     # プラグインのディレクトリ名を指定(任意)
     # ディレクトリ名の指定を省略した場合はname属性の前に「redmine_」を付与したディレクトリに展開します
     directory: view_customize
+  - name: message_customize
+    repo: https://github.com/ishikawa999/redmine_message_customize.git
+    # プラグインインストール後に行う処理を設定できます
+    post_install_action: |
+      ln -sf {{ redmine_home }}/plugins/redmine_message_customize/35_change_load_order_locales.rb {{ redmine_home }}/config/initializers/35_change_load_order_locales.rb
+  - name: issues_panel
+    repo: https://github.com/redmica/redmine_issues_panel.git
   - name: issue_templates
-    repo: "https://github.com/akiko-pusu/redmine_issue_templates.git"
+    repo: https://github.com/agileware-jp/redmine_issue_templates.git
   # ファイルをアップロードしてインストールする場合
-  - name: easy_gantt
-    # ファイルのパスを指定します
-    file: path/to/EasyGanttFree.zip
-  - name: agile
-    file: path/to/redmine_agile-light.zip
   - name: checklists
     file: path/to/redmine_checklists-light.zip
 ```
