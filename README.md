@@ -99,6 +99,9 @@ redmine_plugins:
     directory: view_customize
   - name: message_customize
     repo: https://github.com/ishikawa999/redmine_message_customize.git
+    # プラグインインストール後に行う処理を設定できます
+    post_install_action: |
+      ln -sf {{ redmine_home }}/plugins/redmine_message_customize/35_change_load_order_locales.rb {{ redmine_home }}/config/initializers/35_change_load_order_locales.rb
   - name: issues_panel
     repo: https://github.com/redmica/redmine_issues_panel.git
   - name: issue_templates
