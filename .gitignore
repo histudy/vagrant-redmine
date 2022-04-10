@@ -11,5 +11,4 @@
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.logs
 
-
-# End of https://www.gitignore.io/api/vagrant,ansible
+.galaxy_install_info
