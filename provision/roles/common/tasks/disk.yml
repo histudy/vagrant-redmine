@@ -1,0 +1,15 @@
+---
+- name: install dependency packages
+  apt:
+    name:
+      - parted
+      - util-linux
+      - e2fsprogs
+      - xfsprogs
+- name: manage disk partition
+  include_tasks: disk/manage_partition.yml
+  vars:
+    tmp_device: "{{ item[0].device }}"
+    tmp_if_device_exists: "{{ item[0].if_device_exists | default(true) }}"
+    tmp_partition: "{{ item[1] }}"
+  loop: "{{ common_disks | subelements('partitions') }}"

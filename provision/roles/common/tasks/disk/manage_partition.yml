@@ -1,0 +1,24 @@
+- name: set temorary variable
+  set_fact:
+    tmp_device_name: "{{ tmp_device.split('/')[-1] }}"
+- name: manage partition
+  block:
+    - name: manage partition
+      parted:
+        device: "{{ tmp_device }}"
+        number: "{{ tmp_partition.number }}"
+        fs_type: "{{ tmp_partition.fstype | default(omit) }}"
+        part_start: "{{ tmp_partition.part_start | default(omit) }}"
+        part_end: "{{ tmp_partition.part_end | default(omit) }}"
+        flags:  "{{ tmp_partition.flags | default(omit) }}"
+        state: present
+      register: partition_result
+    - name: make filesystem
+      filesystem:
+        fstype: "{{ tmp_partition.fstype }}"
+        device: "{{ tmp_device }}{{ tmp_partition.number }}"
+        opts: "{{ tmp_partition.mkfs_option | default(omit) }}"
+      when:
+        - tmp_partition.fstype is defined
+        - partition_result is changed
+  when: not tmp_if_device_exists or (tmp_if_device_exists and ansible_devices[tmp_device_name] is defined)

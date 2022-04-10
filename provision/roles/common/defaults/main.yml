@@ -225,6 +225,15 @@ common_cron_jobs: []
   #   # removed: true
 
 
+common_disks: []
+  # - device: /dev/sdb
+  #   if_device_exists: true
+  #   partitions:
+  #     - fstype: xfs
+  #       number: 1
+  #       part_start: 0%
+  #       part_end: 100%
+
 # バックアップスクリプト保存先ディレクトリ
 backup_script_dir: /backup/scripts
 

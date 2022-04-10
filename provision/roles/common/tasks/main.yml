@@ -27,6 +27,9 @@
 - name: manage user
   import_tasks: user.yml
   tags: user
+- name: setup disk partition
+  import_tasks: disk.yml
+  tags: disk
 - name: setup firewall
   import_tasks: firewall.yml
   tags: firewall

@@ -108,7 +108,7 @@ redmine_cfg:
     # attachments_storage_path: /var/redmine/files
     # attachments_storage_path: D:/redmine/files
     attachments_storage_path:
-
+    #
     # Configuration of the autologin cookie.
     # autologin_cookie_name: the name of the cookie (default: autologin)
     # autologin_cookie_path: the cookie path (default: /)
@@ -192,7 +192,7 @@ redmine_cfg:
     # to public/plugin_assets when you install/upgrade a Redmine plugin.
     #
     #mirror_plugins_assets_on_startup: false
-
+    #
     # Your secret key for verifying cookie session data integrity. If you
     # change this key, all old sessions will become invalid! Make sure the
     # secret is at least 30 characters and all random, no regular words or
@@ -256,14 +256,14 @@ redmine_cfg:
     #
     #avatar_server_url: https://www.gravatar.com        # default
     #avatar_server_url: https://seccdn.libravatar.org
-
+    #
     # Configure CommonMark hardbreaks behaviour
     #
     # allowed values: true, false
     # true: treats regular line break (\n) as hardbreaks
     # false: switches to default common mark where two or more spaces are required
     # common_mark_enable_hardbreaks: true
-
+    #
   # specific configuration options for production environment
   # that overrides the default ones
   production:
