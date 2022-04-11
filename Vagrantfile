@@ -2,7 +2,6 @@
 # vi: set ft=ruby :
 
 # ENV['VAGRANT_EXPERIMENTAL'] = "disks"
-
 Vagrant.configure("2") do |config|
   config.vm.box = "wate/debian-11"
 
@@ -13,7 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
   end
-  # config.vm.disk :disk, name: "extra_strage", size: "10GB"
+  config.vm.disk :disk, name: "extra_strage", size: "20GB"
 
   if Vagrant.has_plugin?('vagrant-vbguest')
     config.vbguest.auto_update = false
