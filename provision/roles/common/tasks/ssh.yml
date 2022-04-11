@@ -23,7 +23,7 @@
     state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
 - name: allow SSH port
   ufw:
-    port: "{{ common_ssh_port }}"
+    port: "{{ common_ssh_port | string }}"
     proto: tcp
     rule: "{{ common_ssh_ufw_rule }}"
 - name: enable ufw and set default policy

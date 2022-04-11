@@ -224,7 +224,7 @@ common_cron_jobs: []
   #   ## 定期実行設定の存在の有無(これが指定された場合は値の如何に関わらず、設定が存在する場合は削除する)
   #   # removed: true
 
-
+# ディスク操作
 common_disks: []
   # - device: /dev/sdb
   #   if_device_exists: true
@@ -233,6 +233,17 @@ common_disks: []
   #       number: 1
   #       part_start: 0%
   #       part_end: 100%
+
+# マウント操作
+common_mounts: []
+  # - path: /backup/data
+  #   src: /dev/sdb1
+  #   fstype: ext4
+  #   automount: true
+  #   required_packages:
+  #     - s3fs
+  #   mount_options:
+  #     - defaults
 
 # バックアップスクリプト保存先ディレクトリ
 backup_script_dir: /backup/scripts
