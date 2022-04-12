@@ -27,6 +27,9 @@
 - name: manage user
   import_tasks: user.yml
   tags: user
+- name: setup disk partition
+  import_tasks: disk.yml
+  tags: disk
 - name: setup firewall
   import_tasks: firewall.yml
   tags: firewall
@@ -61,6 +64,9 @@
   import_tasks: swap.yml
   when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0
   tags: swap
+- name: manage mount setting
+  import_tasks: mount.yml
+  tags: mount
 - name: manage backup setting
   import_tasks: backup.yml
   tags: backup

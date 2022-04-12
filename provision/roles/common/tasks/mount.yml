@@ -1,0 +1,25 @@
+---
+- name: install dependency packages
+  apt:
+    name: "{{ item.1 }}"
+    state: present
+  loop: "{{ common_mounts | subelements('required_packages', {'skip_missing': True}) | list }}"
+  loop_control:
+    label: "{{ item.1 }}"
+- name: create mount point directory
+  file:
+    path: "{{ item.path }}"
+    mode: "0755"
+    state: directory
+  loop: "{{ common_mounts }}"
+- name: control active and configured mount points
+  mount:
+    path: "{{ item.path  }}"
+    src: "{{ item.src | default(omit) }}"
+    fstype: "{{ item.fstype | default(omit)  }}"
+    opts: "{{ item.mount_options | default(['defaults']) | join(',') }}"
+    boot: "{{ item.automount | default(true) }}"
+    dump: "{{ item.dump | default(omit) }}"
+    passno: "{{ item.passno | default(omit) }}"
+    state: mounted
+  loop: "{{ common_mounts }}"

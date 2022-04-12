@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# ENV['VAGRANT_EXPERIMENTAL'] = "disks"
 Vagrant.configure("2") do |config|
   config.vm.box = "wate/debian-11"
 
@@ -11,6 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
   end
+  config.vm.disk :disk, name: "extra_strage", size: "20GB"
 
   if Vagrant.has_plugin?('vagrant-vbguest')
     config.vbguest.auto_update = false
@@ -21,16 +23,6 @@ Vagrant.configure("2") do |config|
   if File.exists?(extra_var_file)
     ansible_extra_vars = YAML.load_file(extra_var_file)
   end
-
-  # # vagrant-execプラグインの設定
-  # if Vagrant.has_plugin?('vagrant-exec')
-  #   vagrant_exec_env = {
-  #     'RAILS_ENV' => ansible_extra_vars['redmine_mode'] || 'production'
-  #   }
-  #   config.exec.commands '*', directory: '/opt/redmine', env: vagrant_exec_env
-  #   config.exec.commands %w[rails rake], prepend: 'bundle exec', directory: '/opt/redmine', env: vagrant_exec_env
-  #   config.exec.commands 'systemctl', prepend: 'sudo'
-  # end
 
   config.vm.provision "ansible_local" do |ansible|
     ansible.become = true
