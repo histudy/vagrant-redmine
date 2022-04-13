@@ -6,6 +6,10 @@
       - util-linux
       - e2fsprogs
       - xfsprogs
+- name: gathers hardware facts
+  setup:
+    gather_subset:
+      - 'hardware'
 - name: manage disk partition
   include_tasks: disk/manage_partition.yml
   vars:
@@ -13,3 +17,7 @@
     tmp_if_device_exists: "{{ item[0].if_device_exists | default(true) }}"
     tmp_partition: "{{ item[1] }}"
   loop: "{{ common_disks | subelements('partitions') }}"
+- name: gathers hardware facts
+  setup:
+    gather_subset:
+      - 'hardware'
