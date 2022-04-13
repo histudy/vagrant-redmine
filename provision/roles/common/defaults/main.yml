@@ -236,14 +236,35 @@ common_disks: []
 
 # マウント操作
 common_mounts: []
+  #   ## 追加ディスクのマウント
   # - path: /backup/data
   #   src: /dev/sdb1
+  #   if_device_exists: true
   #   fstype: ext4
   #   automount: true
-  #   required_packages:
-  #     - s3fs
   #   mount_options:
   #     - defaults
+  #   ## オブジェクトストレージのマウント
+  # - path: /object_strage
+  #   required_packages:
+  #     - rclone
+  #   src: remote:/path/to/remote/folder
+  #   fstype: fuse.rclonefs
+  #   if_device_exists: false
+  #   automount: true
+  #   mount_options:
+  #     - config=/home/user/.rclone.conf
+  #     - allow-other
+  #     - default-permissions
+  #     - read-only
+  #     - max-read-ahead=16M
+  #   file:
+  #     ## see: https://github.com/rclone/rclone/wiki/rclone-mount-helper-script#rclonefs-helper-script-old-releases-before-v157
+  #     src: ./rclonefs.sh
+  #     dest: /usr/local/bin/rclonefs
+  #   template:
+  #     src: ./rclone.conf.j2
+  #     dest: /home/user/.rclone.conf
 
 # バックアップスクリプト保存先ディレクトリ
 backup_script_dir: /backup/scripts
@@ -272,12 +293,20 @@ backup_settings: []
   #   # user: root
   #   ## バックアップ設定は残したまま無効化するか否か
   #   # disabled: true
-  # - name: backup setting with upload backup script
+  # - name: backup setting with upload backup script file
   #   command: "{{ backup_script_dir }}/script_file"
   #   ## アップロードするファイル
   #   file: /path/to/script_file
-  #   ## バックアップスクリプトのチェックサム
-  #   # checksome: 6e642bb8dd5c2e027bf21dd923337cbb4214f827
+  #   ## アップロード後のファイル名
+  #   script_name: script_file
+  #   hour: 2
+  #   minute: 34
+  # - name: backup setting with upload backup script template
+  #   command: "{{ backup_script_dir }}/script_file"
+  #   ## アップロードするファイルのテンプレートファイル
+  #   template: /path/to/script_file.j2
+  #   ## アップロード後のファイル名
+  #   script_name: script_file
   #   hour: 2
   #   minute: 34
   # - name: backup setting with download backup script

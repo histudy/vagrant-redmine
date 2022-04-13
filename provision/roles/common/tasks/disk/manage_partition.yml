@@ -10,7 +10,7 @@
         fs_type: "{{ tmp_partition.fstype | default(omit) }}"
         part_start: "{{ tmp_partition.part_start | default(omit) }}"
         part_end: "{{ tmp_partition.part_end | default(omit) }}"
-        flags:  "{{ tmp_partition.flags | default(omit) }}"
+        flags: "{{ tmp_partition.flags | default(omit) }}"
         state: present
       register: partition_result
     - name: make filesystem
@@ -21,4 +21,4 @@
       when:
         - tmp_partition.fstype is defined
         - partition_result is changed
-  when: not tmp_if_device_exists or (tmp_if_device_exists and ansible_devices[tmp_device_name] is defined)
+  when: not tmp_if_device_exists or (tmp_if_device_exists and ansible_facts['devices'][tmp_device_name] is defined)

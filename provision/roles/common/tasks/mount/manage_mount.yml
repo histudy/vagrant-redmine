@@ -1,0 +1,43 @@
+---
+- name: retrieve file system status
+  stat:
+    path: "{{ mount_setting.src }}"
+  register: stat_result
+- block:
+    - name: install dependency packages
+      apt:
+        name: "{{ mount_setting.required_packages }}"
+      when: mount_setting.required_packages is defined
+    - name: copy dependency file
+      copy:
+        src: "{{ mount_setting.file.src }}"
+        dest: "{{ mount_setting.file.dest }}"
+        owner: "{{ mount_setting.file.owner | default(omit) }}"
+        group: "{{ mount_setting.file.group | default(omit) }}"
+        mode: "{{ mount_setting.file.mode | default(omit) }}"
+        remote_src: "{{ mount_setting.file.remote_src | default(omit) }}"
+      when: mount_setting.file is defined
+    - name: create dependency files
+      template:
+        src: "{{ mount_dependency_template.src }}"
+        dest: "{{ mount_dependency_template.dest }}"
+        owner: "{{ mount_dependency_template.owner | default(omit) }}"
+        group: "{{ mount_dependency_template.group | default(omit) }}"
+        mode: "{{ mount_dependency_template.mode | default(omit) }}"
+      when: mount_setting.template is defined
+    - name: create mount point directory
+      file:
+        path: "{{ mount_setting.path }}"
+        mode: "0755"
+        state: directory
+    - name: control active and configured mount points
+      mount:
+        path: "{{ mount_setting.path  }}"
+        src: "{{ mount_setting.src | default(omit) }}"
+        fstype: "{{ mount_setting.fstype  }}"
+        opts: "{{ mount_setting.mount_options | default(['defaults']) | join(',') }}"
+        boot: "{{ mount_setting.automount | default(true) }}"
+        dump: "{{ mount_setting.dump | default(omit) }}"
+        passno: "{{ mount_setting.passno | default(omit) }}"
+        state: "{{ mount_setting.automount | default(true) | ternary('mounted', 'present') }}"
+  when: not mount_setting.if_device_exists | default(false) or (mount_setting.if_device_exists and stat_result.stat.exists)
