@@ -1,0 +1,15 @@
+---
+- name: install dependency packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+- name: get apt-source package
+  get_url:
+    url: https://packages.groonga.org/debian/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
+    dest: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
+- name: add mroonga repository
+  apt:
+    deb: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb

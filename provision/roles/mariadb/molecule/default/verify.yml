@@ -13,7 +13,7 @@
         that: result is not changed
     - name: test server package
       apt:
-        name: mariadb-server
+        name: mariadb-server-mroonga
       register: result
     - name: assert server package
       assert:
