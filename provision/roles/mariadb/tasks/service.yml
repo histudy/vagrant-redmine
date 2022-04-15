@@ -1,0 +1,12 @@
+---
+- name: MariaDB is active and enabled on system startup
+  systemd:
+    name: mariadb
+    state: started
+    enabled: true
+- name: allow MariaDB port
+  ufw:
+    rule: allow
+    port: "3306"
+    proto: tcp
+  when: mariadb_allow_connect_other_host | default(false)

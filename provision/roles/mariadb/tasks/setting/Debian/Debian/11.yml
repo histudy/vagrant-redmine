@@ -1,0 +1,15 @@
+---
+- name: execute mysql_secure_installation
+  expect:
+    command: mysql_secure_installation
+    responses:
+      "Enter current password for root": ""
+      "Switch to unix_socket authentication": "y"
+      "Change the root password?": "y"
+      "New password:": "{{ mariadb_root_password }}"
+      "Re-enter new password:": "{{ mariadb_root_password }}"
+      "Remove anonymous users?": "y"
+      "Disallow root login remotely?": "y"
+      "Remove test database and access to it?": "y"
+      "Reload privilege tables now?": "y"
+  no_log: true

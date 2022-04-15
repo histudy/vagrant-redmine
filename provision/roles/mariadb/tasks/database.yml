@@ -1,0 +1,11 @@
+---
+- name: create / remove databases
+  mysql_db:
+    name: "{{ item.name }}"
+    encoding: "{{ item.encoding | default(mariadb_default_charset) }}"
+    collation: "{{ item.collation | default(mariadb_default_collation) }}"
+    state: "{{ item.state | default(true) | ternary('present', 'absent') }}"
+    login_unix_socket: "{{ mariadb_unix_socket_path }}"
+  loop: "{{ mariadb_databases }}"
+  loop_control:
+    label: "{{ item.name }}"

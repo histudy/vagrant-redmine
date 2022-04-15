@@ -1,0 +1,20 @@
+---
+- name: create MariaDB users(on mariadb_databases variable)
+  mysql_user:
+    name: "{{ item.0.user | default(item.0.name) }}"
+    password: "{{ item.0.password | default(omit) }}"
+    host: "{{ item.1 }}"
+    priv: "{{ item.0.name }}.*:ALL"
+    login_unix_socket: "{{ mariadb_unix_socket_path }}"
+  loop: "{{ lookup('subelements', mariadb_databases, 'hosts', {'skip_missing': True}) }}"
+  no_log: true
+- name: create / remove MariaDB users
+  mysql_user:
+    name: "{{ item.0.name }}"
+    password: "{{ item.0.password }}"
+    host: "{{ item.1 }}"
+    priv: "{{ item.0.privs | join('/') }}"
+    state: "{{ item.0.state | default(true) | ternary('present', 'absent') }}"
+    login_unix_socket: "{{ mariadb_unix_socket_path }}"
+  loop: "{{ lookup('subelements', mariadb_users, 'hosts') }}"
+  no_log: true

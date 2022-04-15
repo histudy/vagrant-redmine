@@ -1,9 +1,8 @@
 ---
 mariadb_packages:
   - mariadb-client
-  - mariadb-server
+  - mariadb-server-mroonga
   - mariadb-backup
-  - mariadb-plugin-mroonga
   - groonga-tokenizer-mecab
   - mysqltuner
 
