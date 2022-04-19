@@ -57,6 +57,7 @@ redmine_cfg:
     # See the examples below and the Rails guide for more configuration options:
     # http://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration
     email_delivery:
+      delivery_method: :sendmail
     # ==== Simple SMTP server at localhost
     #  email_delivery:
     #    delivery_method: :smtp
