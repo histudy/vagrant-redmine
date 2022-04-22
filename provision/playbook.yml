@@ -58,6 +58,13 @@
                 chdir: "{{ redmine_home }}"
           when: result is changed
       when: redmine_custom_directory_mappings is defined
+    - name: restart service
+      systemd:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - redmine
+        - nginx
     - name: Finish display message
       debug:
         msg: "Let's Redmine!"
