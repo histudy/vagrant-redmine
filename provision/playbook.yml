@@ -7,8 +7,6 @@
     - name: dehydrated
     - name: redmine
     - name: tools
-  vars:
-    tbls_version: "1.48.1"
   tasks:
     - block:
         - name: set enviromnet variables
