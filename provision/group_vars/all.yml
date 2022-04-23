@@ -17,6 +17,9 @@ nginx_vhosts:
           proxy_pass http://backend;
           include proxy_params;
 
+dehydrated_cfg:
+  CA: https://acme-staging-v02.api.letsencrypt.org/directory
+
 redmine_db_cfg:
   production:
     adapter: mysql2
