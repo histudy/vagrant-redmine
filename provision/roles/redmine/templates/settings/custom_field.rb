@@ -4,7 +4,7 @@ def import_custom_filed(cf, setting)
   allow_regexp_formats = ['string', 'text', 'link', 'int', 'float']
   allow_default_value_formats = ['string', 'text', 'link', 'int', 'float', 'date', 'bool']
   allow_text_formatting_formats = ['string', 'text']
-  allow_url_pattern_formats = ['string', 'link', 'date', 'int', 'float', 'bool', 'enumeration']
+  allow_url_pattern_formats = ['string', 'link', 'date', 'int', 'float', 'list', 'bool']
   allow_edit_tag_style_formats = ['version', 'user', 'list', 'bool', 'enumeration']
   allow_multiple_formats = ['version', 'user', 'list', 'enumeration']
   allow_searchable_formats = ['string', 'text', 'list']

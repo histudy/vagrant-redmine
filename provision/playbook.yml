@@ -7,8 +7,6 @@
     - name: dehydrated
     - name: redmine
     - name: tools
-  vars:
-    tbls_version: "1.48.1"
   tasks:
     - block:
         - name: set enviromnet variables
@@ -58,6 +56,13 @@
                 chdir: "{{ redmine_home }}"
           when: result is changed
       when: redmine_custom_directory_mappings is defined
+    - name: restart service
+      systemd:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - redmine
+        - nginx
     - name: Finish display message
       debug:
         msg: "Let's Redmine!"

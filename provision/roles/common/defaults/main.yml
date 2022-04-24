@@ -30,6 +30,7 @@ common_packages:
   - imagemagick
   - postfix
   - ca-certificates
+  - software-properties-common
 
 common_groups: []
   # - name: group1
@@ -331,8 +332,6 @@ common_install_tools:
   - glances
 
 common_japanese_fonts:
-  - fonts-umeplus
-  - fonts-yozvox-yozfont
   - fonts-ipaexfont
   - fonts-ipafont
   - fonts-noto-cjk

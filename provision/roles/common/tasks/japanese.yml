@@ -5,6 +5,12 @@
 - name: install font packages
   apt:
     name: "{{ common_japanese_fonts }}"
+- name: install other japanse fonts
+  include_tasks: "japanese/{{ item }}.yml"
+  loop: "{{ other_japanese_fonts }}"
+  vars:
+    other_japanese_fonts:
+      - morisawa-biz-ud-gothic
 - name: Ensure a locale exists
   locale_gen:
     name: ja_JP.UTF-8
