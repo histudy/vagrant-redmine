@@ -7,6 +7,7 @@
     - name: update cache(Debian)
       apt:
         update_cache: true
+        upgrade: true
       when: ansible_facts.os_family == 'Debian'
     - name: update cache(RedHat 8 <)
       yum:
