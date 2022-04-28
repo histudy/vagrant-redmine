@@ -12,6 +12,7 @@ redmine_version: "4.2-stable"
 # 追加でインストールするgemパッケージ
 # --------------------
 redmine_gemfile_local_content: |
+  source 'https://rubygems.org'
   gem 'puma'
 
 # --------------------
@@ -1542,124 +1543,6 @@ redmine_cron_jobs:
 #     field_format: text
 #   - name: キー・バリュー リスト
 #     field_format: enumeration
-
-# --------------------
-# Redmineの設定(カスタムクエリ)
-# --------------------
-# redmine_custom_queries:
-#   - name: 先月の作業実績
-#     filters:
-#       status:
-#         operator: c
-#       assigned_to:
-#         operator: "="
-#         values:
-#           - me
-#       closed_on:
-#         operator: "lm"
-#     group_by: project
-#     columns:
-#       # トラッカー
-#       - tracker
-#       # 題名
-#       - subject
-#       # 優先度
-#       - priority
-#       # 担当者
-#       - assigned_to
-#       # 予定時間
-#       - estimated_hours
-#       # 作業時間
-#       - spent_hours
-#       # 終了日
-#       - closed_on
-#     sort:
-#       # 終了日/昇順
-#       - field: closed_on
-#         order: asc
-#       # チケットNo/昇順
-#       - field: id
-#         order: asc
-#     total:
-#       # 予定時間
-#       - estimated_hours
-#       # 作業時間
-#       - spent_hours
-#   - name: 今月の作業実績
-#     filters:
-#       status:
-#         operator: c
-#       assigned_to:
-#         operator: "="
-#         values:
-#           - me
-#       closed_on:
-#         operator: "m"
-#     group_by: project
-#     columns:
-#       # トラッカー
-#       - tracker
-#       # 題名
-#       - subject
-#       # 優先度
-#       - priority
-#       # 担当者
-#       - assigned_to
-#       # 予定時間
-#       - estimated_hours
-#       # 作業時間
-#       - spent_hours
-#       # 終了日
-#       - closed_on
-#     sort:
-#       # 終了日/昇順
-#       - field: closed_on
-#         order: asc
-#       # チケットNp/昇順
-#       - field: id
-#         order: asc
-#     total:
-#       # 予定時間
-#       - estimated_hours
-#       # 作業時間
-#       - spent_hours
-#   - name: 期日が3日以内のチケット
-#     filters:
-#       status:
-#         operator: o
-#       assigned_to:
-#         operator: "="
-#         values:
-#           - me
-#       due_date:
-#         operator: '<t+'
-#         values:
-#           - "3"
-#     columns:
-#       # プロジェクト
-#       - project
-#       # トラッカー
-#       - tracker
-#       # 題名
-#       - subject
-#       # 優先度
-#       - priority
-#       # 優先度
-#       - status
-#       # 進捗率
-#       - done_ratio
-#       # 期日
-#       - due_date
-#     sort:
-#       # 期日/昇順
-#       - field: due_date
-#         order: asc
-#       # 優先度/降順
-#       - field: priority
-#         order: desc
-#       # チケットNo/昇順
-#       - field: id
-#         order: asc
 
 # --------------------
 # Redmineの設定(ユーザー)
