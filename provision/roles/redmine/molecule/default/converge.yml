@@ -1,9 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  # roles:
-  #   - name: common
-  #   - name: mariadb
+  become: true
   pre_tasks:
     - name: update cache(Debian)
       apt:
