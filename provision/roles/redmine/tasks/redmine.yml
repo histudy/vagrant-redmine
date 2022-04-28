@@ -174,6 +174,14 @@
       notify: restart redmine
       become: true
       become_user: root
+    - name: create plugin custom setting file
+      template:
+        src: plugin/custom_setting.yml.j2
+        dest: "{{ redmine_home }}/config/{{ item.custom_setting_name }}.yml"
+        mode: "0644"
+      loop: "{{ redmine_plugins | selectattr('custom_setting_name', 'defined') | list }}"
+      loop_control:
+        label: "{{ item.name }}"
     - block:
         - name: execute bundle install
           command: bundle install
@@ -193,6 +201,8 @@
             chdir: "{{ redmine_home }}"
             warn: false
           loop: "{{ redmine_plugins | selectattr('post_install_action', 'defined') | list }}"
+          loop_control:
+            label: "{{ item.name }}"
       when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
     - name: create puma config file
       template:
