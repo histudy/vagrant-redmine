@@ -15,7 +15,7 @@
     - name: test repository
       apt_repository:
         filename: influxdb
-        repo: deb https://deb.nodesource.com/node_12.x {{ ansible_facts.distribution_release }} main
+        repo: deb https://deb.nodesource.com/node_16.x {{ ansible_facts.distribution_release }} main
         state: present
       register: result
     - name: assert repository

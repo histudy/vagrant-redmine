@@ -1,3 +1,5 @@
 ---
 skip_list:
-  - no-handler
+  - 'no-handler'
+  - 'fqcn-builtins'
+warn_list: []

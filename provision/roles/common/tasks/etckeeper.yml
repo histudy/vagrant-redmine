@@ -11,6 +11,10 @@
       command: etckeeper init
       args:
         chdir: /etc
+      tags:
+        - skip_ansible_lint
     - name: initial commit
       command: etckeeper commit "Initial commit"
+      tags:
+        - skip_ansible_lint
   when: not result.stat.exists

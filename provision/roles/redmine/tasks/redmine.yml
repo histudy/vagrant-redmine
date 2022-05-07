@@ -89,11 +89,13 @@
           copy:
             src: "{{ redmine_upload_restore_files_archive_file }}"
             dest: "{{ redmine_restore_files_archive_file }}"
+            mode: "0644"
           when: redmine_upload_restore_files_archive_file is defined
         - name: upload restore file(database dump)
           copy:
             src: "{{ redmine_upload_restore_database_dump_file }}"
             dest: "{{ redmine_restore_database_dump_file }}"
+            mode: "0644"
           when: redmine_upload_restore_files_archive_file is defined
         - name: restore redmine data
           import_tasks: redmine/restore.yml
@@ -123,6 +125,7 @@
       unarchive:
         src: "{{ item.file }}"
         dest: "{{ redmine_theme_dir }}"
+        mode: "0644"
       loop: "{{ redmine_themes | selectattr('file', 'defined') | list }}"
       loop_control:
         label: "{{ item.name }}"
@@ -140,6 +143,7 @@
       get_url:
         url: "{{ item.url }}"
         dest: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
+        mode: "0644"
       loop: "{{ redmine_plugins | selectattr('url', 'defined') | list }}"
       loop_control:
         label: "{{ item.name }}"
@@ -187,14 +191,20 @@
           command: bundle install
           args:
             chdir: "{{ redmine_home }}"
+          tags:
+            - skip_ansible_lint
         - name: execute bundle exec rake db:migrate
           command: bundle exec rake db:migrate
           args:
             chdir: "{{ redmine_home }}"
+          tags:
+            - skip_ansible_lint
         - name: execute bundle exec rake redmine:plugins:migrate
           command: bundle exec rake redmine:plugins:migrate
           args:
             chdir: "{{ redmine_home }}"
+          tags:
+            - skip_ansible_lint
         - name: execute plugin post install action
           shell: "{{ item.post_install_action }}"
           args:
@@ -203,6 +213,8 @@
           loop: "{{ redmine_plugins | selectattr('post_install_action', 'defined') | list }}"
           loop_control:
             label: "{{ item.name }}"
+          tags:
+            - skip_ansible_lint
       when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
     - name: create puma config file
       template:
