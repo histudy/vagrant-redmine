@@ -10,6 +10,7 @@
   get_url:
     url: https://packages.groonga.org/debian/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
     dest: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
+    mode: "0644"
 - name: add mroonga repository
   apt:
     deb: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb

@@ -1,14 +1,2 @@
 ---
-galaxy_info:
-  author: yoshiaki tanaka
-  description: setup MariaDB
-  license: MIT
-  namespace: wate
-  role_name: mariadb
-  min_ansible_version: 2.11
-  platforms:
-    - name: Debian
-      versions:
-        - bullseye
-        - buster
 dependencies: []

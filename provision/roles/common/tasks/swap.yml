@@ -19,8 +19,12 @@
         state: touch
     - name: initilize swapfile
       command: "dd if=/dev/zero of={{ common_swapfile_path }} bs=1M count={{ common_swap_size | int * 1024 }}"
+      tags:
+        - skip_ansible_lint
     - name: create swap
       command: "mkswap {{ common_swapfile_path }}"
+      tags:
+        - skip_ansible_lint
   when: not result.stat.exists
 - name: Ensure mounted swap
   mount:
