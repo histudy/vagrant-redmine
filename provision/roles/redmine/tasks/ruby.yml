@@ -3,6 +3,7 @@
   apt:
     name:
       - ruby
+      - ruby-dev
       - rubygems-integration
       - ruby-rmagick
       - libmagickcore-dev

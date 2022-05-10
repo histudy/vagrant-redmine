@@ -88,7 +88,7 @@
 - name: add admin group for admin users
   user:
     name: "{{ item.name }}"
-    groups: wheel
+    groups: "{{ admin_group_name }}"
     append: true
   loop: "{{ existing_users | selectattr('admin', 'defined') | selectattr('admin', 'equalto', true) | list }}"
   loop_control:

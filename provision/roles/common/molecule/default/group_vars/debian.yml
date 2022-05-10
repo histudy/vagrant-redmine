@@ -8,6 +8,7 @@ common_files:
     mode: "0644"
   - dest: /usr/local/bin/remove_file
     removed: true
+
 common_users:
   - name: simple
     password: "{{ 'password' | password_hash('sha512') }}"
@@ -85,3 +86,17 @@ common_users:
   - name: update_pass_always
     password: "{{ 'password3' | password_hash('sha512') }}"
     update_password: always
+
+backup_settings:
+  - name: sample1
+    command: echo date
+    file: files/test_script
+    script_name: test_script_1
+    hour: 1
+    minute: 23
+  - name: sample2
+    command: echo date
+    template: files/test_script.j2
+    script_name: test_script_2
+    hour: 2
+    minute: 34

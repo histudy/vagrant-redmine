@@ -26,6 +26,7 @@
     password: "{{ redmine_db_cfg.production.password }}"
     default_character_set: "{{ redmine_db_cfg.production.encoding | default('utf8') }}"
   when: redmine_db_cfg.production.adapter == 'mysql2'
+  no_log: true
 - name: create install directory
   file:
     path: "{{ redmine_home }}"
