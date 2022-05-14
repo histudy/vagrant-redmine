@@ -1,7 +1,7 @@
 ---
 - name: set variable
-  set_fact:
+  ansible.builtin.set_fact:
     package_file: "tbls_{{ tbls_version }}-1_{{ ansible_facts.kernel.split('-')[-1] }}.rpm"
 - name: install tbls
-  yum:
+  ansible.builtin.yum:
     name: https://github.com/k1LoW/tbls/releases/download/v{{ tbls_version }}/{{ package_file }}

@@ -25,15 +25,15 @@ mariadb_databases: []
   #   password: dsample_p@55w0rd
 
 mariadb_users: []
-  # - name: sample_user
-  #   password: sample_user_password
+  # - name: mackerel_db_user
+  #   password: mackerel_db_password
   #   hosts:
   #     - "127.0.0.1"
   #     - "::1"
   #     - localhost
   #   privs:
-  #     - "sample.*:ALL"
-  #   state: false
+  #     - "*.*:SUPER"
+  #   state: true
 
 mariadb_max_connections: 100
 mariadb_max_table_use_in_query: 3

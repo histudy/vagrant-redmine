@@ -1,12 +1,12 @@
 ---
 - name: create/update mailhog systemd unit file
-  template:
+  ansible.builtin.template:
     src: mailhog/mailhog.service.j2
     dest: /usr/lib/systemd/system/mailhog.service
     mode: "0644"
   notify: restart mailhog
 - name: MailHog is active and enabled on system startup
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
     name: mailhog
     state: started

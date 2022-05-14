@@ -1,6 +1,6 @@
 ---
 - name: find task file
-  set_fact:
+  ansible.builtin.set_fact:
     include_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
   vars:
     params:
@@ -11,5 +11,5 @@
       paths:
         - tasks/dependency
 - name: install dependency packages
-  include_tasks: "{{ include_task_file }}"
+  ansible.builtin.include_tasks: "{{ include_task_file }}"
   when: include_task_file | length > 0

@@ -1,9 +1,9 @@
 - name: append direnv setting on skeleton directory
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/skel/.bashrc
     line: 'eval "$(direnv hook bash)"'
 - name: append direnv setting on remote user
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: ~/.bashrc
     line: 'eval "$(direnv hook bash)"'
   become: false

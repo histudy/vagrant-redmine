@@ -1,3 +1,3 @@
 - name: install sassc(C/C++ port of the Sass CSS precompiler)
-  apt:
+  ansible.builtin.apt:
     name: sassc

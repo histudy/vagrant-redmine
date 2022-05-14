@@ -1,5 +1,5 @@
 ---
 - name: add/update mecab setting
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /etc/mecabrc
     block: "{{ mecab_extra_cfg  }}"

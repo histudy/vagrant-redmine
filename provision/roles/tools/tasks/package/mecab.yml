@@ -1,3 +1,3 @@
 - name: install packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ mecab_packages }}"

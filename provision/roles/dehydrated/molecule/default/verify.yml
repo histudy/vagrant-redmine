@@ -5,16 +5,16 @@
   check_mode: true
   tasks:
     - name: test dehydrated package
-      apt:
+      ansible.builtin.apt:
         name: dehydrated
       register: result
     - name: assert package
-      assert:
+      ansible.builtin.assert:
         that: result is not changed
     - name: test lexicon package
-      apt:
+      ansible.builtin.apt:
         name: lexicon
       register: result
     - name: assert package
-      assert:
+      ansible.builtin.assert:
         that: result is not changed
