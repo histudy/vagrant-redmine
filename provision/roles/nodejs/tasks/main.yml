@@ -1,9 +1,9 @@
 ---
 - name: add repository
-  import_tasks: repository.yml
+  ansible.builtin.import_tasks: repository.yml
   tags: repository
 - name: install nodejs
-  apt:
+  ansible.builtin.apt:
     name: nodejs
 - name: install yarn
   npm:

@@ -1,4 +1,4 @@
 ---
 - name: install dependency packages
-  dnf:
+  ansible.builtin.dnf:
     name: "{{ tools_dependency_packages }}"

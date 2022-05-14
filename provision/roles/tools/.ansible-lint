@@ -1,5 +1,6 @@
 ---
 skip_list:
   - 'no-handler'
-  - 'fqcn-builtins'
-warn_list: []
+  - 'role-name'
+warn_list:
+  - 'experimental'

@@ -1,4 +1,4 @@
 ---
 - name: install dependency packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ tools_dependency_packages }}"

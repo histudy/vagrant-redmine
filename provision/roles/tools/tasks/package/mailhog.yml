@@ -1,14 +1,14 @@
 ---
 - name: set variable
-  set_fact:
+  ansible.builtin.set_fact:
     download_bainary_suffix: "{{ ansible_facts.system | lower }}_{{ ansible_facts.kernel.split('-')[-1] }}"
 - name: download MailHog binary
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/mailhog/MailHog/releases/download/{{ mailhog_version }}/MailHog_{{ download_bainary_suffix }}
     dest: /usr/local/bin/mailhog
     mode: "0755"
 - name: download mhsendmail binary
-  get_url:
+  ansible.builtin.get_url:
     url: https://github.com/mailhog/mhsendmail/releases/download/{{ mailhog_mhsendmail_version }}/mhsendmail_{{ download_bainary_suffix }}
     dest: /usr/local/bin/mhsendmail
     mode: "0755"

@@ -1,42 +1,42 @@
 ---
 - name: install dehydrated
-  apt:
+  ansible.builtin.apt:
     name:
       - dehydrated
       - cron
 - name: install lexicon
-  apt:
+  ansible.builtin.apt:
     name: lexicon
   when: dehydrated_with_lexicon
 - name: create addtitional config file
-  template:
+  ansible.builtin.template:
     src: local.sh.j2
     dest: "{{ dehydrated_config_dir }}/local.sh"
     mode: "0644"
 - name: create domain file
-  template:
+  ansible.builtin.template:
     src: domains.txt.j2
     dest: "{{ dehydrated_domains_txt }}"
     mode: "0644"
 - name: create hook file
-  template:
+  ansible.builtin.template:
     src: hook.sh.j2
     dest: "{{ dehydrated_config_base_dir }}/hook.sh"
     mode: "0750"
 - name: register account key
-  command: dehydrated --register --accept-terms
+  ansible.builtin.command: dehydrated --register --accept-terms
   args:
     creates: "{{ dehydrated_base_dir }}/accounts"
 - name: create auth file directory
-  file:
+  ansible.builtin.file:
     path: /var/www/dehydrated
     state: directory
     mode: "0755"
 - name: sign/renew non-existent/changed/expiring certificates
-  command: dehydrated --cron
+  ansible.builtin.command: dehydrated --cron
   when: dehydrated_auto_execute
 - name: register cron job
-  cron:
+  ansible.builtin.cron:
     name: Update SSL certificate
     job: "{{ dehydrated_cron.job }}"
     hour: "{{ dehydrated_cron.hour | string }}"
