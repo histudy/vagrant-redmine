@@ -1,6 +1,6 @@
 ---
 - name: install database adapter(MySQL)
-  apt:
+  ansible.builtin.apt:
     name:
       - mariadb-client
       - mariadb-server

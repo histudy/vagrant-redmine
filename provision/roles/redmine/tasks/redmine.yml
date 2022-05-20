@@ -1,12 +1,12 @@
 ---
 - name: install dependency packages
-  apt:
+  ansible.builtin.apt:
     name:
       - git
       - acl
       - pkg-config
 - name: add redmine user
-  user:
+  ansible.builtin.user:
     name: "{{ redmine_user }}"
     system: true
 - name: create mysql connection file
@@ -28,58 +28,59 @@
   when: redmine_db_cfg.production.adapter == 'mysql2'
   no_log: true
 - name: create install directory
-  file:
+  ansible.builtin.file:
     path: "{{ redmine_home }}"
     owner: "{{ redmine_user }}"
     group: "{{ redmine_user }}"
     state: directory
     mode: "0755"
-- block:
+- name: setup redmine
+  block:
     - name: checkout Redmine
-      git:
+      ansible.builtin.git:
         repo: "{{ redmine_repo }}"
         dest: "{{ redmine_home }}"
         version: "{{ redmine_version }}"
       register: git_result
     - name: create bundler setting directory
-      file:
+      ansible.builtin.file:
         path: "{{ redmine_home }}/.bundle"
         state: directory
         mode: "0755"
     - name: copy bundler setting file
-      copy:
+      ansible.builtin.copy:
         src: config
         dest: "{{ redmine_home }}/.bundle/config"
         mode: "0644"
     - name: create Gemfile.local file
-      template:
+      ansible.builtin.template:
         src: Gemfile.local.j2
         dest: "{{ redmine_home }}/Gemfile.local"
         mode: "0644"
     - name: set redmine database config variable
-      set_fact:
+      ansible.builtin.set_fact:
         redmine_db_cfg:
           production: "{{ redmine_db_cfg.production }}"
           development: "{{ redmine_db_cfg.production }}"
     - name: create database config file
-      template:
+      ansible.builtin.template:
         src: database.yml.j2
         dest: "{{ redmine_home }}/config/database.yml"
         mode: "0644"
       register: db_config_result
     - name: create Redmine config file
-      template:
+      ansible.builtin.template:
         src: configuration.yml.j2
         dest: "{{ redmine_home }}/config/configuration.yml"
         mode: "0644"
       notify: restart redmine
     - name: execute bundle update
-      command: bundle update
+      ansible.builtin.command: bundle update
       args:
         chdir: "{{ redmine_home }}"
       when: git_result is changed
     - name: create secret token
-      command: bundle exec rake generate_secret_token
+      ansible.builtin.command: bundle exec rake generate_secret_token
       args:
         chdir: "{{ redmine_home }}"
         creates: "{{ redmine_home }}/config/initializers/secret_token.rb"
@@ -87,35 +88,35 @@
     - name: restore redmine data
       block:
         - name: upload restore file(files archive)
-          copy:
+          ansible.builtin.copy:
             src: "{{ redmine_upload_restore_files_archive_file }}"
             dest: "{{ redmine_restore_files_archive_file }}"
             mode: "0644"
           when: redmine_upload_restore_files_archive_file is defined
         - name: upload restore file(database dump)
-          copy:
+          ansible.builtin.copy:
             src: "{{ redmine_upload_restore_database_dump_file }}"
             dest: "{{ redmine_restore_database_dump_file }}"
             mode: "0644"
           when: redmine_upload_restore_files_archive_file is defined
         - name: restore redmine data
-          import_tasks: redmine/restore.yml
+          ansible.builtin.import_tasks: redmine/restore.yml
       when: generate_token_result is changed or redmine_restore
     - name: migrate database
-      command: bundle exec rake db:migrate
+      ansible.builtin.command: bundle exec rake db:migrate
       args:
         chdir: "{{ redmine_home }}"
       notify: restart redmine
       when: git_result is changed or db_config_result is changed
     - name: load default data
-      command: bundle exec rake redmine:load_default_data
+      ansible.builtin.command: bundle exec rake redmine:load_default_data
       args:
         chdir: "{{ redmine_home }}"
       when:
         - generate_token_result is changed
         - redmine_restore_files is undefined
     - name: install themes from git
-      git:
+      ansible.builtin.git:
         repo: "{{ item.repo }}"
         dest: "{{ redmine_theme_dir }}/{{ item.directory if item.directory is defined else item.name }}"
         version: master
@@ -123,7 +124,7 @@
       loop_control:
         label: "{{ item.name }}"
     - name: install themes from file
-      unarchive:
+      ansible.builtin.unarchive:
         src: "{{ item.file }}"
         dest: "{{ redmine_theme_dir }}"
         mode: "0644"
@@ -131,7 +132,7 @@
       loop_control:
         label: "{{ item.name }}"
     - name: install plugin from git
-      git:
+      ansible.builtin.git:
         repo: "{{ item.repo }}"
         dest: "{{ redmine_plugin_dir }}/{{ item.directory if item.directory is defined else 'redmine_' +  item.name }}"
         version: "{{ item.version | default('master') }}"
@@ -141,7 +142,7 @@
       notify: restart redmine
       register: plugin_install_from_git_result
     - name: download plugin archive file
-      get_url:
+      ansible.builtin.get_url:
         url: "{{ item.url }}"
         dest: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
         mode: "0644"
@@ -149,7 +150,7 @@
       loop_control:
         label: "{{ item.name }}"
     - name: unarchive downloaded plugin archive file
-      unarchive:
+      ansible.builtin.unarchive:
         src: "{{ redmine_home }}/tmp/{{ item.url | basename }}"
         dest: "{{ redmine_plugin_dir }}"
         remote_src: true
@@ -160,7 +161,7 @@
       notify: restart redmine
       register: plugin_install_from_url_result
     - name: unarchive plugin archive file
-      unarchive:
+      ansible.builtin.unarchive:
         src: "{{ item.file }}"
         dest: "{{ redmine_plugin_dir }}"
         mode: "0755"
@@ -170,7 +171,7 @@
       notify: restart redmine
       register: plugin_install_from_file_result
     - name: install plugin dependency packages
-      apt:
+      ansible.builtin.apt:
         name: "{{ item.1 }}"
         state: present
       loop: "{{ redmine_plugins | subelements('required_packages', {'skip_missing': True}) }}"
@@ -180,34 +181,35 @@
       become: true
       become_user: root
     - name: create plugin custom setting file
-      template:
+      ansible.builtin.template:
         src: plugin/custom_setting.yml.j2
         dest: "{{ redmine_home }}/config/{{ item.custom_setting_name }}.yml"
         mode: "0644"
       loop: "{{ redmine_plugins | selectattr('custom_setting_name', 'defined') | list }}"
       loop_control:
         label: "{{ item.name }}"
-    - block:
+    - name: plugin setup
+      block:
         - name: execute bundle install
-          command: bundle install
+          ansible.builtin.command: bundle install
           args:
             chdir: "{{ redmine_home }}"
           tags:
             - skip_ansible_lint
         - name: execute bundle exec rake db:migrate
-          command: bundle exec rake db:migrate
+          ansible.builtin.command: bundle exec rake db:migrate
           args:
             chdir: "{{ redmine_home }}"
           tags:
             - skip_ansible_lint
         - name: execute bundle exec rake redmine:plugins:migrate
-          command: bundle exec rake redmine:plugins:migrate
+          ansible.builtin.command: bundle exec rake redmine:plugins:migrate
           args:
             chdir: "{{ redmine_home }}"
           tags:
             - skip_ansible_lint
         - name: execute plugin post install action
-          shell: "{{ item.post_install_action }}"
+          ansible.builtin.shell: "{{ item.post_install_action }}"
           args:
             chdir: "{{ redmine_home }}"
             warn: false
@@ -218,23 +220,23 @@
             - skip_ansible_lint
       when: plugin_install_from_git_result is changed or plugin_install_from_url_result is changed or plugin_install_from_file_result is changed
     - name: create puma config file
-      template:
+      ansible.builtin.template:
         src: puma.rb.j2
         dest: "{{ redmine_home }}/config/puma.rb"
         mode: "0644"
       notify: restart redmine
     - name: clear cache
-      command: bundle exec rake tmp:cache:clear
+      ansible.builtin.command: bundle exec rake tmp:cache:clear
       args:
         chdir: "{{ redmine_home }}"
       when: redmine_cache_clear | default(false)
     - name: create setting file directory
-      file:
+      ansible.builtin.file:
         path: "{{ redmine_home }}/tmp/import"
         state: directory
         mode: "0755"
     - name: import Redmine setting
-      import_tasks: import.yml
+      ansible.builtin.import_tasks: import.yml
       when: generate_token_result is changed or redmine_reimport
   become: true
   become_user: "{{ redmine_user }}"
@@ -242,13 +244,13 @@
     RAILS_ENV: "{{ redmine_mode }}"
     REDMINE_LANG: "{{ redmine_lang }}"
 - name: create redmine systemd unit file
-  template:
+  ansible.builtin.template:
     src: redmine.service.j2
     dest: /lib/systemd/system/redmine.service
     mode: "0644"
   notify: restart redmine
 - name: Redmine is active and enable on system startup
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
     name: redmine
     state: started

@@ -30,7 +30,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: set redmine cron job
-  cron:
+  ansible.builtin.cron:
     name: "{{ item.name | default(omit) }}"
     job: cd {{ redmine_home }} && {{ item.command }} {{ item.params | default([]) | join(' ') }}
     hour: "{{ item.hour | default('*') | string }}"

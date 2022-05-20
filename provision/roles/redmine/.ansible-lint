@@ -1,5 +1,9 @@
 ---
 skip_list:
   - 'no-handler'
-  - 'fqcn-builtins'
-warn_list: []
+  - 'meta-incorrect'
+  - 'meta-no-info'
+  - 'meta-no-tags'
+  - 'meta-video-links'
+warn_list:
+  - 'experimental'
