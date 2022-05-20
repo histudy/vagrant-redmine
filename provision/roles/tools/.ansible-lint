@@ -1,6 +1,8 @@
 ---
 skip_list:
-  - 'no-handler'
-  - 'role-name'
+  - 'meta-incorrect'
+  - 'meta-no-info'
+  - 'meta-no-tags'
+  - 'meta-video-links'
 warn_list:
   - 'experimental'

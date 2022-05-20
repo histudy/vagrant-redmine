@@ -6,6 +6,10 @@ dehydrated_cfg: {}
 
 dehydrated_with_lexicon: true
 
+dehydrated_lexicon_packages:
+  - lexicon
+  - python3-boto3
+
 dehydrated_domains: []
   # - name: example.com
   #   domains:

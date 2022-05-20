@@ -1,24 +1,24 @@
 - name: Ensure includedir setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ mariadb_config_base_dir }}/my.cnf"
     line: "!includedir {{ mariadb_config_dir }}/"
   notify: restart mariadb
 - name: create MariaDB setting files
-  template:
+  ansible.builtin.template:
     src: custom.cnf.j2
     dest: "{{ mariadb_config_dir }}/99-custom.cnf"
     mode: "0644"
   notify: restart mariadb
 - name: MariaDB is active and enabled on system startup
-  systemd:
+  ansible.builtin.systemd:
     name: mariadb
     state: started
     enabled: true
 - name: install expect dependency packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ mariadb_expect_dependency_packages  }}"
 - name: find mysql_secure_installation task file
-  set_fact:
+  ansible.builtin.set_fact:
     mysql_secure_installation_task_file: "{{ lookup('first_found', params, errors='ignore') }}"
   vars:
     params:
@@ -29,6 +29,6 @@
       paths:
         - tasks/setting
 - name: execute mysql_secure_installation
-  include_tasks: "{{ mysql_secure_installation_task_file }}"
+  ansible.builtin.include_tasks: "{{ mysql_secure_installation_task_file }}"
   when: mysql_secure_installation_task_file | length > 0
   tags: mysql_secure_installation

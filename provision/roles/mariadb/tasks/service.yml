@@ -1,6 +1,6 @@
 ---
 - name: MariaDB is active and enabled on system startup
-  systemd:
+  ansible.builtin.systemd:
     name: mariadb
     state: started
     enabled: true

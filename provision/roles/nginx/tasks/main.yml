@@ -1,77 +1,27 @@
 ---
-- name: install dependency package
-  apt:
-    name: ufw
-- name: install nginx
-  apt:
-    name: "{{ nginx_packages }}"
-- name: create config directories
-  file:
-    path: /etc/nginx/{{ item }}
-    state: directory
-    mode: "0755"
-  loop:
-    - conf.d
-    - snippets
-    - modules-available
-    - modules-enabled
-    - sites-available
-    - sites-enabled
-- name: create nginx.conf
-  template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-    mode: "0644"
-  notify: restart nginx
-- name: generate OpenSSL Diffie-Hellman parameters
-  openssl_dhparam:
-    path: "{{ nginx_dh_key_path }}"
-    size: "{{ nginx_dh_key_bit }}"
-  when: nginx_generate_dh_key
-  tags:
-    - skip_ansible_lint
-- name: copy snippet files
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/nginx/snippets/{{ item | basename }}"
-    mode: "0644"
-  loop: "{{ lookup('fileglob', 'files/snippets/*.conf', wantlist=True) }}"
-  notify: restart nginx
-- name: create nginx extra config files
-  template:
-    src: "{{ item }}"
-    dest: "/etc/nginx/conf.d/{{ item[:-3] | basename }}"
-    mode: "0644"
-  loop: "{{ lookup('fileglob', 'templates/conf/*.conf.j2', wantlist=True) }}"
-- name: change extra config status
-  file:
-    path: /etc/nginx/modules-enabled/{{ item.name }}.conf
-    src: "{{ item.state | default(true) | ternary('/etc/nginx/modules-available/' + item.name +  '.conf', omit) }}"
-    state: "{{ item.state | default(true) | ternary('link', 'absent') }}"
-    mode: "0644"
-  loop: "{{ nginx_modules }}"
-  notify: restart nginx
-- name: create site config files
-  template:
-    src: vhost.j2
-    dest: /etc/nginx/sites-available/{{ item.name | default(item.server_name) }}
-    mode: "0644"
-  loop: "{{ nginx_vhosts }}"
-  notify: restart nginx
-- name: change site config
-  file:
-    path: /etc/nginx/sites-enabled/{{ item.name | default(item.server_name) }}
-    src: "{{ item.state | default(true) | ternary('/etc/nginx/sites-available/' + item.name | default(item.server_name), omit) }}"
-    state: "{{ item.state | default(true) | ternary('link', 'absent') }}"
-    mode: "0644"
-  loop: "{{ nginx_vhosts }}"
-  notify: restart nginx
-- name: nginx is active and enabled on system startup
-  service:
-    name: nginx
-    state: started
-    enabled: true
-- name: allow http and https port
-  ufw:
-    rule: allow
-    name: "WWW Full"
+- name: find variable file
+  ansible.builtin.set_fact:
+    variable_file: "{{ lookup('first_found', params, errors='ignore') }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}/{{ ansible_facts.distribution_major_version }}.yml'
+        - '{{ ansible_facts.os_family }}/{{ ansible_facts.distribution }}.yml'
+        - '{{ ansible_facts.os_family }}.yml'
+      paths:
+        - vars
+- name: include variable file
+  ansible.builtin.include_vars: "{{ variable_file }}"
+  when: variable_file | length > 0
+- name: install dependency packages
+  ansible.builtin.import_tasks: dependency.yml
+  tags: dependency
+- name: install packages
+  ansible.builtin.import_tasks: package.yml
+  tags: package
+- name: create/update setting
+  ansible.builtin.import_tasks: setting.yml
+  tags: setting
+- name: setup service
+  ansible.builtin.import_tasks: service.yml
+  tags: service

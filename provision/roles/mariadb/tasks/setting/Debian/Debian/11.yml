@@ -1,6 +1,6 @@
 ---
 - name: execute mysql_secure_installation
-  expect:
+  ansible.builtin.expect:
     command: mysql_secure_installation
     responses:
       "Enter current password for root": ""

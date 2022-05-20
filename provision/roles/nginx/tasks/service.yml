@@ -1,0 +1,10 @@
+---
+- name: nginx is active and enabled on system startup
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enabled: true
+- name: allow http and https port
+  ufw:
+    rule: allow
+    name: "WWW Full"

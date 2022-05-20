@@ -1,6 +1,6 @@
 ---
 - name: create sshd custom setting
-  template:
+  ansible.builtin.template:
     src: sshd/custom.conf.j2
     dest: /etc/ssh/sshd_config.d/custom.conf
     mode: "0644"
