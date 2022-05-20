@@ -1,16 +1,16 @@
 ---
 - name: install dependency packages
-  apt:
+  ansible.builtin.apt:
     name:
       - apt-transport-https
       - ca-certificates
       - curl
       - gnupg
 - name: get apt-source package
-  get_url:
+  ansible.builtin.get_url:
     url: https://packages.groonga.org/debian/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
     dest: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb
     mode: "0644"
 - name: add mroonga repository
-  apt:
+  ansible.builtin.apt:
     deb: /usr/local/src/groonga-apt-source-latest-{{ ansible_facts.distribution_release }}.deb

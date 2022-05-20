@@ -6,7 +6,7 @@
       - cron
 - name: install lexicon
   ansible.builtin.apt:
-    name: lexicon
+    name: "{{ dehydrated_lexicon_packages }}"
   when: dehydrated_with_lexicon
 - name: create addtitional config file
   ansible.builtin.template:

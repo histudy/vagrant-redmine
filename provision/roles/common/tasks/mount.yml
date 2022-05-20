@@ -1,6 +1,6 @@
 ---
 - name: manage mount point
-  include_tasks: mount/manage_mount.yml
+  ansible.builtin.include_tasks: mount/manage_mount.yml
   loop: "{{ common_mounts }}"
   loop_control:
     loop_var: mount_setting

@@ -1,15 +1,16 @@
 ---
 - name: retrieve file system status
-  stat:
+  ansible.builtin.stat:
     path: "{{ mount_setting.src }}"
   register: stat_result
-- block:
+- name: set mount setting
+  block:
     - name: install dependency packages
-      apt:
+      ansible.builtin.apt:
         name: "{{ mount_setting.required_packages }}"
       when: mount_setting.required_packages is defined
     - name: copy dependency file
-      copy:
+      ansible.builtin.copy:
         src: "{{ mount_setting.file.src }}"
         dest: "{{ mount_setting.file.dest }}"
         owner: "{{ mount_setting.file.owner | default(omit) }}"
@@ -18,7 +19,7 @@
         remote_src: "{{ mount_setting.file.remote_src | default(omit) }}"
       when: mount_setting.file is defined
     - name: create dependency files
-      template:
+      ansible.builtin.template:
         src: "{{ mount_dependency_template.src }}"
         dest: "{{ mount_dependency_template.dest }}"
         owner: "{{ mount_dependency_template.owner | default(omit) }}"
@@ -26,7 +27,7 @@
         mode: "{{ mount_dependency_template.mode | default(omit) }}"
       when: mount_setting.template is defined
     - name: create mount point directory
-      file:
+      ansible.builtin.file:
         path: "{{ mount_setting.path }}"
         mode: "0755"
         state: directory

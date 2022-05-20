@@ -1,39 +1,42 @@
 ---
-- name: check swapfile exist
-  stat:
-    path: "{{ common_swapfile_path }}"
-  register: result
-- name: create swapfile
+- name: setup swap file
   block:
-    - name: create swapfile directory
-      file:
-        path: "{{ common_swapfile_path | dirname }}"
-        state: directory
-        mode: "0700"
-    - name: create swapfile
-      file:
+    - name: check swapfile exist
+      ansible.builtin.stat:
         path: "{{ common_swapfile_path }}"
-        owner: root
-        group: root
-        mode: "0600"
-        state: touch
-    - name: initilize swapfile
-      command: "dd if=/dev/zero of={{ common_swapfile_path }} bs=1M count={{ common_swap_size | int * 1024 }}"
+      register: result
+    - name: create swapfile
+      block:
+        - name: create swapfile directory
+          ansible.builtin.file:
+            path: "{{ common_swapfile_path | dirname }}"
+            state: directory
+            mode: "0700"
+        - name: create swapfile
+          ansible.builtin.file:
+            path: "{{ common_swapfile_path }}"
+            owner: root
+            group: root
+            mode: "0600"
+            state: touch
+        - name: initilize swapfile
+          ansible.builtin.command: "dd if=/dev/zero of={{ common_swapfile_path }} bs=1M count={{ common_swap_size | int * 1024 }}"
+          tags:
+            - skip_ansible_lint
+        - name: create swap
+          ansible.builtin.command: "mkswap {{ common_swapfile_path }}"
+          tags:
+            - skip_ansible_lint
+      when: not result.stat.exists
+    - name: Ensure mounted swap
+      mount:
+        src: "{{ common_swapfile_path }}"
+        path: swap
+        fstype: swap
+        opts: default
+        state: present
+    - name: enable swap
+      ansible.builtin.command: swapon
       tags:
         - skip_ansible_lint
-    - name: create swap
-      command: "mkswap {{ common_swapfile_path }}"
-      tags:
-        - skip_ansible_lint
-  when: not result.stat.exists
-- name: Ensure mounted swap
-  mount:
-    src: "{{ common_swapfile_path }}"
-    path: swap
-    fstype: swap
-    opts: default
-    state: present
-- name: enable swap
-  command: swapon
-  tags:
-    - skip_ansible_lint
+  when: ansible_facts.memory_mb.swap is undefined or ansible_facts.memory_mb.swap.total == 0

@@ -1,4 +1,4 @@
 ---
 - name: install tool packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ common_install_tools  }}"

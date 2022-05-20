@@ -1,12 +1,12 @@
 ---
 - name: install japanese environment package
-  apt:
+  ansible.builtin.apt:
     name: task-japanese
 - name: install font packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ common_japanese_fonts }}"
 - name: install other japanse fonts
-  include_tasks: "japanese/{{ item }}.yml"
+  ansible.builtin.include_tasks: "japanese/{{ item }}.yml"
   loop: "{{ other_japanese_fonts }}"
   vars:
     other_japanese_fonts:
@@ -16,9 +16,9 @@
     name: ja_JP.UTF-8
     state: present
 - name: get system locale
-  command: localectl status
+  ansible.builtin.command: localectl status
   register: result
   changed_when: false
 - name: set locale
-  command: localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+  ansible.builtin.command: localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
   when: "'LANG=ja_JP.UTF-8' not in result.stdout"

@@ -16,20 +16,20 @@ http {
     # Basic Settings
     ##
 
-    sendfile {{ 'on' if nginx_cfg.http.sendfile else 'off' }};
-    tcp_nopush {{ 'on' if nginx_cfg.http.tcp_nopush else 'off' }};
-    tcp_nodelay {{ 'on' if nginx_cfg.http.tcp_nodelay else 'off' }};
+    sendfile {{ nginx_cfg.http.sendfile | ternary('on', 'off') }};
+    tcp_nopush {{ nginx_cfg.http.tcp_nopush | ternary('on', 'off') }};
+    tcp_nodelay {{ nginx_cfg.http.tcp_nodelay | ternary('on', 'off') }};
     keepalive_timeout {{ nginx_cfg.http.keepalive_timeout }};
     types_hash_max_size {{ nginx_cfg.http.types_hash_max_size }};
     {% if nginx_cfg.http.server_tokens is defined -%}
-    server_tokens {{ 'on' if nginx_cfg.http.server_tokens else 'off' }};
+    server_tokens {{ nginx_cfg.http.server_tokens | ternary('on', 'off') }};
     {% endif -%}
 
     {% if nginx_cfg.http.server_names_hash_bucket_size is defined -%}
     server_names_hash_bucket_size {{ nginx_cfg.http.server_names_hash_bucket_size }};
     {% endif -%}
     {% if nginx_cfg.http.server_name_in_redirect is defined -%}
-    server_name_in_redirect {{ 'on' if nginx_cfg.http.server_name_in_redirect else 'off' }};
+    server_name_in_redirect {{ nginx_cfg.http.server_name_in_redirect | ternary('on', 'off') }};
     {% endif -%}
 
     include /etc/nginx/mime.types;
@@ -51,32 +51,32 @@ http {
     # SSL Settings
     ##
 
-    ssl_protocols {{ nginx_cfg.http.ssl.protocols|join(' ') }};
-    ssl_ciphers "{{ nginx_cfg.http.ssl.ciphers|join(':') }}";
-    ssl_prefer_server_ciphers {{ 'on' if nginx_cfg.http.ssl.prefer_server_ciphers else 'off' }};
+    ssl_protocols {{ nginx_cfg.http.ssl.protocols | join(' ') }};
+    ssl_ciphers "{{ nginx_cfg.http.ssl.ciphers | join(':') }}";
+    ssl_prefer_server_ciphers {{ nginx_cfg.http.ssl.prefer_server_ciphers | ternary('on', 'off') }};
     ssl_session_timeout {{ nginx_cfg.http.ssl.session_timeout }};
     ssl_session_cache {{ nginx_cfg.http.ssl.session_cache }};
-    ssl_session_tickets {{ 'on' if nginx_cfg.http.ssl.session_tickets else 'off' }};
+    ssl_session_tickets {{ nginx_cfg.http.ssl.session_tickets | ternary('on', 'off') }};
     {% if nginx_cfg.http.ssl.dhparam is defined -%}
     ssl_dhparam {{ nginx_cfg.http.ssl.dhparam }};
     {% endif -%}
     {% if nginx_cfg.http.ssl.hsts is defined -%}
     add_header Strict-Transport-Security "{{ nginx_cfg.http.ssl.hsts }}";
     {% endif -%}
-    ssl_stapling {{ 'on' if nginx_cfg.http.ssl.stapling else 'off' }};
-    ssl_stapling_verify {{ 'on' if nginx_cfg.http.ssl.stapling_verify else 'off' }};
+    ssl_stapling {{ nginx_cfg.http.ssl.stapling | ternary('on', 'off') }};
+    ssl_stapling_verify {{ nginx_cfg.http.ssl.stapling_verify | ternary('on', 'off') }};
 
     ##
     # Gzip Settings
     ##
 
-    gzip {{ 'on' if nginx_cfg.http.gzip else 'off' }};
-    gzip_vary {{ 'on' if nginx_cfg.http.gzip_vary else 'off' }};
+    gzip {{ nginx_cfg.http.gzip | ternary('on', 'off') }};
+    gzip_vary {{ nginx_cfg.http.gzip_vary | ternary('on', 'off') }};
     gzip_proxied {{ nginx_cfg.http.gzip_proxied }};
     gzip_comp_level {{ nginx_cfg.http.gzip_comp_level }};
     gzip_buffers {{ nginx_cfg.http.gzip_buffers }};
     gzip_http_version {{ nginx_cfg.http.gzip_http_version }};
-    gzip_types {{ nginx_cfg.http.gzip_types|join(' ') }};
+    gzip_types {{ nginx_cfg.http.gzip_types | join(' ') }};
 
     ##
     # Virtual Host Configs

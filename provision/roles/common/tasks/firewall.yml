@@ -1,9 +1,9 @@
 ---
 - name: install ufw
-  apt:
+  ansible.builtin.apt:
     name: ufw
 - name: firewall is active and enabled on system startup
-  systemd:
+  ansible.builtin.systemd:
     name: ufw
     state: started
     enabled: true

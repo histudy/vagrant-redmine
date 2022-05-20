@@ -1,6 +1,6 @@
 ---
 - name: manage groups
-  group:
+  ansible.builtin.group:
     name: "{{ item.name }}"
     gid: "{{ item.id | default(omit) }}"
     system: "{{ item.system | default(omit) }}"
@@ -9,7 +9,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: manage users
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     password: "{{ item.password | default(omit) }}"
     update_password: "{{ item.update_password | default('on_create') }}"
@@ -26,7 +26,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: filter removed users
-  set_fact:
+  ansible.builtin.set_fact:
     existing_users: "{{ common_users | selectattr('removed', 'undefined') | list }}"
 - name: set authorized keys
   authorized_key:
@@ -37,7 +37,7 @@
   loop_control:
     label: "{{ item.0.name }} : {{ item.1 }}"
 - name: create ~/.ssh directory
-  file:
+  ansible.builtin.file:
     path: ~/.ssh
     state: directory
     mode: "0700"
@@ -47,7 +47,7 @@
   become: true
   become_user: "{{ item.name }}"
 - name: manage ~/.ssh/config setting
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: ~/.ssh/config
     block: |
       {% for ssh_config in item.ssh_config -%}
@@ -62,7 +62,7 @@
   become: true
   become_user: "{{ item.name }}"
 - name: deploy ssh private keys
-  copy:
+  ansible.builtin.copy:
     dest: ~/.ssh/{{ item.1.name }}
     src: "{{ item.1.src }}"
     mode: "0600"
@@ -72,7 +72,7 @@
   become: true
   become_user: "{{ item.0.name }}"
 - name: manage secret variable
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: ~/.secret
     regexp: "^export {{ item.1.name }}=.*"
     line: 'export {{ item.1.name }}="{{ item.1.value | default("") }}"'
@@ -86,7 +86,7 @@
     label: "{{ item.0.name }} : {{ item.1.name }}"
   tags: secret
 - name: add admin group for admin users
-  user:
+  ansible.builtin.user:
     name: "{{ item.name }}"
     groups: "{{ admin_group_name }}"
     append: true
@@ -103,7 +103,7 @@
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: Manage cron jobs
-  cron:
+  ansible.builtin.cron:
     user: "{{ item.0.name }}"
     name: "{{ item.1.name }}"
     job: "{{ item.1.job }}"
@@ -118,7 +118,7 @@
   loop_control:
     label: "{{ item.0.name }} : {{ item.1.name }}"
 - name: set root lock status
-  user:
+  ansible.builtin.user:
     name: root
     password_lock: "{{ common_root_lock }}"
   when: common_root_lock is defined

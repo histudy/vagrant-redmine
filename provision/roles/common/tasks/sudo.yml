@@ -1,12 +1,12 @@
 ---
 - name: install sudo packages
-  apt:
+  ansible.builtin.apt:
     name: sudo
 - name: add admin group
-  group:
+  ansible.builtin.group:
     name: "{{ admin_group_name  }}"
 - name: admin group sudo setting
-  template:
+  ansible.builtin.template:
     src: sudo/admin_group.j2
     dest: /etc/sudoers.d/admin_group
     validate: '/usr/sbin/visudo -cf %s'

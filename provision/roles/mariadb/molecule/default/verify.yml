@@ -5,16 +5,16 @@
   check_mode: true
   tasks:
     - name: test client package
-      apt:
+      ansible.builtin.apt:
         name: mariadb-client
       register: result
     - name: assert client package
-      assert:
+      ansible.builtin.assert:
         that: result is not changed
     - name: test server package
-      apt:
+      ansible.builtin.apt:
         name: mariadb-server-mroonga
       register: result
     - name: assert server package
-      assert:
+      ansible.builtin.assert:
         that: result is not changed

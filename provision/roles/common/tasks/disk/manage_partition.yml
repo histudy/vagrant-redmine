@@ -1,5 +1,5 @@
 - name: set temorary variable
-  set_fact:
+  ansible.builtin.set_fact:
     tmp_device_name: "{{ tmp_device.split('/')[-1] }}"
 - name: manage partition
   block:

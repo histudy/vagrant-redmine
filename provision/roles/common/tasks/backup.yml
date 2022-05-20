@@ -1,16 +1,16 @@
 ---
 - name: create backup data directory
-  file:
+  ansible.builtin.file:
     path: "{{ backup_dir }}"
     state: directory
     mode: "0755"
 - name: create backup scripts directory
-  file:
+  ansible.builtin.file:
     path: "{{ backup_script_dir }}"
     state: directory
     mode: "0755"
 - name: download backup script
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "{{ backup_script_dir }}/{{ item.name | default(item.url | basename) }}"
     checksum: "{{ item.checksum | default(omit) }}"
@@ -21,7 +21,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: upload backup script(script file)
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.file }}"
     dest: "{{ backup_script_dir }}/{{ item.script_name | default(item.file | basename) }}"
     mode: "0755"
@@ -29,7 +29,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: upload backup script(jinja templete file)
-  template:
+  ansible.builtin.template:
     src: "{{ item.template }}"
     dest: "{{ backup_script_dir }}/{{ item.script_name | default(item.template | basename | regex_replace('.j2$', '')) }}"
     mode: "0755"
@@ -37,7 +37,7 @@
   loop_control:
     label: "{{ item.name }}"
 - name: manage backup settings
-  cron:
+  ansible.builtin.cron:
     name: "{{ item.name }}"
     job: "{{ item.command }}"
     minute: "{{ item.minute | default(omit) }}"

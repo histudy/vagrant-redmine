@@ -1,22 +1,22 @@
 # ---
 - name: install geoip packages
-  apt:
+  ansible.builtin.apt:
     name:
       - geoip-bin
       - geoip-database
 - name: create ssh filter script
-  template:
+  ansible.builtin.template:
     src: ssh/sshfilter.j2
     dest: /usr/local/bin/sshfilter
     mode: "0755"
 - name: set TCP Wrapper(deny)
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts.deny
     regexp: "^sshd: "
     line: 'sshd: ALL'
     state: "{{ common_ssh_use_geoip_filter | ternary('present', 'absent') }}"
 - name: set TCP Wrapper(allow)
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts.allow
     regexp: "^sshd: "
     line: 'sshd: ALL: spawn /usr/local/bin/sshfilter %a'
