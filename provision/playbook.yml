@@ -16,6 +16,14 @@
             redmin_db_name: "{{ redmine_db_cfg.production.database }}"
             redmin_db_user: "{{ redmine_db_cfg.production.username }}"
             redmin_db_password: "{{ redmine_db_cfg.production.password }}"
+        - name: allow redmine database user connection other host
+          mysql_user:
+            name: "{{ redmin_db_user }}"
+            password: "{{ redmin_db_password }}"
+            host: '%'
+            priv: "{{ redmin_db_name }}.*:ALL"
+            login_unix_socket: "{{ mariadb_unix_socket_path | default('/run/mysqld/mysqld.sock') }}"
+          become: true
         - name: set enviromnet variables
           ansible.builtin.blockinfile:
             path: ~/.bashrc
