@@ -1,19 +1,34 @@
 - name: Deploy Redmine
   hosts: all
   roles:
-    - name: common
-    - name: mariadb
-    - name: nginx
-    - name: dehydrated
-    - name: redmine
-    - name: tools
+    - role: common
+    - role: mariadb
+    - role: nginx
+    - role: dehydrated
+    - role: redmine
+    - role: tools
   tasks:
-    - block:
+    - name: set user config
+      block:
+        - name: set variables
+          ansible.builtin.set_fact:
+            redmin_db_host: "{{ redmine_db_cfg.production.host }}"
+            redmin_db_name: "{{ redmine_db_cfg.production.database }}"
+            redmin_db_user: "{{ redmine_db_cfg.production.username }}"
+            redmin_db_password: "{{ redmine_db_cfg.production.password }}"
+        - name: allow redmine database user connection other host
+          mysql_user:
+            name: "{{ redmin_db_user }}"
+            password: "{{ redmin_db_password }}"
+            host: '%'
+            priv: "{{ redmin_db_name }}.*:ALL"
+            login_unix_socket: "{{ mariadb_unix_socket_path | default('/run/mysqld/mysqld.sock') }}"
+          become: true
         - name: set enviromnet variables
-          blockinfile:
+          ansible.builtin.blockinfile:
             path: ~/.bashrc
             block: |
-              export TBLS_DSN=my://{{ redmine_db_cfg.production.username }}:{{ redmine_db_cfg.production.password }}@{{ redmine_db_cfg.production.host }}:3306/{{ redmine_db_cfg.production.database }}
+              export TBLS_DSN=my://{{ redmin_db_user }}:{{ redmin_db_password }}@{{ redmin_db_host }}:3306/{{ redmin_db_name }}
               export TBLS_DOC_PATH=/vagrant/dbdoc/{{ redmine_version }}
         - name: create mysql connection file
           ini_file:
@@ -24,15 +39,16 @@
             value: "{{ item.value | string }}"
             mode: "0640"
           with_dict:
-            host: "{{ redmine_db_cfg.production.host }}"
-            database: "{{ redmine_db_cfg.production.database }}"
-            user: "{{ redmine_db_cfg.production.username }}"
-            password: "{{ redmine_db_cfg.production.password }}"
+            host: "{{ redmin_db_host }}"
+            database: "{{ redmin_db_name }}"
+            user: "{{ redmin_db_user }}"
+            password: "{{ redmin_db_password }}"
             default_character_set: "{{ mariadb_databases[0].encoding | default(mariadb_default_charset | default('utf8')) }}"
       become: false
-    - block:
+    - name: apply custom directory mapping
+      block:
         - name: apply custom directory mapping
-          file:
+          ansible.builtin.file:
             dest: "{{ redmine_home }}/{{ item.dest }}"
             src: "/vagrant/{{ item.src }}"
             owner: "{{ redmine_user }}"
@@ -41,28 +57,35 @@
           loop: "{{ redmine_custom_directory_mappings }}"
           notify: restart redmine
           register: result
-        - block:
+        - name: resetup redmine
+          block:
             - name: execute bundle install
-              command: bundle install
+              ansible.builtin.command: bundle install
               args:
                 chdir: "{{ redmine_home }}"
+              tags:
+                - skip_ansible_lint
             - name: execute bundle exec rake db:migrate
-              command: bundle exec rake db:migrate
+              ansible.builtin.command: bundle exec rake db:migrate
               args:
                 chdir: "{{ redmine_home }}"
+              tags:
+                - skip_ansible_lint
             - name: execute bundle exec rake redmine:plugins:migrate
-              command: bundle exec rake redmine:plugins:migrate
+              ansible.builtin.command: bundle exec rake redmine:plugins:migrate
               args:
                 chdir: "{{ redmine_home }}"
+              tags:
+                - skip_ansible_lint
           when: result is changed
       when: redmine_custom_directory_mappings is defined
     - name: restart service
-      systemd:
+      ansible.builtin.systemd:
         name: "{{ item }}"
         state: restarted
       loop:
         - redmine
         - nginx
     - name: Finish display message
-      debug:
+      ansible.builtin.debug:
         msg: "Let's Redmine!"

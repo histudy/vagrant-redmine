@@ -1771,6 +1771,11 @@ redmine_cron_jobs:
 #     position: 1
 
 # --------------------
+# Redmineインストール時にデフォルトデータのロードをスキップする
+# --------------------
+redmine_skip_load_default_data: false
+
+# --------------------
 # 2回目以降の再インポート判定
 # --------------------
 redmine_reimport: false
@@ -1829,8 +1834,17 @@ redmine_reimport_issue_templates_note: false
 # ファイルが存在しない場合は実行されません。
 # --------------------
 redmine_restore: false
-### 「filed」ディレクトリ内のファイルをまとめたアーカイブファイル
-## 「filed」ディレクトリのリストアファイルをサーバにアップロードする場合は以下の変数にコントロールノード側のファイルパスを設定します
+
+### バックアップファイルのアップロード
+## リストアするデータをアップロードする場合は以下の変数を設定すると
+## 対応する変数のパスにアップロードされます
+## redmine_upload_restore_files_archive_file => redmine_restore_files_archive_file
+## redmine_upload_restore_database_dump_file => redmine_restore_database_dump_file
+# redmine_upload_restore_files_archive_file:
+# redmine_upload_restore_database_dump_file:
+
+### 「files」ディレクトリ内のファイルをまとめたアーカイブファイル
+## 「files」ディレクトリのリストアファイルをサーバにアップロードする場合は以下の変数にコントロールノード側のファイルパスを設定します
 ## ※変数「redmine_restore_files_archive_file」のパスにアップロードされます。
 # redmine_upload_restore_files_archive_file: path/to/local/redmine/files_archive/file.tar.gz
 ## アーカイブファイル展開時のコマンドラインオプションを指定素隊場合は、以下の変数にコマンドラインオプションを設定します。
@@ -1841,4 +1855,11 @@ redmine_restore_files_archive_file: "{{ redmine_home }}/tmp/redmine_files_archiv
 # データベースのガンプファイルをサーバにアップロードする場合は以下の変数にコントロールノード側のファイルパスを設定する
 # ※変数「redmine_restore_database_dump_file」のパスにアップロードされます。
 # redmine_upload_restore_database_dump_file: path/to/local/redmine/database_dump.tar.gz
-redmine_restore_database_dump_file: "{{ redmine_home }}/tmp/redmine_database_dump.tar.gz"
+redmine_restore_database_dump_file: "{{ redmine_home }}/tmp/redmine_database_dump.sql.gz"
+
+### データベースダンプファイルリストア時の接続情報
+# redmine_restore_database_host:
+# redmine_restore_database_user:
+# redmine_restore_database_password:
+# redmine_restore_database_port:
+# redmine_restore_database_unix_socket:

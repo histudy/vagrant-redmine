@@ -27,6 +27,11 @@
     name: "{{ redmine_db_cfg.production.database }}"
     state: import
     target: "{{ redmine_restore_database_dump_file }}"
+    login_host: "{{ redmine_restore_database_host | default(omit) }}"
+    login_user: "{{ redmine_restore_database_user | default(omit) }}"
+    login_password: "{{ redmine_restore_database_password | default(omit) }}"
+    login_port: "{{ redmine_restore_database_port | default(omit) }}"
+    login_unix_socket: "{{ redmine_restore_database_unix_socket | default(omit) }}"
   when:
     - redmine_restor_file_result.stat.exists
     - redmine_db_cfg.production.adapter == 'mysql2'

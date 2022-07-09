@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "wate/debian-11"
 
   config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 3306, host: 3306
   config.vm.network "private_network", ip: "192.168.56.200"
   config.vm.synced_folder "./", "/vagrant"
 

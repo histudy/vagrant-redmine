@@ -20,6 +20,10 @@ nginx_vhosts:
 dehydrated_cfg:
   CA: https://acme-staging-v02.api.letsencrypt.org/directory
 
+mariadb_mysqld_cfg:
+  bind_address: 0.0.0.0
+mariadb_allow_connect_other_host: true
+
 redmine_db_cfg:
   production:
     adapter: mysql2
