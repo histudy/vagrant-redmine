@@ -9,7 +9,7 @@ mariadb_packages:
 mariadb_root_password: rootP@55w0rd
 
 mariadb_default_charset: utf8mb4
-mariadb_default_collation: utf8mb4_unicode_ci
+mariadb_default_collation: utf8mb4_general_ci
 
 mariadb_databases: []
   # - name: sample

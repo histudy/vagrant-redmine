@@ -115,6 +115,7 @@
       when:
         - generate_token_result is changed
         - redmine_restore_files is undefined
+        - not redmine_skip_load_default_data
     - name: install themes from git
       ansible.builtin.git:
         repo: "{{ item.repo }}"
