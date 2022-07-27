@@ -57,11 +57,6 @@
         src: Gemfile.local.j2
         dest: "{{ redmine_home }}/Gemfile.local"
         mode: "0644"
-    - name: set redmine database config variable
-      ansible.builtin.set_fact:
-        redmine_db_cfg:
-          production: "{{ redmine_db_cfg.production }}"
-          development: "{{ redmine_db_cfg.production }}"
     - name: create database config file
       ansible.builtin.template:
         src: database.yml.j2
