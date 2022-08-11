@@ -28,8 +28,8 @@
           ansible.builtin.blockinfile:
             path: ~/.bashrc
             block: |
-              export TBLS_DSN=my://{{ redmin_db_user }}:{{ redmin_db_password }}@{{ redmin_db_host }}:3306/{{ redmin_db_name }}
-              export TBLS_DOC_PATH=/vagrant/dbdoc/{{ redmine_version }}
+              export TBLS_DSN=mariadb://{{ redmin_db_user }}:{{ redmin_db_password }}@{{ redmin_db_host }}:3306/{{ redmin_db_name }}
+              export TBLS_DOC_PATH=/vagrant/dbdoc
         - name: create mysql connection file
           ini_file:
             path: ~/.my.cnf
