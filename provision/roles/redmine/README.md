@@ -24,10 +24,10 @@ Example Playbook
 ```yml
 - hosts: servers
   roles:
-     - role: redmine
+    - role: redmine
 ```
 
 License
 -------
 
-MIT
+Apache License 2.0

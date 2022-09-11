@@ -1,6 +1,9 @@
 ---
 skip_list:
-  - 'no-handler'
-  - 'role-name'
+  - role-name
+  - name[casing]
+  - no-handler
+  - no-changed-when
+  - command-instead-of-shell
 warn_list:
-  - 'experimental'
+  - experimental

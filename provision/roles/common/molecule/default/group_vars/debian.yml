@@ -12,6 +12,7 @@ common_files:
 common_users:
   - name: simple
     password: "{{ 'password' | password_hash('sha512') }}"
+  - name: dusable_acount
   - name: full_set
     password: "{{ 'password' | password_hash('sha512') }}"
     authorized_keys:

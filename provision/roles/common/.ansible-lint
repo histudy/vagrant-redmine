@@ -1,8 +1,8 @@
 ---
+use_default_rules: true
 skip_list:
-  - 'meta-incorrect'
-  - 'meta-no-info'
-  - 'meta-no-tags'
-  - 'meta-video-links'
+  - role-name
+  - name[casing]
+  - no-changed-when
 warn_list:
-  - 'experimental'
+  - experimental

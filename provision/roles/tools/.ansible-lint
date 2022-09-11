@@ -1,8 +1,7 @@
 ---
 skip_list:
-  - 'meta-incorrect'
-  - 'meta-no-info'
-  - 'meta-no-tags'
-  - 'meta-video-links'
+  - role-name
+  - name[casing]
+  - no-handler
 warn_list:
-  - 'experimental'
+  - experimental

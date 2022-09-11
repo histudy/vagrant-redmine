@@ -2,16 +2,14 @@
 install_tools:
   - pict
   - tbls
-  - mkdocs
-  - hugo
   - direnv
   - mailhog
-  - sassc
+  - mkdocs
+  # - hugo
+  # - sassc
   # - mecab
 
-tbls_version: "1.54.2"
-
-mecab_extra_cfg: ""
+tbls_version: "latest"
 
 mailhog_version: v1.0.1
 mailhog_mhsendmail_version: v0.2.0
@@ -29,3 +27,5 @@ mailhog_cfg:
   storage: memory
   outgoing_smtp: false
   ui_web_path: false
+
+mecab_extra_cfg: ""

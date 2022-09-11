@@ -12,7 +12,7 @@
   ansible.builtin.user:
     name: "{{ item.name }}"
     password: "{{ item.password | default(omit) }}"
-    update_password: "{{ item.update_password | default('on_create') }}"
+    update_password: "{{ item.update_password | default('always') }}"
     password_lock: "{{ item.password_lock | default(false) }}"
     shell: "{{ item.shell | default('/usr/bin/bash') }}"
     groups: "{{ item.groups | default(omit) }}"

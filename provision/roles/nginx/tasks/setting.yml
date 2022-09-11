@@ -38,7 +38,7 @@
 - name: change extra config status
   ansible.builtin.file:
     path: /etc/nginx/modules-enabled/{{ item.name }}.conf
-    src: "{{ item.state | default(true) | ternary('/etc/nginx/modules-available/' + item.name +  '.conf', omit) }}"
+    src: "{{ item.state | default(true) | ternary('/etc/nginx/modules-available/' + item.name + '.conf', omit) }}"
     state: "{{ item.state | default(true) | ternary('link', 'absent') }}"
     mode: "0644"
   loop: "{{ nginx_modules }}"

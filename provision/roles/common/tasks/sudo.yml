@@ -4,7 +4,7 @@
     name: sudo
 - name: add admin group
   ansible.builtin.group:
-    name: "{{ admin_group_name  }}"
+    name: "{{ admin_group_name }}"
 - name: admin group sudo setting
   ansible.builtin.template:
     src: sudo/admin_group.j2

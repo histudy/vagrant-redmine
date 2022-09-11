@@ -69,6 +69,6 @@
 - name: manage backup setting
   ansible.builtin.import_tasks: backup.yml
   tags: backup
-- name: setup other tools
-  ansible.builtin.import_tasks: tools.yml
-  tags: tools
+- name: setup other utilities
+  ansible.builtin.import_tasks: utilities.yml
+  tags: utilities

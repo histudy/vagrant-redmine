@@ -24,8 +24,8 @@
     dest: "{{ dehydrated_config_base_dir }}/hook.sh"
     mode: "0750"
 - name: register account key
-  ansible.builtin.command: dehydrated --register --accept-terms
-  args:
+  ansible.builtin.command:
+    cmd: dehydrated --register --accept-terms
     creates: "{{ dehydrated_base_dir }}/accounts"
 - name: create auth file directory
   ansible.builtin.file:
@@ -33,7 +33,8 @@
     state: directory
     mode: "0755"
 - name: sign/renew non-existent/changed/expiring certificates
-  ansible.builtin.command: dehydrated --cron
+  ansible.builtin.command:
+    cmd: dehydrated --cron
   when: dehydrated_auto_execute
 - name: register cron job
   ansible.builtin.cron:

@@ -16,10 +16,10 @@ Example Playbook
 ```yaml
 - hosts: servers
   roles:
-     - role: mariadb
+    - role: mariadb
 ```
 
 License
 -------
 
-MIT
+Apache License 2.0

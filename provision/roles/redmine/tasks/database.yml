@@ -4,7 +4,7 @@
     name:
       - mariadb-client
       - libmariadb-dev
-      - python{{ ansible_facts.distribution_major_version is version('11', '>=') | ternary('3', '')  }}-pymysql
+      - python{{ ansible_facts.distribution_major_version is version('11', '>=') | ternary('3', '') }}-pymysql
   when: redmine_db_cfg.production.adapter == 'mysql2'
 - name: localhost database setting
   block:

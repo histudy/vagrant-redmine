@@ -301,8 +301,8 @@
     or
     redmine_reimport_issue_templates_note
 - name: update redmine settings
-  ansible.builtin.command: "bundle exec rails runner {{ redmine_home }}/scripts/import.rb"
-  args:
+  ansible.builtin.command:
+    cmd: bundle exec rails runner {{ redmine_home }}/scripts/import.rb
     chdir: "{{ redmine_home }}"
   tags:
     - skip_ansible_lint

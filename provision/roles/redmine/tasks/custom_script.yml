@@ -8,14 +8,14 @@
     - name: create custom script
       ansible.builtin.template:
         src: "{{ item.file }}"
-        dest: "{{ redmine_script_dir }}/{{ item.remote_name | default( item.file | basename ) }}"
+        dest: "{{ redmine_script_dir }}/{{ item.remote_name | default(item.file | basename) }}"
         owner: "{{ redmine_user }}"
         group: "{{ redmine_user }}"
-        mode: "{{ item.mode | default( '0700' ) }}"
+        mode: "{{ item.mode | default('0700') }}"
       loop: "{{ redmine_custom_script_files | default([]) | selectattr('removed', 'undefined') | list }}"
     - name: remove custom script
       ansible.builtin.file:
-        path: "{{ redmine_script_dir }}/{{ item.remote_name | default( item.file | basename ) }}"
+        path: "{{ redmine_script_dir }}/{{ item.remote_name | default(item.file | basename) }}"
         state: absent
       loop: "{{ redmine_custom_script_files | default([]) | selectattr('removed', 'defined') | list }}"
   become_user: "{{ redmine_user }}"

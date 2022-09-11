@@ -4,17 +4,17 @@
   gather_facts: true
   check_mode: true
   tasks:
-    - name: test client package
+    - name: Test client package
       ansible.builtin.apt:
         name: mariadb-client
       register: result
-    - name: assert client package
+    - name: Assert client package
       ansible.builtin.assert:
         that: result is not changed
-    - name: test server package
+    - name: Aest server package
       ansible.builtin.apt:
         name: mariadb-server-mroonga
       register: result
-    - name: assert server package
+    - name: Assert server package
       ansible.builtin.assert:
         that: result is not changed

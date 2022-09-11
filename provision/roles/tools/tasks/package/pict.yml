@@ -6,8 +6,8 @@
     version: main
   register: git_result
 - name: build
-  ansible.builtin.command: make
-  args:
+  ansible.builtin.command:
+    cmd: make
     chdir: /usr/local/src/pict
   when: git_result is changed
   tags:

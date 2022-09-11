@@ -35,9 +35,9 @@
         state: directory
     - name: control active and configured mount points
       mount:
-        path: "{{ mount_setting.path  }}"
+        path: "{{ mount_setting.path }}"
         src: "{{ mount_setting.src | default(omit) }}"
-        fstype: "{{ mount_setting.fstype  }}"
+        fstype: "{{ mount_setting.fstype }}"
         opts: "{{ mount_setting.mount_options | default(['defaults']) | join(',') }}"
         boot: "{{ mount_setting.automount | default(true) }}"
         dump: "{{ mount_setting.dump | default(omit) }}"
