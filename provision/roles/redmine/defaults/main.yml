@@ -3,7 +3,7 @@
 # 設置するRedmineのバージョン
 # --------------------
 redmine_repo: https://github.com/redmine/redmine.git
-redmine_version: "4.2-stable"
+redmine_version: "5.0-stable"
 ## RedMica
 # redmine_repo: https://github.com/redmica/redmica.git
 # redmine_version: "stable-2.0"
